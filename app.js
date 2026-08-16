@@ -1,1 +1,3370 @@
-/* Obfuscated by J2TEAM.org */const _0x564057=_0x565a;(function(_0x5d2e55,_0x37866b){const _0x1ad982=_0x565a,_0x444892=_0x5d2e55();while(!![]){try{const _0x1e6d34=parseInt(_0x1ad982(0x373))/0x1+-parseInt(_0x1ad982(0x2bd))/0x2*(parseInt(_0x1ad982(0x1a6))/0x3)+parseInt(_0x1ad982(0x1df))/0x4+-parseInt(_0x1ad982(0x241))/0x5*(-parseInt(_0x1ad982(0x171))/0x6)+-parseInt(_0x1ad982(0x145))/0x7+parseInt(_0x1ad982(0x3a1))/0x8+-parseInt(_0x1ad982(0x21a))/0x9;if(_0x1e6d34===_0x37866b)break;else _0x444892['push'](_0x444892['shift']());}catch(_0x29aced){_0x444892['push'](_0x444892['shift']());}}}(_0x2d10,0xd3088));const firebaseConfig={'apiKey':_0x564057(0x27b),'authDomain':'realsystem-12c37.firebaseapp.com','databaseURL':_0x564057(0x30b),'projectId':_0x564057(0x1ec),'storageBucket':'realsystem-12c37.firebasestorage.app','messagingSenderId':_0x564057(0x3c5),'appId':_0x564057(0x22a),'measurementId':_0x564057(0x1f8)};firebase['initializeApp'](firebaseConfig);const db=firebase[_0x564057(0x1e1)]();let activeTab=_0x564057(0x1d3),allStudents=[],allTeachers=[];function getTodayMonthString(){const _0x3f3d51=_0x564057,_0x4e6ab5=new Date(),_0xc3fb67=_0x4e6ab5[_0x3f3d51(0x38c)](),_0xc97a06=String(_0x4e6ab5[_0x3f3d51(0x3e6)]()+0x1)[_0x3f3d51(0x2f8)](0x2,'0');return _0xc3fb67+'-'+_0xc97a06;}let selectedMonth=getTodayMonthString(),selectedStudent=null,activeAttendanceStudentId=null,lastProcessedScanTime=0x0,currentFilteredStudents=[],currentBulkTargetStudents=[],selectedWaBulkTemplateKey=null;function toEnglishDigits(_0x2343fc){const _0x17cb5c=_0x564057;if(_0x2343fc===null||_0x2343fc===undefined)return'0';return String(_0x2343fc)[_0x17cb5c(0x21c)](/[٠-٩]/g,_0x158623=>_0x17cb5c(0x3e8)['indexOf'](_0x158623));}function escapeHTML(_0x237681){const _0x2aebaa=_0x564057;if(_0x237681===null||_0x237681===undefined)return'';return String(_0x237681)[_0x2aebaa(0x21c)](/&/g,'&amp;')['replace'](/</g,_0x2aebaa(0x3ae))[_0x2aebaa(0x21c)](/>/g,_0x2aebaa(0x33d))['replace'](/"/g,_0x2aebaa(0x271))[_0x2aebaa(0x21c)](/'/g,_0x2aebaa(0x3b1));}async function hashPassword(_0x271ed7){const _0x1a2fa4=_0x564057;if(!_0x271ed7)return'';const _0x5b0527=new TextEncoder()[_0x1a2fa4(0x1f6)](_0x271ed7),_0x193e05=await crypto[_0x1a2fa4(0x3ca)]['digest'](_0x1a2fa4(0x245),_0x5b0527),_0x528a71=Array[_0x1a2fa4(0x38b)](new Uint8Array(_0x193e05));return _0x528a71[_0x1a2fa4(0x186)](_0x486d8f=>_0x486d8f[_0x1a2fa4(0x279)](0x10)['padStart'](0x2,'0'))[_0x1a2fa4(0x398)]('');}function getSelectedMonthText(){const _0x24d473=_0x564057,_0x28ebdd=document['getElementById'](_0x24d473(0x344));if(_0x28ebdd&&_0x28ebdd[_0x24d473(0x24b)]&&_0x28ebdd[_0x24d473(0x379)]>=0x0)return _0x28ebdd[_0x24d473(0x24b)][_0x28ebdd[_0x24d473(0x379)]][_0x24d473(0x1a5)];return _0x24d473(0x360)+(new Date()['getMonth']()+0x1);}function getSelectedSessionText(){const _0x2a9fbf=_0x564057,_0x114ffb=document['getElementById'](_0x2a9fbf(0x2a7));if(_0x114ffb&&_0x114ffb[_0x2a9fbf(0x24b)]&&_0x114ffb[_0x2a9fbf(0x379)]>=0x0)return _0x114ffb[_0x2a9fbf(0x24b)][_0x114ffb['selectedIndex']]['text'];return _0x2a9fbf(0x14d);}function getWaBulkTemplates(){const _0x3e8e0=_0x564057,_0x38d57d=getSelectedMonthText(),_0x599038=getSelectedSessionText();return{'attendance':'السلام\x20عليكم\x20ورحمة\x20الله\x20وبركاته،\x0a\x0aنحيطكم\x20علماً\x20بأنه\x20قد\x20تم\x20بحمد\x20الله\x20حضور\x20الطالب/ـة:\x20{student_name}\x20درس\x20اللغة\x20العربية\x20اليوم\x20('+_0x599038+_0x3e8e0(0x289),'absent':_0x3e8e0(0x345)+_0x599038+_0x3e8e0(0x289),'paid':_0x3e8e0(0x328)+_0x38d57d+_0x3e8e0(0x2d8),'unpaid':'السلام\x20عليكم\x20ورحمة\x20الله\x20وبركاته،\x0a\x0aتنبيه:\x20يرجى\x20العلم\x20أنه\x20لم\x20يتم\x20سداد\x20مصروفات\x20درس\x20اللغة\x20العربية\x20('+_0x38d57d+')\x20حتى\x20الآن\x20للطالب/ـة:\x20{student_name}.\x0a\x0aتحت\x20إشراف\x20مستر\x20هيثم\x20فؤاد','report':_0x3e8e0(0x307)+_0x38d57d+_0x3e8e0(0x17d)};}const tabStudents=document[_0x564057(0x391)](_0x564057(0x2f6)),tabTeachers=document['getElementById']('tab-teachers'),sectionStudentForm=document['getElementById'](_0x564057(0x1bc)),sectionStudentList=document[_0x564057(0x391)](_0x564057(0x158)),sectionStudentProfile=document['getElementById'](_0x564057(0x1ff)),sectionAnalyticsDashboard=document['getElementById'](_0x564057(0x330)),dashFilterGrade=document[_0x564057(0x391)](_0x564057(0x23b)),dashFilterMonth=document[_0x564057(0x391)](_0x564057(0x3a8)),kpiTotalStudents=document['getElementById'](_0x564057(0x339)),kpiGradeSubtext=document[_0x564057(0x391)]('kpi-grade-subtext'),kpiAttendedToday=document[_0x564057(0x391)](_0x564057(0x306)),kpiAttendedRate=document['getElementById'](_0x564057(0x37f)),kpiPaidStudents=document[_0x564057(0x391)]('kpi-paid-students'),kpiPaidStudentsRate=document[_0x564057(0x391)](_0x564057(0x1e9)),kpiPaidRate=document['getElementById'](_0x564057(0x2c7)),kpiPaidCountText=document[_0x564057(0x391)](_0x564057(0x1b1)),topStudentsListContainer=document['getElementById'](_0x564057(0x31a));let attendanceChartInstance=null,feesChartInstance=null,gradesChartInstance=null;const inputAcademicId=document[_0x564057(0x391)]('academic-id'),inputName=document[_0x564057(0x391)](_0x564057(0x2f2)),inputGrade=document[_0x564057(0x391)](_0x564057(0x24f)),inputPhone=document['getElementById']('student-phone'),guardianPhone=document[_0x564057(0x391)](_0x564057(0x15f)),studentNotes=document['getElementById']('student-notes'),inputSearch=document[_0x564057(0x391)](_0x564057(0x357)),filterGradeSelect=document[_0x564057(0x391)](_0x564057(0x20f)),filterFeeSelect=document[_0x564057(0x391)](_0x564057(0x27d)),filterAttendanceSelect=document['getElementById']('filter-attendance-select'),btnWhatsAppUnattendedBulk=document[_0x564057(0x391)](_0x564057(0x301)),unattendedCountBadge=document[_0x564057(0x391)](_0x564057(0x314)),btnOpenWaSettings=document[_0x564057(0x391)](_0x564057(0x34d)),waModalOverlay=document[_0x564057(0x391)](_0x564057(0x1ce)),btnCloseWaModal=document[_0x564057(0x391)](_0x564057(0x2ed)),btnSaveWaConfig=document['getElementById'](_0x564057(0x34e)),btnTestWaConfig=document[_0x564057(0x391)](_0x564057(0x1fa)),inputWaApiUrl=document[_0x564057(0x391)](_0x564057(0x2fa)),inputWaInstanceId=document['getElementById'](_0x564057(0x22d)),inputWaToken=document[_0x564057(0x391)](_0x564057(0x184)),filterMonthSelect=document[_0x564057(0x391)](_0x564057(0x344)),activeSessionSelect=document['getElementById'](_0x564057(0x2a7)),btnSave=document[_0x564057(0x391)](_0x564057(0x28b)),btnEdit=document[_0x564057(0x391)](_0x564057(0x322)),btnDelete=document[_0x564057(0x391)](_0x564057(0x2b7)),btnClear=document[_0x564057(0x391)](_0x564057(0x166)),btnManualSearch=document[_0x564057(0x391)](_0x564057(0x1de)),studentsListBody=document[_0x564057(0x391)](_0x564057(0x1a8)),studentCountText=document[_0x564057(0x391)](_0x564057(0x2fb)),inputTeacherAcademicId=document['getElementById'](_0x564057(0x26f)),inputTeacherName=document['getElementById'](_0x564057(0x2e5)),inputTeacherSubject=document[_0x564057(0x391)](_0x564057(0x233)),inputTeacherPhone=document[_0x564057(0x391)](_0x564057(0x2b2)),inputTeacherNotes=document[_0x564057(0x391)](_0x564057(0x350)),inputTeacherSearch=document[_0x564057(0x391)]('teacher-search-input'),btnTeacherSave=document[_0x564057(0x391)](_0x564057(0x319)),btnTeacherEdit=document[_0x564057(0x391)](_0x564057(0x234)),btnTeacherDelete=document[_0x564057(0x391)]('btn-teacher-delete'),btnTeacherClear=document[_0x564057(0x391)](_0x564057(0x340)),btnTeacherManualSearch=document[_0x564057(0x391)](_0x564057(0x2bf)),teachersListBody=document['getElementById'](_0x564057(0x19a)),teacherCountText=document[_0x564057(0x391)](_0x564057(0x3b2)),statTotalStudents=document[_0x564057(0x391)](_0x564057(0x203)),statTodayAttendance=document[_0x564057(0x391)]('stat-today-attendance'),statTotalTeachers=document['getElementById'](_0x564057(0x321)),profileStudentName=document[_0x564057(0x391)](_0x564057(0x2f1)),profileStudentId=document[_0x564057(0x391)](_0x564057(0x32d)),profileStudentGrade=document[_0x564057(0x391)](_0x564057(0x257)),profileStudentPhone=document['getElementById'](_0x564057(0x1a9)),profileMonthSelect=document[_0x564057(0x391)](_0x564057(0x3ed)),paymentPaidCheckbox=document[_0x564057(0x391)]('payment-paid-checkbox'),paymentStatusLabel=document[_0x564057(0x391)]('payment-status-label'),paymentAmountInput=document[_0x564057(0x391)]('payment-amount'),btnSavePayment=document[_0x564057(0x391)](_0x564057(0x170)),btnQuickAttend=document[_0x564057(0x391)]('btn-quick-attend'),sessionsGridContainer=document[_0x564057(0x391)](_0x564057(0x239));document['addEventListener'](_0x564057(0x3ee),()=>{const _0x423131=_0x564057;lastProcessedScanTime=Date[_0x423131(0x198)]();if(filterMonthSelect){let _0x43ba46=![];for(let _0x533d96=0x0;_0x533d96<filterMonthSelect['options']['length'];_0x533d96++){if(filterMonthSelect[_0x423131(0x24b)][_0x533d96][_0x423131(0x246)]===selectedMonth){filterMonthSelect[_0x423131(0x379)]=_0x533d96,_0x43ba46=!![];break;}}if(!_0x43ba46){const _0x4652c2=document['createElement'](_0x423131(0x1c0));_0x4652c2[_0x423131(0x246)]=selectedMonth,_0x4652c2[_0x423131(0x2ee)]='شهر\x20'+(new Date()[_0x423131(0x3e6)]()+0x1),filterMonthSelect[_0x423131(0x308)](_0x4652c2),filterMonthSelect[_0x423131(0x246)]=selectedMonth;}}dashFilterMonth&&(dashFilterMonth['value']=selectedMonth,dashFilterMonth[_0x423131(0x37b)](_0x423131(0x3a7),updateAnalyticsDashboard)),dashFilterGrade&&dashFilterGrade[_0x423131(0x37b)]('change',updateAnalyticsDashboard),setupFirebaseListeners(),setupEventHandlers(),setupTabs(),setupProfileEvents(),setupSelectClearButtons(),setupWhatsAppBulkModal(),updateWaBulkButtonVisibility();});function setupFirebaseListeners(){const _0x4cb465=_0x564057,_0x3ba090=db[_0x4cb465(0x349)](_0x4cb465(0x408));_0x3ba090['on'](_0x4cb465(0x246),_0x4793a9=>{const _0x108498=_0x4cb465,_0x4eed41=document[_0x108498(0x391)]('status-dot'),_0x10dad6=document['getElementById'](_0x108498(0x2d6));_0x4793a9[_0x108498(0x22c)]()===!![]?(_0x4eed41[_0x108498(0x313)]=_0x108498(0x1b7),_0x10dad6[_0x108498(0x2ee)]=_0x108498(0x342)):(_0x4eed41['className']='status-dot\x20offline',_0x10dad6[_0x108498(0x2ee)]=_0x108498(0x194));});function _0x564b32(){const _0xda9b30=_0x4cb465;try{const _0x216187=window[_0xda9b30(0x197)]||window['webkitAudioContext'];if(!_0x216187)return;const _0x1637f9=new _0x216187(),_0x4cd36=_0x1637f9[_0xda9b30(0x2cc)](),_0x1a52f2=_0x1637f9['createGain']();_0x4cd36[_0xda9b30(0x3d2)]=_0xda9b30(0x31d),_0x4cd36[_0xda9b30(0x1f7)][_0xda9b30(0x348)](0x7d0,_0x1637f9[_0xda9b30(0x378)]),_0x1a52f2[_0xda9b30(0x399)][_0xda9b30(0x348)](0.6,_0x1637f9[_0xda9b30(0x378)]),_0x1a52f2['gain']['exponentialRampToValueAtTime'](0.01,_0x1637f9[_0xda9b30(0x378)]+0.2),_0x4cd36[_0xda9b30(0x3e0)](_0x1a52f2),_0x1a52f2[_0xda9b30(0x3e0)](_0x1637f9[_0xda9b30(0x283)]),_0x4cd36[_0xda9b30(0x17c)](),_0x4cd36[_0xda9b30(0x1f3)](_0x1637f9[_0xda9b30(0x378)]+0.2);}catch(_0x1d7f66){console['warn'](_0xda9b30(0x1ea),_0x1d7f66);}}const _0x21cda0=db['ref'](_0x4cb465(0x1c4));_0x21cda0['on'](_0x4cb465(0x246),_0xcf0212=>{const _0x571e77=_0x4cb465,_0xd6f5df=_0xcf0212[_0x571e77(0x22c)]();if(_0xd6f5df&&_0xd6f5df[_0x571e77(0x320)]&&_0xd6f5df['timestamp']){if(_0xd6f5df[_0x571e77(0x159)]>lastProcessedScanTime){lastProcessedScanTime=_0xd6f5df[_0x571e77(0x159)],_0x564b32();if(activeTab==='students'){inputAcademicId[_0x571e77(0x246)]=_0xd6f5df['academicId'],inputAcademicId[_0x571e77(0x177)]['remove'](_0x571e77(0x34b)),void inputAcademicId[_0x571e77(0x2c1)],inputAcademicId[_0x571e77(0x177)][_0x571e77(0x288)](_0x571e77(0x34b));const _0xdf09cd=activeSessionSelect?activeSessionSelect[_0x571e77(0x246)]:'1';checkAndLoadStudent(_0xd6f5df[_0x571e77(0x320)]),quickAttendStudentSession(_0xd6f5df[_0x571e77(0x320)],_0xdf09cd);}else inputTeacherAcademicId[_0x571e77(0x246)]=_0xd6f5df[_0x571e77(0x320)],inputTeacherAcademicId['classList'][_0x571e77(0x15e)](_0x571e77(0x34b)),void inputTeacherAcademicId[_0x571e77(0x2c1)],inputTeacherAcademicId[_0x571e77(0x177)][_0x571e77(0x288)]('pulse-highlight'),showToast(_0x571e77(0x261),_0x571e77(0x3a3)+_0xd6f5df[_0x571e77(0x320)],_0x571e77(0x2a5)),checkAndLoadTeacher(_0xd6f5df[_0x571e77(0x320)]);}}});const _0x583263=db[_0x4cb465(0x349)]('students');_0x583263['on'](_0x4cb465(0x246),_0xd9b109=>{const _0x1dab47=_0x4cb465,_0x459308=_0xd9b109[_0x1dab47(0x22c)]();allStudents=[];if(_0x459308)for(const _0x4daa8b in _0x459308){_0x459308[_0x1dab47(0x268)](_0x4daa8b)&&allStudents[_0x1dab47(0x3ac)]({'academicId':_0x4daa8b,'name':_0x459308[_0x4daa8b][_0x1dab47(0x341)],'grade':_0x459308[_0x4daa8b][_0x1dab47(0x2b3)]||'','phone':_0x459308[_0x4daa8b][_0x1dab47(0x14c)]||'','guardianPhone':_0x459308[_0x4daa8b][_0x1dab47(0x2d5)]||'','notes':_0x459308[_0x4daa8b][_0x1dab47(0x27e)]||'','records':_0x459308[_0x4daa8b][_0x1dab47(0x3ef)]||{}});}filterStudentsList(),updateDashboardStats(),updateAnalyticsDashboard();if(selectedStudent){const _0x326d9a=allStudents[_0x1dab47(0x1a2)](_0x5a5c06=>_0x5a5c06[_0x1dab47(0x320)]===selectedStudent[_0x1dab47(0x320)]);if(_0x326d9a)selectedStudent=_0x326d9a,renderMonthlyRecords();else{selectedStudent=null;if(sectionStudentProfile)sectionStudentProfile[_0x1dab47(0x177)][_0x1dab47(0x288)]('hidden');}}});const _0x1fcde6=db[_0x4cb465(0x349)](_0x4cb465(0x35b));_0x1fcde6['on']('value',_0x1af357=>{const _0x4f7de1=_0x4cb465,_0x33fa18=_0x1af357[_0x4f7de1(0x22c)]();allTeachers=[];if(_0x33fa18)for(const _0x5b4cd0 in _0x33fa18){_0x33fa18['hasOwnProperty'](_0x5b4cd0)&&allTeachers[_0x4f7de1(0x3ac)]({'academicId':_0x5b4cd0,'name':_0x33fa18[_0x5b4cd0][_0x4f7de1(0x341)],'subject':_0x33fa18[_0x5b4cd0][_0x4f7de1(0x151)]||'','phone':_0x33fa18[_0x5b4cd0][_0x4f7de1(0x14c)]||'','notes':_0x33fa18[_0x5b4cd0][_0x4f7de1(0x27e)]||''});}if(teachersListBody)renderTeachersList(allTeachers);updateDashboardStats();});}function setupEventHandlers(){const _0x5ad58f=_0x564057;btnSave[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),saveStudent),btnEdit[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),editStudent),btnDelete['addEventListener'](_0x5ad58f(0x1a0),deleteStudent),btnClear[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),clearForm),btnManualSearch[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>checkAndLoadStudent(inputAcademicId[_0x5ad58f(0x246)]['trim']())),[inputPhone,guardianPhone,inputTeacherPhone][_0x5ad58f(0x315)](_0x2fb557=>{const _0x42d123=_0x5ad58f;_0x2fb557&&_0x2fb557[_0x42d123(0x37b)](_0x42d123(0x3a4),_0x38cc55=>{const _0x32eb16=_0x42d123;_0x38cc55[_0x32eb16(0x15b)][_0x32eb16(0x246)]=_0x38cc55[_0x32eb16(0x15b)][_0x32eb16(0x246)][_0x32eb16(0x21c)](/\D/g,'')[_0x32eb16(0x1db)](0x0,0xb);});}),inputAcademicId[_0x5ad58f(0x37b)](_0x5ad58f(0x150),_0x9b2faa=>{const _0x61cbc3=_0x5ad58f;_0x9b2faa['key']===_0x61cbc3(0x187)&&(_0x9b2faa[_0x61cbc3(0x3ba)](),checkAndLoadStudent(inputAcademicId[_0x61cbc3(0x246)][_0x61cbc3(0x31e)]()));}),inputSearch['addEventListener'](_0x5ad58f(0x3a4),()=>{activeAttendanceStudentId=null,filterStudentsList();});filterGradeSelect&&filterGradeSelect[_0x5ad58f(0x37b)](_0x5ad58f(0x3a7),()=>{activeAttendanceStudentId=null,filterStudentsList();});filterFeeSelect&&filterFeeSelect['addEventListener'](_0x5ad58f(0x3a7),()=>{activeAttendanceStudentId=null,filterStudentsList();});filterAttendanceSelect&&filterAttendanceSelect[_0x5ad58f(0x37b)](_0x5ad58f(0x3a7),()=>{activeAttendanceStudentId=null,filterStudentsList();});btnWhatsAppUnattendedBulk&&btnWhatsAppUnattendedBulk[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x28ebe8=_0x5ad58f;if(!currentFilteredStudents||currentFilteredStudents[_0x28ebe8(0x36a)]===0x0){showToast(_0x28ebe8(0x318),'لا\x20يوجد\x20طلاب\x20ظاهرين\x20في\x20الجدول\x20حالياً\x20لإرسال\x20الرسائل\x20لهم.',_0x28ebe8(0x2a5));return;}openWhatsAppBulkModal();});const _0x31550f=document[_0x5ad58f(0x391)](_0x5ad58f(0x3b3)),_0x439c04=document[_0x5ad58f(0x391)](_0x5ad58f(0x2a8)),_0x5582e0=document[_0x5ad58f(0x391)]('wa-auth-btn-cancel'),_0x589ed8=document['getElementById'](_0x5ad58f(0x3e3)),_0x56c8e2=document[_0x5ad58f(0x391)](_0x5ad58f(0x1dc)),_0x2e4d67=document[_0x5ad58f(0x391)](_0x5ad58f(0x1d5));function _0x5cd28f(){const _0x26bf92=_0x5ad58f,_0x580f67=getWhatsAppConfig();if(inputWaApiUrl)inputWaApiUrl[_0x26bf92(0x246)]=_0x580f67[_0x26bf92(0x274)];if(inputWaInstanceId)inputWaInstanceId[_0x26bf92(0x246)]=_0x580f67[_0x26bf92(0x232)];if(inputWaToken)inputWaToken[_0x26bf92(0x246)]=_0x580f67['token'];const _0x5bb456=_0x580f67['provider']||'local',_0x5c7042=document[_0x26bf92(0x391)]('radio-provider-local'),_0x37d154=document[_0x26bf92(0x391)]('radio-provider-ultramsg'),_0x4db657=document[_0x26bf92(0x391)](_0x26bf92(0x294)),_0x171f97=document['getElementById'](_0x26bf92(0x26c)),_0x409789=document['getElementById'](_0x26bf92(0x29f)),_0xe187b6=document[_0x26bf92(0x391)](_0x26bf92(0x351)),_0x3e0e30=document[_0x26bf92(0x391)](_0x26bf92(0x302)),_0x325d73=document[_0x26bf92(0x391)](_0x26bf92(0x36b)),_0xe1c9c8=document[_0x26bf92(0x391)](_0x26bf92(0x190)),_0x3d3fc9=document[_0x26bf92(0x391)]('card-provider-direct');[_0xe187b6,_0x3e0e30,_0x325d73,_0xe1c9c8,_0x3d3fc9][_0x26bf92(0x315)](_0x37cede=>_0x37cede&&_0x37cede['classList'][_0x26bf92(0x15e)]('active'));if(_0x5bb456==='ultramsg'){if(_0x37d154)_0x37d154[_0x26bf92(0x22f)]=!![];if(_0x3e0e30)_0x3e0e30['classList'][_0x26bf92(0x288)](_0x26bf92(0x2c3));}else{if(_0x5bb456===_0x26bf92(0x1f2)){if(_0x171f97)_0x171f97[_0x26bf92(0x22f)]=!![];if(_0xe1c9c8)_0xe1c9c8[_0x26bf92(0x177)][_0x26bf92(0x288)](_0x26bf92(0x2c3));}else{if(_0x5bb456===_0x26bf92(0x141)){if(_0x4db657)_0x4db657[_0x26bf92(0x22f)]=!![];if(_0x325d73)_0x325d73[_0x26bf92(0x177)][_0x26bf92(0x288)](_0x26bf92(0x2c3));}else{if(_0x5bb456==='direct'){if(_0x409789)_0x409789[_0x26bf92(0x22f)]=!![];if(_0x3d3fc9)_0x3d3fc9[_0x26bf92(0x177)][_0x26bf92(0x288)]('active');}else{if(_0x5c7042)_0x5c7042[_0x26bf92(0x22f)]=!![];if(_0xe187b6)_0xe187b6['classList'][_0x26bf92(0x288)](_0x26bf92(0x2c3));}}}}if(waModalOverlay)waModalOverlay[_0x26bf92(0x177)]['remove'](_0x26bf92(0x2f4));}function _0x42aeb1(){const _0x147732=_0x5ad58f;_0x31550f&&(_0x31550f[_0x147732(0x177)][_0x147732(0x15e)](_0x147732(0x2c3)),setTimeout(()=>_0x31550f[_0x147732(0x177)][_0x147732(0x288)](_0x147732(0x2f4)),0x78));if(_0x56c8e2)_0x56c8e2[_0x147732(0x246)]='';if(_0x2e4d67)_0x2e4d67[_0x147732(0x3ea)]['display']=_0x147732(0x2db);}async function _0x3cd591(){const _0x3fa37d=_0x5ad58f,_0x13010f=_0x56c8e2?_0x56c8e2['value']['trim']():'',_0x419b4d=firebaseAuthCredentials[_0x3fa37d(0x29a)]||await hashPassword(_0x3fa37d(0x200)),_0x31baca=await hashPassword(_0x13010f);if(_0x13010f===_0x3fa37d(0x200)||_0x31baca===_0x419b4d)_0x42aeb1(),_0x5cd28f(),showToast(_0x3fa37d(0x2a2),_0x3fa37d(0x1d7),'success');else{if(_0x2e4d67)_0x2e4d67['style'][_0x3fa37d(0x303)]='block';_0x56c8e2&&(_0x56c8e2[_0x3fa37d(0x177)]['add']('pulse-highlight'),setTimeout(()=>_0x56c8e2[_0x3fa37d(0x177)][_0x3fa37d(0x15e)](_0x3fa37d(0x34b)),0x3e8),_0x56c8e2['focus'](),_0x56c8e2['select']()),showToast(_0x3fa37d(0x3d0),_0x3fa37d(0x3e4),_0x3fa37d(0x375));}}btnOpenWaSettings&&btnOpenWaSettings[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x1b83c4=_0x5ad58f;if(_0x31550f){if(_0x56c8e2)_0x56c8e2[_0x1b83c4(0x246)]='';if(_0x2e4d67)_0x2e4d67[_0x1b83c4(0x3ea)][_0x1b83c4(0x303)]='none';_0x31550f[_0x1b83c4(0x177)][_0x1b83c4(0x15e)](_0x1b83c4(0x2f4)),requestAnimationFrame(()=>{const _0x30c054=_0x1b83c4;_0x31550f['classList'][_0x30c054(0x288)](_0x30c054(0x2c3));if(_0x56c8e2)_0x56c8e2[_0x30c054(0x326)]();});}else _0x5cd28f();});if(_0x439c04)_0x439c04['addEventListener']('click',_0x42aeb1);if(_0x5582e0)_0x5582e0['addEventListener']('click',_0x42aeb1);if(_0x589ed8)_0x589ed8[_0x5ad58f(0x37b)]('click',_0x3cd591);_0x56c8e2&&_0x56c8e2[_0x5ad58f(0x37b)](_0x5ad58f(0x150),_0x1aad92=>{const _0x4a4961=_0x5ad58f;if(_0x1aad92[_0x4a4961(0x358)]===_0x4a4961(0x187))_0x1aad92['preventDefault'](),_0x3cd591();else _0x1aad92[_0x4a4961(0x358)]===_0x4a4961(0x223)&&_0x42aeb1();});_0x31550f&&_0x31550f[_0x5ad58f(0x37b)]('click',_0x1d4b92=>{const _0x1a6d06=_0x5ad58f;if(_0x1d4b92[_0x1a6d06(0x15b)]===_0x31550f)_0x42aeb1();});const _0x4bc2da=document[_0x5ad58f(0x391)]('card-provider-local'),_0x49486a=document[_0x5ad58f(0x391)](_0x5ad58f(0x302)),_0x48b795=document[_0x5ad58f(0x391)](_0x5ad58f(0x36b)),_0x5b04a7=document['getElementById']('card-provider-whatsauto'),_0x28afc9=document[_0x5ad58f(0x391)]('card-provider-direct'),_0x2e4102=document[_0x5ad58f(0x391)](_0x5ad58f(0x407)),_0x78b82e=document[_0x5ad58f(0x391)](_0x5ad58f(0x31f)),_0x3f50c2=document[_0x5ad58f(0x391)]('radio-provider-callmebot'),_0x5dcd35=document[_0x5ad58f(0x391)](_0x5ad58f(0x26c)),_0x145b5f=document[_0x5ad58f(0x391)](_0x5ad58f(0x29f));_0x4bc2da&&_0x4bc2da[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x5845e8=_0x5ad58f;if(_0x2e4102)_0x2e4102['checked']=!![];[_0x4bc2da,_0x49486a,_0x48b795,_0x5b04a7,_0x28afc9]['forEach'](_0x16d61d=>_0x16d61d&&_0x16d61d['classList'][_0x5845e8(0x15e)](_0x5845e8(0x2c3))),_0x4bc2da[_0x5845e8(0x177)][_0x5845e8(0x288)](_0x5845e8(0x2c3));if(inputWaApiUrl)inputWaApiUrl[_0x5845e8(0x246)]=_0x5845e8(0x277);if(inputWaInstanceId)inputWaInstanceId[_0x5845e8(0x246)]='';if(inputWaToken)inputWaToken[_0x5845e8(0x246)]='';});_0x49486a&&_0x49486a[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x4074cb=_0x5ad58f;if(_0x78b82e)_0x78b82e[_0x4074cb(0x22f)]=!![];[_0x4bc2da,_0x49486a,_0x48b795,_0x5b04a7,_0x28afc9][_0x4074cb(0x315)](_0x151189=>_0x151189&&_0x151189[_0x4074cb(0x177)][_0x4074cb(0x15e)](_0x4074cb(0x2c3))),_0x49486a['classList']['add'](_0x4074cb(0x2c3));if(inputWaApiUrl)inputWaApiUrl[_0x4074cb(0x246)]=_0x4074cb(0x364);if(inputWaInstanceId)inputWaInstanceId[_0x4074cb(0x246)]='instance188259';if(inputWaToken)inputWaToken[_0x4074cb(0x246)]=_0x4074cb(0x3af);});_0x5b04a7&&_0x5b04a7[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x5def12=_0x5ad58f;if(_0x5dcd35)_0x5dcd35[_0x5def12(0x22f)]=!![];[_0x4bc2da,_0x49486a,_0x48b795,_0x5b04a7,_0x28afc9][_0x5def12(0x315)](_0x344ac9=>_0x344ac9&&_0x344ac9[_0x5def12(0x177)][_0x5def12(0x15e)](_0x5def12(0x2c3))),_0x5b04a7[_0x5def12(0x177)][_0x5def12(0x288)]('active');if(inputWaApiUrl)inputWaApiUrl[_0x5def12(0x246)]=_0x5def12(0x26e);if(inputWaInstanceId)inputWaInstanceId[_0x5def12(0x246)]='';if(inputWaToken)inputWaToken[_0x5def12(0x246)]='';});_0x48b795&&_0x48b795[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x15e42e=_0x5ad58f;if(_0x3f50c2)_0x3f50c2[_0x15e42e(0x22f)]=!![];[_0x4bc2da,_0x49486a,_0x48b795,_0x5b04a7,_0x28afc9]['forEach'](_0x2012c3=>_0x2012c3&&_0x2012c3[_0x15e42e(0x177)]['remove'](_0x15e42e(0x2c3))),_0x48b795['classList'][_0x15e42e(0x288)]('active');if(inputWaApiUrl)inputWaApiUrl[_0x15e42e(0x246)]=_0x15e42e(0x237);if(inputWaInstanceId)inputWaInstanceId[_0x15e42e(0x246)]='';if(inputWaToken)inputWaToken[_0x15e42e(0x246)]='';});_0x28afc9&&_0x28afc9[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x2ab103=_0x5ad58f;if(_0x145b5f)_0x145b5f['checked']=!![];[_0x4bc2da,_0x49486a,_0x48b795,_0x5b04a7,_0x28afc9]['forEach'](_0x505364=>_0x505364&&_0x505364[_0x2ab103(0x177)][_0x2ab103(0x15e)]('active')),_0x28afc9[_0x2ab103(0x177)][_0x2ab103(0x288)](_0x2ab103(0x2c3));if(inputWaApiUrl)inputWaApiUrl['value']='';if(inputWaInstanceId)inputWaInstanceId[_0x2ab103(0x246)]='';if(inputWaToken)inputWaToken[_0x2ab103(0x246)]='';showToast(_0x2ab103(0x24a),_0x2ab103(0x1e2),'info');});btnCloseWaModal&&btnCloseWaModal['addEventListener'](_0x5ad58f(0x1a0),()=>{const _0x5488a3=_0x5ad58f;if(waModalOverlay)waModalOverlay[_0x5488a3(0x177)]['add'](_0x5488a3(0x2f4));});btnSaveWaConfig&&btnSaveWaConfig[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x4ba44a=_0x5ad58f;let _0x44368a='local';if(_0x78b82e&&_0x78b82e[_0x4ba44a(0x22f)])_0x44368a='ultramsg';else{if(_0x5dcd35&&_0x5dcd35[_0x4ba44a(0x22f)])_0x44368a='whatsauto';else{if(_0x3f50c2&&_0x3f50c2['checked'])_0x44368a=_0x4ba44a(0x141);else{if(_0x145b5f&&_0x145b5f[_0x4ba44a(0x22f)])_0x44368a=_0x4ba44a(0x3bb);}}}const _0x232e70=inputWaApiUrl?inputWaApiUrl[_0x4ba44a(0x246)]:'',_0x29be97=inputWaInstanceId?inputWaInstanceId[_0x4ba44a(0x246)]:'',_0x49ced0=inputWaToken?inputWaToken[_0x4ba44a(0x246)]:'';saveWhatsAppConfig(_0x44368a,_0x232e70,_0x29be97,_0x49ced0),showToast('تم\x20الحفظ\x20بنجاح\x20🟢',_0x4ba44a(0x3e2)+_0x44368a[_0x4ba44a(0x23a)]()+_0x4ba44a(0x2f3),_0x4ba44a(0x255));if(waModalOverlay)waModalOverlay[_0x4ba44a(0x177)][_0x4ba44a(0x288)]('hidden');});btnTestWaConfig&&btnTestWaConfig[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),()=>{const _0x21806f={'name':'طالب\x20تجريبي','guardianPhone':'01000000000'};sendWhatsAppAbsentNotice(_0x21806f,'1');});const _0x21b262=document[_0x5ad58f(0x391)](_0x5ad58f(0x3a9));_0x21b262&&_0x21b262['addEventListener']('click',()=>{const _0x52aaca=_0x5ad58f;if(_0x48b795)_0x48b795['click']();showToast(_0x52aaca(0x172),_0x52aaca(0x30c),_0x52aaca(0x2a5));});filterMonthSelect&&filterMonthSelect[_0x5ad58f(0x37b)]('change',_0x41616e=>{selectedMonth=_0x41616e['target']['value'],filterStudentsList();});activeSessionSelect&&activeSessionSelect[_0x5ad58f(0x37b)]('change',()=>{filterStudentsList();});if(btnTeacherSave)btnTeacherSave['addEventListener'](_0x5ad58f(0x1a0),saveTeacher);if(btnTeacherEdit)btnTeacherEdit[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),editTeacher);if(btnTeacherDelete)btnTeacherDelete[_0x5ad58f(0x37b)]('click',deleteTeacher);if(btnTeacherClear)btnTeacherClear[_0x5ad58f(0x37b)](_0x5ad58f(0x1a0),clearTeacherForm);if(btnTeacherManualSearch)btnTeacherManualSearch[_0x5ad58f(0x37b)]('click',()=>{const _0x2c076f=_0x5ad58f;if(inputTeacherAcademicId)checkAndLoadTeacher(inputTeacherAcademicId[_0x2c076f(0x246)][_0x2c076f(0x31e)]());});inputTeacherAcademicId&&inputTeacherAcademicId[_0x5ad58f(0x37b)](_0x5ad58f(0x150),_0x11e2a2=>{const _0xc1996c=_0x5ad58f;_0x11e2a2[_0xc1996c(0x358)]===_0xc1996c(0x187)&&(_0x11e2a2['preventDefault'](),checkAndLoadTeacher(inputTeacherAcademicId[_0xc1996c(0x246)][_0xc1996c(0x31e)]()));});if(inputTeacherSearch)inputTeacherSearch[_0x5ad58f(0x37b)]('input',filterTeachersList);}function setupTabs(){const _0x108ec1=_0x564057;tabStudents&&tabStudents[_0x108ec1(0x37b)](_0x108ec1(0x1a0),()=>{const _0x2bd72a=_0x108ec1;activeTab=_0x2bd72a(0x1d3),tabStudents[_0x2bd72a(0x177)][_0x2bd72a(0x288)](_0x2bd72a(0x2c3));if(tabTeachers)tabTeachers['classList'][_0x2bd72a(0x15e)](_0x2bd72a(0x2c3));if(sectionStudentForm)sectionStudentForm[_0x2bd72a(0x177)][_0x2bd72a(0x15e)](_0x2bd72a(0x2f4));if(sectionStudentList)sectionStudentList[_0x2bd72a(0x177)][_0x2bd72a(0x15e)](_0x2bd72a(0x2f4));if(sectionAnalyticsDashboard)sectionAnalyticsDashboard[_0x2bd72a(0x177)][_0x2bd72a(0x288)](_0x2bd72a(0x2f4));if(selectedStudent){if(sectionStudentProfile)sectionStudentProfile[_0x2bd72a(0x177)][_0x2bd72a(0x15e)](_0x2bd72a(0x2f4));}else{if(sectionStudentProfile)sectionStudentProfile[_0x2bd72a(0x177)][_0x2bd72a(0x288)](_0x2bd72a(0x2f4));}}),tabTeachers&&tabTeachers[_0x108ec1(0x37b)](_0x108ec1(0x1a0),()=>{const _0xa9a5db=_0x108ec1;activeTab=_0xa9a5db(0x3f4),tabTeachers[_0xa9a5db(0x177)]['add']('active');if(tabStudents)tabStudents[_0xa9a5db(0x177)][_0xa9a5db(0x15e)](_0xa9a5db(0x2c3));if(sectionStudentForm)sectionStudentForm[_0xa9a5db(0x177)][_0xa9a5db(0x288)](_0xa9a5db(0x2f4));if(sectionStudentList)sectionStudentList[_0xa9a5db(0x177)][_0xa9a5db(0x288)](_0xa9a5db(0x2f4));if(sectionStudentProfile)sectionStudentProfile[_0xa9a5db(0x177)]['add']('hidden');if(sectionAnalyticsDashboard)sectionAnalyticsDashboard[_0xa9a5db(0x177)]['remove'](_0xa9a5db(0x2f4));updateAnalyticsDashboard();});}function _0x565a(_0x57453a,_0x80b4eb){_0x57453a=_0x57453a-0x141;const _0x2d10b5=_0x2d10();let _0x565aaa=_0x2d10b5[_0x57453a];return _0x565aaa;}function setupProfileEvents(){const _0xe5d53c=_0x564057;profileMonthSelect&&profileMonthSelect[_0xe5d53c(0x37b)](_0xe5d53c(0x3a7),_0x556f5c=>{const _0x46864e=_0xe5d53c;selectedMonth=_0x556f5c[_0x46864e(0x15b)][_0x46864e(0x246)],renderMonthlyRecords();});paymentPaidCheckbox&&paymentPaidCheckbox[_0xe5d53c(0x37b)](_0xe5d53c(0x3a7),_0x187953=>{const _0x2b1f7e=_0xe5d53c;updatePaymentLabel(_0x187953[_0x2b1f7e(0x15b)][_0x2b1f7e(0x22f)]);});if(btnSavePayment)btnSavePayment['addEventListener'](_0xe5d53c(0x1a0),saveMonthlyPayment);if(btnQuickAttend)btnQuickAttend[_0xe5d53c(0x37b)]('click',quickAttendToday);}function setStudentFormReadOnly(_0xfe3c5a){const _0x41d31a=_0x564057;inputName[_0x41d31a(0x2ff)]=_0xfe3c5a,inputGrade[_0x41d31a(0x2ff)]=_0xfe3c5a,inputPhone[_0x41d31a(0x2ff)]=_0xfe3c5a,guardianPhone['disabled']=_0xfe3c5a,studentNotes[_0x41d31a(0x2ff)]=_0xfe3c5a;}function setTeacherFormReadOnly(_0x3de591){const _0x52143a=_0x564057;if(inputTeacherName)inputTeacherName[_0x52143a(0x2ff)]=_0x3de591;if(inputTeacherSubject)inputTeacherSubject[_0x52143a(0x2ff)]=_0x3de591;if(inputTeacherPhone)inputTeacherPhone['disabled']=_0x3de591;if(inputTeacherNotes)inputTeacherNotes[_0x52143a(0x2ff)]=_0x3de591;}function triggerSaveButtonGlow(){btnSave&&(btnSave['disabled']=![]);}function removeSaveButtonGlow(){}function setEditButtonState(_0x204169){const _0x3a584f=_0x564057;if(!btnEdit)return;_0x204169?(btnEdit[_0x3a584f(0x2aa)]=_0x3a584f(0x1d4),btnEdit[_0x3a584f(0x177)]['remove'](_0x3a584f(0x1cf)),btnEdit[_0x3a584f(0x177)][_0x3a584f(0x288)](_0x3a584f(0x3da))):(btnEdit['innerHTML']=_0x3a584f(0x3ec),btnEdit[_0x3a584f(0x177)]['remove'](_0x3a584f(0x3da)),btnEdit[_0x3a584f(0x177)][_0x3a584f(0x288)](_0x3a584f(0x1cf)));}async function checkAndLoadStudent(_0x10effe){const _0x372103=_0x564057;if(!_0x10effe){showToast(_0x372103(0x18b),_0x372103(0x35a),_0x372103(0x375));return;}const _0x17b07b=db['ref'](_0x372103(0x30d)+_0x10effe);try{const _0x1fb58c=await _0x17b07b[_0x372103(0x374)]();if(_0x1fb58c[_0x372103(0x21b)]()){const _0x21e3d0=_0x1fb58c[_0x372103(0x22c)]();_0x21e3d0[_0x372103(0x320)]=_0x10effe,selectedStudent=_0x21e3d0,inputAcademicId[_0x372103(0x246)]=_0x10effe,inputName[_0x372103(0x246)]=_0x21e3d0[_0x372103(0x341)]||'',inputGrade['value']=_0x21e3d0[_0x372103(0x2b3)]||'',inputPhone['value']=_0x21e3d0[_0x372103(0x14c)]||'',guardianPhone[_0x372103(0x246)]=_0x21e3d0[_0x372103(0x2d5)]||'',studentNotes[_0x372103(0x246)]=_0x21e3d0[_0x372103(0x27e)]||'',updateAllSelectStates(),setStudentFormReadOnly(!![]),setEditButtonState(![]),removeSaveButtonGlow(),btnSave['disabled']=!![],btnEdit[_0x372103(0x2ff)]=![],btnDelete[_0x372103(0x2ff)]=![],activeAttendanceStudentId=_0x10effe,filterStudentsList(),sectionStudentForm&&sectionStudentForm[_0x372103(0x2eb)]({'behavior':_0x372103(0x226),'block':_0x372103(0x17c)}),showToast(_0x372103(0x1bf),_0x372103(0x17b)+_0x21e3d0[_0x372103(0x341)],'success');}else{inputName['value']='',inputGrade[_0x372103(0x246)]='',inputPhone[_0x372103(0x246)]='',guardianPhone['value']='',studentNotes[_0x372103(0x246)]='',updateAllSelectStates(),setStudentFormReadOnly(![]),btnSave[_0x372103(0x2ff)]=![],btnEdit[_0x372103(0x2ff)]=!![],btnDelete[_0x372103(0x2ff)]=!![],selectedStudent=null;if(sectionStudentProfile)sectionStudentProfile[_0x372103(0x177)][_0x372103(0x288)](_0x372103(0x2f4));showToast('طالب\x20جديد',_0x372103(0x282),'info');}}catch(_0x196e6d){console[_0x372103(0x375)]('Firebase\x20read\x20error:\x20',_0x196e6d),showToast(_0x372103(0x16d),_0x372103(0x3bd),'error');}}async function saveStudent(){const _0xd46111=_0x564057,_0x5f355f=inputAcademicId['value']['trim'](),_0xd9ad5e=inputName['value']['trim'](),_0x158ff1=inputGrade[_0xd46111(0x246)],_0x59d56e=inputPhone[_0xd46111(0x246)][_0xd46111(0x31e)](),_0x8c97bb=guardianPhone[_0xd46111(0x246)]['trim'](),_0x55373b=studentNotes['value'][_0xd46111(0x31e)]();if(!_0x5f355f||!_0xd9ad5e||!_0x158ff1||!_0x59d56e||!_0x8c97bb){showToast(_0xd46111(0x34a),_0xd46111(0x20d),_0xd46111(0x375));return;}if(selectedStudent&&String(selectedStudent['academicId'])[_0xd46111(0x31e)]()===String(_0x5f355f)['trim']()){editStudent();return;}const _0x3cb5bb=/^\d{11}$/;if(!_0x3cb5bb[_0xd46111(0x25c)](_0x59d56e)){showToast(_0xd46111(0x1e6),_0xd46111(0x1e0),_0xd46111(0x375)),inputPhone[_0xd46111(0x326)]();return;}if(!_0x3cb5bb[_0xd46111(0x25c)](_0x8c97bb)){showToast(_0xd46111(0x1d2),_0xd46111(0x19b),_0xd46111(0x375)),guardianPhone['focus']();return;}const _0x21c22a=allStudents['find'](_0x399102=>String(_0x399102[_0xd46111(0x320)])[_0xd46111(0x31e)]()===String(_0x5f355f)[_0xd46111(0x31e)]());if(_0x21c22a){showToast('الرقم\x20الأكاديمي\x20مكرر\x20⚠️',_0xd46111(0x298)+_0x5f355f+_0xd46111(0x3db)+_0x21c22a['name']+_0xd46111(0x359),'error'),inputAcademicId['focus']();return;}try{const _0x2b1d80=await db[_0xd46111(0x349)](_0xd46111(0x30d)+_0x5f355f)[_0xd46111(0x374)]();if(_0x2b1d80[_0xd46111(0x21b)]()){const _0x12d139=_0x2b1d80[_0xd46111(0x22c)]();showToast(_0xd46111(0x1f1),_0xd46111(0x298)+_0x5f355f+_0xd46111(0x3db)+(_0x12d139[_0xd46111(0x341)]||_0x5f355f)+_0xd46111(0x359),'error'),inputAcademicId[_0xd46111(0x326)]();return;}}catch(_0x494552){console[_0xd46111(0x375)]('Firebase\x20read\x20error\x20during\x20save:\x20',_0x494552);}const _0x1d11ec=db['ref'](_0xd46111(0x30d)+_0x5f355f);_0x1d11ec['set']({'name':_0xd9ad5e,'grade':_0x158ff1,'phone':_0x59d56e,'guardianPhone':_0x8c97bb,'notes':_0x55373b})[_0xd46111(0x29c)](()=>{const _0x442876=_0xd46111;showToast('تم\x20الحفظ\x20بنجاح\x20🟢',_0x442876(0x1b2)+_0xd9ad5e+_0x442876(0x1a7)+_0x5f355f,_0x442876(0x255)),removeSaveButtonGlow(),clearForm();})[_0xd46111(0x3bc)](_0x2a6dc0=>{const _0x326a3b=_0xd46111;console[_0x326a3b(0x375)](_0x2a6dc0),showToast('فشل\x20الحفظ',_0x326a3b(0x305)+_0x2a6dc0[_0x326a3b(0x27c)],_0x326a3b(0x375));});}function editStudent(){const _0x4358cb=_0x564057;if(inputName['disabled']){setStudentFormReadOnly(![]),inputName[_0x4358cb(0x326)](),setEditButtonState(!![]),triggerSaveButtonGlow(),showToast(_0x4358cb(0x2fd),'تم\x20فتح\x20بيانات\x20الطالب\x20للتعديل.\x20قم\x20بإجراء\x20التغييرات\x20ثم\x20اضغط\x20زر\x20\x27حفظ\x20التعديل\x27\x20للحفظ.',_0x4358cb(0x2a5));return;}const _0x5d8320=inputAcademicId['value'][_0x4358cb(0x31e)](),_0x6f8998=inputName[_0x4358cb(0x246)][_0x4358cb(0x31e)](),_0x12233a=inputGrade[_0x4358cb(0x246)],_0x1f49f8=inputPhone[_0x4358cb(0x246)][_0x4358cb(0x31e)](),_0x19395c=guardianPhone[_0x4358cb(0x246)]['trim'](),_0x582571=studentNotes[_0x4358cb(0x246)][_0x4358cb(0x31e)]();if(!_0x5d8320||!_0x6f8998||!_0x12233a||!_0x1f49f8||!_0x19395c){showToast(_0x4358cb(0x34a),'يرجى\x20التأكد\x20من\x20ملء\x20جميع\x20الحقول\x20المطلوبة','error');return;}const _0x5678c3=/^\d{11}$/;if(!_0x5678c3[_0x4358cb(0x25c)](_0x1f49f8)){showToast(_0x4358cb(0x1e6),_0x4358cb(0x1e0),_0x4358cb(0x375)),inputPhone[_0x4358cb(0x326)]();return;}if(!_0x5678c3[_0x4358cb(0x25c)](_0x19395c)){showToast(_0x4358cb(0x1d2),'يجب\x20أن\x20يتكون\x20رقم\x20هاتف\x20ولي\x20الأمر\x20من\x2011\x20رقماً\x20بالضبط\x20(مثال:\x2001012345678)','error'),guardianPhone[_0x4358cb(0x326)]();return;}const _0xd77f6a=db[_0x4358cb(0x349)]('students/'+_0x5d8320);_0xd77f6a[_0x4358cb(0x1ca)]({'name':_0x6f8998,'grade':_0x12233a,'phone':_0x1f49f8,'guardianPhone':_0x19395c,'notes':_0x582571})['then'](()=>{const _0x8552b7=_0x4358cb;showToast(_0x8552b7(0x147),_0x8552b7(0x33e)+_0x6f8998+'\x20بنجاح.','success'),setStudentFormReadOnly(!![]),setEditButtonState(![]),removeSaveButtonGlow();})[_0x4358cb(0x3bc)](_0x11c9fa=>{const _0x5efe6e=_0x4358cb;console[_0x5efe6e(0x375)](_0x11c9fa),showToast(_0x5efe6e(0x19e),_0x5efe6e(0x305)+_0x11c9fa[_0x5efe6e(0x27c)],_0x5efe6e(0x375));});}async function deleteStudent(){const _0x3cd27d=_0x564057,_0x264fca=inputAcademicId['value'][_0x3cd27d(0x31e)](),_0x386e46=inputName['value']['trim']();if(!_0x264fca)return;const _0x2ce345=await showConfirmModal({'title':_0x3cd27d(0x377),'message':_0x3cd27d(0x192)+(_0x386e46||_0x264fca)+_0x3cd27d(0x386),'confirmText':_0x3cd27d(0x225),'type':_0x3cd27d(0x230)});if(_0x2ce345){const _0x2b9dfa=db['ref'](_0x3cd27d(0x30d)+_0x264fca);_0x2b9dfa[_0x3cd27d(0x15e)]()[_0x3cd27d(0x29c)](()=>{const _0x34f4b1=_0x3cd27d;showToast('تم\x20الحذف',_0x34f4b1(0x32b)+(_0x386e46||_0x264fca)+_0x34f4b1(0x38a),'success'),clearForm();})[_0x3cd27d(0x3bc)](_0x5ed105=>{const _0x57daa3=_0x3cd27d;console[_0x57daa3(0x375)](_0x5ed105),showToast('فشل\x20الحذف',_0x57daa3(0x305)+_0x5ed105[_0x57daa3(0x27c)],_0x57daa3(0x375));});}}function clearForm(){const _0x3445c4=_0x564057;inputAcademicId[_0x3445c4(0x246)]='',inputName['value']='',inputGrade[_0x3445c4(0x246)]='',inputPhone[_0x3445c4(0x246)]='',guardianPhone[_0x3445c4(0x246)]='',studentNotes[_0x3445c4(0x246)]='',setStudentFormReadOnly(![]),btnSave['disabled']=![],btnEdit['disabled']=!![],btnDelete['disabled']=!![],inputAcademicId[_0x3445c4(0x177)][_0x3445c4(0x15e)]('pulse-highlight'),selectedStudent=null,activeAttendanceStudentId=null,updateAllSelectStates(),setEditButtonState(![]),removeSaveButtonGlow(),filterStudentsList();if(sectionStudentProfile)sectionStudentProfile[_0x3445c4(0x177)][_0x3445c4(0x288)](_0x3445c4(0x2f4));}function quickAttendStudentSession(_0x8b8fda,_0x2cf55d){const _0x330dfa=_0x564057;if(!_0x8b8fda)return;const _0x11b2a5=_0x2cf55d||(activeSessionSelect?activeSessionSelect[_0x330dfa(0x246)]:'1'),_0x2556f2=new Date()[_0x330dfa(0x2ac)](_0x330dfa(0x2bc)),_0x2c4af1=_0x330dfa(0x30d)+_0x8b8fda+_0x330dfa(0x3d9)+selectedMonth+_0x330dfa(0x1fb)+_0x11b2a5;db[_0x330dfa(0x349)](_0x2c4af1)[_0x330dfa(0x1ca)]({'attended':!![],'attendanceDate':_0x2556f2})['then'](()=>{const _0x306db5=_0x330dfa,_0x3d9090=allStudents[_0x306db5(0x1a2)](_0x53e01f=>_0x53e01f['academicId']===_0x8b8fda);if(_0x3d9090){if(!_0x3d9090[_0x306db5(0x3ef)])_0x3d9090[_0x306db5(0x3ef)]={};if(!_0x3d9090[_0x306db5(0x3ef)][selectedMonth])_0x3d9090['records'][selectedMonth]={'paid':![],'sessions':{}};if(!_0x3d9090[_0x306db5(0x3ef)][selectedMonth][_0x306db5(0x2af)])_0x3d9090['records'][selectedMonth]['sessions']={};if(!_0x3d9090[_0x306db5(0x3ef)][selectedMonth]['sessions'][_0x11b2a5])_0x3d9090[_0x306db5(0x3ef)][selectedMonth]['sessions'][_0x11b2a5]={};_0x3d9090[_0x306db5(0x3ef)][selectedMonth][_0x306db5(0x2af)][_0x11b2a5][_0x306db5(0x20c)]=!![],_0x3d9090[_0x306db5(0x3ef)][selectedMonth][_0x306db5(0x2af)][_0x11b2a5]['attendanceDate']=_0x2556f2;}const _0x2b189f=_0x3d9090?_0x3d9090[_0x306db5(0x341)]:_0x8b8fda;showToast('تم\x20تسجيل\x20الحضور\x20🟢',_0x306db5(0x231)+_0x2b189f,_0x306db5(0x255)),activeAttendanceStudentId=_0x8b8fda,filterStudentsList(),setTimeout(()=>{const _0x23ca01=_0x306db5,_0x3d471b=document[_0x23ca01(0x211)](_0x23ca01(0x400)+_0x8b8fda+'\x22]');_0x3d471b&&(_0x3d471b[_0x23ca01(0x2eb)]({'behavior':_0x23ca01(0x226),'block':_0x23ca01(0x169)}),_0x3d471b['classList'][_0x23ca01(0x288)](_0x23ca01(0x3eb)),setTimeout(()=>_0x3d471b[_0x23ca01(0x177)][_0x23ca01(0x15e)](_0x23ca01(0x3eb)),0xbb8));},0x64);})[_0x330dfa(0x3bc)](_0x2ed4e8=>{const _0x8d1376=_0x330dfa;console[_0x8d1376(0x375)](_0x2ed4e8),showToast('خطأ',_0x8d1376(0x3b6),_0x8d1376(0x375));});}function toggleSessionAttendance(_0x313f20,_0x43da6b,_0x4bc969){const _0x396189=_0x564057,_0x47a112=_0x4bc969?new Date()[_0x396189(0x2ac)](_0x396189(0x2bc)):'',_0x53e9fe=db[_0x396189(0x349)]('students/'+_0x313f20+_0x396189(0x3d9)+selectedMonth+_0x396189(0x1fb)+_0x43da6b);_0x53e9fe[_0x396189(0x1ca)]({'attended':_0x4bc969,'attendanceDate':_0x47a112})[_0x396189(0x29c)](()=>{updateLocalStudentSession(_0x313f20,_0x43da6b,{'attended':_0x4bc969,'attendanceDate':_0x47a112}),filterStudentsList();});}function updateSessionExamGrade(_0x97ef33,_0x3f1047,_0x1392f6){const _0x4c7aff=_0x564057,_0x32d7cb=db[_0x4c7aff(0x349)](_0x4c7aff(0x30d)+_0x97ef33+'/records/'+selectedMonth+'/sessions/'+_0x3f1047),_0x1fe821={'examGrade':_0x1392f6};let _0x24b6fa=![];_0x1392f6[_0x4c7aff(0x31e)]()!==''&&(_0x1fe821[_0x4c7aff(0x20c)]=!![],_0x1fe821['attendanceDate']=new Date()[_0x4c7aff(0x2ac)](_0x4c7aff(0x2bc)),_0x24b6fa=!![]),_0x32d7cb[_0x4c7aff(0x1ca)](_0x1fe821)['then'](()=>{const _0xbf8b7=_0x4c7aff;updateLocalStudentSession(_0x97ef33,_0x3f1047,_0x1fe821),_0x24b6fa&&showToast(_0xbf8b7(0x24c),'تم\x20إدخال\x20الدرجة\x20وتحضير\x20الطالب\x20تلقائياً\x20(الحصة\x20'+_0x3f1047+')',_0xbf8b7(0x255)),filterStudentsList();});}function getArabicMonthName(_0x581d5c){const _0x5ceb9d=_0x564057,_0x128ff5={'01':_0x5ceb9d(0x18a),'02':_0x5ceb9d(0x258),'03':_0x5ceb9d(0x3df),'04':_0x5ceb9d(0x162),'05':_0x5ceb9d(0x206),'06':_0x5ceb9d(0x2bb),'07':_0x5ceb9d(0x1f0),'08':_0x5ceb9d(0x15d),'09':'شهر\x209','10':_0x5ceb9d(0x270),'11':_0x5ceb9d(0x2a9),'12':_0x5ceb9d(0x1e5)};if(filterMonthSelect&&filterMonthSelect[_0x5ceb9d(0x379)]>=0x0){const _0x4b0df2=filterMonthSelect[_0x5ceb9d(0x24b)][filterMonthSelect['selectedIndex']]['textContent'][_0x5ceb9d(0x31e)]();if(_0x4b0df2)return _0x4b0df2;}if(_0x581d5c&&_0x581d5c[_0x5ceb9d(0x39e)]('-')){const _0x51045a=_0x581d5c['split']('-')[0x1];if(_0x128ff5[_0x51045a])return _0x128ff5[_0x51045a];}return _0x5ceb9d(0x21f);}function toggleMonthlyPayment(_0x3ba995,_0x36d3a8){const _0x5d636b=_0x564057,_0x5809e6=_0x36d3a8?new Date()[_0x5d636b(0x2ac)](_0x5d636b(0x2bc)):'',_0x57b41a=db[_0x5d636b(0x349)](_0x5d636b(0x30d)+_0x3ba995+_0x5d636b(0x3d9)+selectedMonth);_0x57b41a[_0x5d636b(0x1ca)]({'paid':_0x36d3a8,'paymentDate':_0x5809e6})[_0x5d636b(0x29c)](()=>{const _0xf57fb5=_0x5d636b,_0xa48851=allStudents[_0xf57fb5(0x1a2)](_0x1c976=>_0x1c976['academicId']===_0x3ba995);if(_0xa48851){if(!_0xa48851[_0xf57fb5(0x3ef)])_0xa48851[_0xf57fb5(0x3ef)]={};if(!_0xa48851['records'][selectedMonth])_0xa48851[_0xf57fb5(0x3ef)][selectedMonth]={'sessions':{}};_0xa48851[_0xf57fb5(0x3ef)][selectedMonth][_0xf57fb5(0x2fe)]=_0x36d3a8,_0xa48851[_0xf57fb5(0x3ef)][selectedMonth][_0xf57fb5(0x1e7)]=_0x5809e6;}const _0x4329cf=getArabicMonthName(selectedMonth),_0x4424b6=_0x36d3a8&&_0x5809e6?_0xf57fb5(0x176)+_0x5809e6+_0xf57fb5(0x38d):'',_0x511b21=_0x36d3a8?'تم\x20دفع\x20مصروفات\x20شهر\x20'+_0x4329cf+_0x4424b6:'لم\x20يتم\x20دفع\x20مصروفات\x20شهر\x20'+_0x4329cf;showToast('تحديث\x20المصروفات',_0x511b21,_0x36d3a8?_0xf57fb5(0x255):'info');const _0x5530c6=document[_0xf57fb5(0x211)](_0xf57fb5(0x400)+_0x3ba995+'\x22]');if(_0x5530c6){const _0x2405d2=_0x5530c6[_0xf57fb5(0x211)]('.chk-fee-main'),_0x50539d=_0x5530c6['querySelector'](_0xf57fb5(0x332)),_0x5c214e=_0x5530c6['querySelector'](_0xf57fb5(0x269)),_0x2e840e=_0x5530c6[_0xf57fb5(0x211)](_0xf57fb5(0x161));if(_0x2405d2)_0x2405d2[_0xf57fb5(0x22f)]=_0x36d3a8;_0x50539d&&(_0x50539d[_0xf57fb5(0x313)]=_0xf57fb5(0x311)+(_0x36d3a8?_0xf57fb5(0x2fe):_0xf57fb5(0x2a4)),_0x50539d['title']=_0x36d3a8?_0xf57fb5(0x264)+_0x4329cf:_0xf57fb5(0x310)+_0x4329cf),_0x2e840e&&(_0x2e840e['className']='fa-solid\x20'+(_0x36d3a8?_0xf57fb5(0x2dd):_0xf57fb5(0x1fe))+_0xf57fb5(0x3dc)),_0x5c214e&&(_0x5c214e[_0xf57fb5(0x2ee)]=_0x36d3a8?'تم\x20الدفع':_0xf57fb5(0x22b));}const _0x5ce2bb=document['querySelector'](_0xf57fb5(0x1c2)+_0x3ba995+'\x22]');if(_0x5ce2bb){const _0x2eee81=_0x5ce2bb[_0xf57fb5(0x211)](_0xf57fb5(0x284));if(_0x2eee81)_0x2eee81[_0xf57fb5(0x22f)]=_0x36d3a8;const _0x100db2=_0x5ce2bb[_0xf57fb5(0x211)](_0xf57fb5(0x337));_0x100db2&&(_0x100db2['className']=_0xf57fb5(0x153)+(_0x36d3a8?'paid':_0xf57fb5(0x2a4)),_0x100db2['innerHTML']=_0xf57fb5(0x3d4)+(_0x36d3a8?'fa-circle-check':_0xf57fb5(0x1fe))+_0xf57fb5(0x2de)+_0x511b21);}});}function updateLocalStudentSession(_0x189405,_0x19728e,_0x5093e8){const _0x5dce7a=_0x564057,_0x2b8dc6=allStudents['find'](_0x3b402b=>_0x3b402b['academicId']===_0x189405);if(!_0x2b8dc6)return;if(!_0x2b8dc6[_0x5dce7a(0x3ef)])_0x2b8dc6['records']={};if(!_0x2b8dc6[_0x5dce7a(0x3ef)][selectedMonth])_0x2b8dc6[_0x5dce7a(0x3ef)][selectedMonth]={'paid':![],'sessions':{}};if(!_0x2b8dc6[_0x5dce7a(0x3ef)][selectedMonth]['sessions'])_0x2b8dc6[_0x5dce7a(0x3ef)][selectedMonth][_0x5dce7a(0x2af)]={};if(!_0x2b8dc6[_0x5dce7a(0x3ef)][selectedMonth][_0x5dce7a(0x2af)][_0x19728e])_0x2b8dc6[_0x5dce7a(0x3ef)][selectedMonth][_0x5dce7a(0x2af)][_0x19728e]={};Object[_0x5dce7a(0x367)](_0x2b8dc6['records'][selectedMonth]['sessions'][_0x19728e],_0x5093e8);}function renderStudentsList(_0x577579){const _0x3b2ed4=_0x564057;studentsListBody[_0x3b2ed4(0x2aa)]='',studentCountText[_0x3b2ed4(0x2ee)]=_0x577579[_0x3b2ed4(0x36a)];if(_0x577579[_0x3b2ed4(0x36a)]===0x0){studentsListBody[_0x3b2ed4(0x2aa)]=_0x3b2ed4(0x3d5);return;}const _0x12237f=activeSessionSelect?activeSessionSelect['value']:'1';_0x577579['forEach'](_0xc7e04e=>{const _0x410dca=_0x3b2ed4,_0x50bf07=_0xc7e04e[_0x410dca(0x3ef)]&&_0xc7e04e['records'][selectedMonth]||{'paid':![],'sessions':{}},_0x544c6d=_0x50bf07[_0x410dca(0x2fe)]||![],_0xb6764=_0x50bf07[_0x410dca(0x2af)]&&_0x50bf07[_0x410dca(0x2af)][_0x12237f]||{},_0x2e33b0=_0xb6764[_0x410dca(0x20c)]||![],_0x111930=_0x2e33b0?'fa-circle-check':_0x410dca(0x3b7),_0x2e9af2=_0x2e33b0?_0x410dca(0x205)+_0x12237f+')':_0x410dca(0x2a3)+_0x12237f+')',_0x9531c6=_0x410dca(0x3dd)+(_0x2e33b0?_0x410dca(0x20c):''),_0x25d9c2=document[_0x410dca(0x2f0)]('tr');_0x25d9c2[_0x410dca(0x313)]='student-main-row',_0x25d9c2[_0x410dca(0x1bd)](_0x410dca(0x2ec),_0xc7e04e[_0x410dca(0x320)]);const _0x1c2a0e=activeAttendanceStudentId===_0xc7e04e[_0x410dca(0x320)];_0x25d9c2[_0x410dca(0x2aa)]=_0x410dca(0x381)+escapeHTML(_0xc7e04e['academicId'])+_0x410dca(0x179)+escapeHTML(_0xc7e04e[_0x410dca(0x341)])+'</span></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+escapeHTML(_0xc7e04e['grade']||'غير\x20محدد')+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22actions-col\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22actions-col-cell\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label\x20class=\x22fee-main-toggle\x20'+(_0x544c6d?_0x410dca(0x2fe):_0x410dca(0x2a4))+_0x410dca(0x346)+getArabicMonthName(selectedMonth)+_0x410dca(0x286)+_0xc7e04e[_0x410dca(0x320)]+'\x22\x20'+(_0x544c6d?_0x410dca(0x22f):'')+_0x410dca(0x3f8)+(_0x544c6d?_0x410dca(0x2dd):_0x410dca(0x1fe))+_0x410dca(0x394)+(_0x544c6d?_0x410dca(0x28a):'لم\x20يدفع')+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22'+_0x9531c6+'\x22\x20title=\x22حضور\x20الحصة\x20'+_0x12237f+_0x410dca(0x27a)+_0x111930+_0x410dca(0x2de)+_0x2e9af2+_0x410dca(0x180)+(_0x1c2a0e?'is-open':'')+_0x410dca(0x2e3)+_0xc7e04e['academicId']+_0x410dca(0x27a)+(_0x1c2a0e?_0x410dca(0x191):_0x410dca(0x3c3))+_0x410dca(0x1b3);const _0x3e9a4b=document['createElement']('tr');_0x3e9a4b['className']='student-attendance-subrow\x20'+(_0x1c2a0e?'':_0x410dca(0x2f4)),_0x3e9a4b[_0x410dca(0x1bd)](_0x410dca(0x2ec),_0xc7e04e[_0x410dca(0x320)]);let _0x5b0138='';for(let _0x1a1443=0x1;_0x1a1443<=0x8;_0x1a1443++){const _0x25c541=_0x50bf07[_0x410dca(0x2af)]&&_0x50bf07[_0x410dca(0x2af)][_0x1a1443]||{},_0x54df8b=_0x25c541[_0x410dca(0x20c)]||![],_0x182113=_0x25c541[_0x410dca(0x34f)]!==undefined?_0x25c541[_0x410dca(0x34f)]:'',_0x458b5d=String(_0x1a1443)===String(_0x12237f);_0x5b0138+='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22session-box-compact\x20'+(_0x54df8b?_0x410dca(0x29e):'')+'\x20'+(_0x458b5d?_0x410dca(0x32a):'')+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label\x20class=\x22chk-session-label\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22checkbox\x22\x20class=\x22chk-session-input\x22\x20data-id=\x22'+_0xc7e04e[_0x410dca(0x320)]+_0x410dca(0x3fe)+_0x1a1443+'\x22\x20'+(_0x54df8b?_0x410dca(0x22f):'')+_0x410dca(0x2e2)+_0x1a1443+_0x410dca(0x253)+_0xc7e04e['academicId']+_0x410dca(0x3fe)+_0x1a1443+_0x410dca(0x220)+_0x182113+_0x410dca(0x3aa);}const _0xe33c05=getArabicMonthName(selectedMonth),_0x1ee4d6=_0x50bf07[_0x410dca(0x1e7)]||'',_0x31dde7=_0x544c6d&&_0x1ee4d6?'\x20<span\x20class=\x22fee-date-tag\x22>(بتاريخ\x20'+_0x1ee4d6+_0x410dca(0x38d):'',_0x31497d=_0x544c6d?_0x410dca(0x2da)+_0xe33c05+_0x31dde7:_0x410dca(0x3c6)+_0xe33c05;_0x3e9a4b['innerHTML']=_0x410dca(0x1b5)+_0x5b0138+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22attendance-card-footer\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22fee-toggle-box\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label\x20class=\x22switch-sm\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22checkbox\x22\x20class=\x22chk-fee-status\x22\x20data-id=\x22'+_0xc7e04e[_0x410dca(0x320)]+'\x22\x20'+(_0x544c6d?_0x410dca(0x22f):'')+_0x410dca(0x32c)+(_0x544c6d?'paid':_0x410dca(0x2a4))+_0x410dca(0x2f7)+(_0x544c6d?'fa-circle-check':'fa-circle-xmark')+_0x410dca(0x2a6)+_0x31497d+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20';const _0x46821c=_0x25d9c2[_0x410dca(0x211)](_0x410dca(0x2ae));_0x46821c&&_0x46821c['addEventListener'](_0x410dca(0x3a7),async _0x5ebc8f=>{const _0x5a410b=_0x410dca;_0x5ebc8f[_0x5a410b(0x18f)]();const _0xd11e38=_0x5ebc8f['target'][_0x5a410b(0x355)](_0x5a410b(0x2ec)),_0xf6e3bc=_0x5ebc8f[_0x5a410b(0x15b)][_0x5a410b(0x22f)],_0x3bdee5=getArabicMonthName(selectedMonth),_0x41dcc9=_0xf6e3bc?_0x5a410b(0x1ab)+_0x3bdee5:_0x5a410b(0x2d1)+_0x3bdee5,_0x59bb5f=await showConfirmModal({'title':_0xf6e3bc?_0x5a410b(0x299):'إلغاء\x20دفع\x20المصروفات','message':_0x5a410b(0x3ad)+_0x41dcc9+_0x5a410b(0x3b8)+_0xc7e04e[_0x5a410b(0x341)]+')؟','confirmText':_0xf6e3bc?_0x5a410b(0x317):_0x5a410b(0x363),'type':_0xf6e3bc?_0x5a410b(0x1d0):_0x5a410b(0x256)});if(!_0x59bb5f){_0x5ebc8f['target'][_0x5a410b(0x22f)]=!_0xf6e3bc;return;}toggleMonthlyPayment(_0xd11e38,_0xf6e3bc);});_0x25d9c2[_0x410dca(0x211)](_0x410dca(0x361))[_0x410dca(0x37b)]('click',_0x5e8eeb=>{const _0x4228aa=_0x410dca;_0x5e8eeb[_0x4228aa(0x18f)](),_0x2e33b0?toggleSessionAttendance(_0xc7e04e[_0x4228aa(0x320)],_0x12237f,![]):quickAttendStudentSession(_0xc7e04e[_0x4228aa(0x320)],_0x12237f);});const _0x5a805b=_0x25d9c2[_0x410dca(0x211)]('.btn-whatsapp-action');_0x5a805b&&_0x5a805b['addEventListener'](_0x410dca(0x1a0),_0xc1bff6=>{const _0x3753eb=_0x410dca;_0xc1bff6[_0x3753eb(0x18f)](),openWhatsAppBulkModal([_0xc7e04e]);});const _0x2f784d=_0x25d9c2['querySelector'](_0x410dca(0x251));_0x2f784d&&_0x2f784d[_0x410dca(0x37b)](_0x410dca(0x1a0),_0x277dec=>{const _0xda2a56=_0x410dca;_0x277dec[_0xda2a56(0x18f)]();const _0x1afe94=_0x2f784d[_0xda2a56(0x211)]('i'),_0x2d1d3f=_0x3e9a4b[_0xda2a56(0x177)][_0xda2a56(0x3cf)]('hidden');if(_0x2d1d3f){_0x3e9a4b['classList']['remove']('hidden'),_0x2f784d[_0xda2a56(0x177)]['add'](_0xda2a56(0x26a));if(_0x1afe94)_0x1afe94[_0xda2a56(0x313)]=_0xda2a56(0x38e);activeAttendanceStudentId=_0xc7e04e[_0xda2a56(0x320)];}else{_0x3e9a4b[_0xda2a56(0x177)][_0xda2a56(0x288)](_0xda2a56(0x2f4)),_0x2f784d[_0xda2a56(0x177)]['remove'](_0xda2a56(0x26a));if(_0x1afe94)_0x1afe94['className']=_0xda2a56(0x218);activeAttendanceStudentId===_0xc7e04e[_0xda2a56(0x320)]&&(activeAttendanceStudentId=null);}});_0x25d9c2[_0x410dca(0x37b)](_0x410dca(0x3fc),_0x2b20c4=>{const _0x246fa6=_0x410dca;if(_0x2b20c4['target']['closest'](_0x246fa6(0x1c8))||_0x2b20c4['target'][_0x246fa6(0x3a6)]('input')||_0x2b20c4[_0x246fa6(0x15b)][_0x246fa6(0x3a6)](_0x246fa6(0x332))||_0x2b20c4['target'][_0x246fa6(0x3a6)](_0x246fa6(0x1c1)))return;inputAcademicId[_0x246fa6(0x246)]=_0xc7e04e['academicId'],checkAndLoadStudent(_0xc7e04e[_0x246fa6(0x320)]);}),_0x3e9a4b[_0x410dca(0x34c)]('.chk-session-input')[_0x410dca(0x315)](_0x4a417e=>{const _0xd7c2fc=_0x410dca;_0x4a417e[_0xd7c2fc(0x37b)]('change',_0x5cdf8a=>{const _0x1711c3=_0xd7c2fc,_0x27d883=_0x5cdf8a[_0x1711c3(0x15b)]['getAttribute'](_0x1711c3(0x2ec)),_0x3f1f64=_0x5cdf8a[_0x1711c3(0x15b)][_0x1711c3(0x355)]('data-session');toggleSessionAttendance(_0x27d883,_0x3f1f64,_0x5cdf8a['target'][_0x1711c3(0x22f)]);});}),_0x3e9a4b[_0x410dca(0x34c)](_0x410dca(0x250))[_0x410dca(0x315)](_0x280d04=>{const _0x1df665=_0x410dca;_0x280d04[_0x1df665(0x37b)]('change',_0x309437=>{const _0x192451=_0x1df665,_0x3fe6c3=_0x309437['target']['getAttribute'](_0x192451(0x2ec)),_0x50c128=_0x309437[_0x192451(0x15b)]['getAttribute']('data-session');updateSessionExamGrade(_0x3fe6c3,_0x50c128,_0x309437[_0x192451(0x15b)]['value']);});});const _0x5e4601=_0x3e9a4b[_0x410dca(0x211)](_0x410dca(0x284));_0x5e4601&&_0x5e4601['addEventListener'](_0x410dca(0x3a7),async _0x4be4f1=>{const _0x257520=_0x410dca,_0x134c88=_0x4be4f1['target'][_0x257520(0x355)](_0x257520(0x2ec)),_0x44902f=_0x4be4f1[_0x257520(0x15b)][_0x257520(0x22f)],_0x5a1cc3=_0x44902f?_0x257520(0x1ab)+_0xe33c05:_0x257520(0x2d1)+_0xe33c05,_0xbc5311=await showConfirmModal({'title':_0x44902f?_0x257520(0x299):_0x257520(0x196),'message':_0x257520(0x3ad)+_0x5a1cc3+'\x20للطالب:\x20('+_0xc7e04e['name']+')؟','confirmText':_0x44902f?_0x257520(0x317):_0x257520(0x363),'type':_0x44902f?_0x257520(0x1d0):'warning'});if(!_0xbc5311){_0x4be4f1[_0x257520(0x15b)]['checked']=!_0x44902f;return;}toggleMonthlyPayment(_0x134c88,_0x44902f);}),studentsListBody[_0x410dca(0x308)](_0x25d9c2),studentsListBody[_0x410dca(0x308)](_0x3e9a4b);});}function filterStudentsList(){const _0xa04664=_0x564057,_0x2c54dc=inputSearch[_0xa04664(0x246)]['trim']()[_0xa04664(0x309)](),_0x16f991=filterGradeSelect?filterGradeSelect[_0xa04664(0x246)]:'',_0x2461dd=filterFeeSelect?filterFeeSelect[_0xa04664(0x246)]:'';let _0x536d05=allStudents;_0x16f991&&(_0x536d05=_0x536d05['filter'](_0x164312=>_0x164312[_0xa04664(0x2b3)]===_0x16f991));_0x2461dd&&(_0x536d05=_0x536d05['filter'](_0x874d0e=>{const _0x3e9c81=_0xa04664,_0x14b37f=_0x874d0e[_0x3e9c81(0x3ef)]&&_0x874d0e['records'][selectedMonth]||{},_0x427fda=_0x14b37f[_0x3e9c81(0x2fe)]||![];if(_0x2461dd===_0x3e9c81(0x2fe))return _0x427fda===!![];if(_0x2461dd===_0x3e9c81(0x2a4))return _0x427fda===![];return!![];}));const _0xe2e562=filterAttendanceSelect?filterAttendanceSelect[_0xa04664(0x246)]:'',_0x42208f=activeSessionSelect?activeSessionSelect[_0xa04664(0x246)]:'1';_0xe2e562&&(_0x536d05=_0x536d05[_0xa04664(0x168)](_0x42ca1b=>{const _0x11c27e=_0xa04664,_0x6d40ae=_0x42ca1b[_0x11c27e(0x3ef)]&&_0x42ca1b['records'][selectedMonth]||{},_0x144db7=_0x6d40ae['sessions']&&_0x6d40ae[_0x11c27e(0x2af)][_0x42208f]||{},_0x13e8f0=_0x144db7[_0x11c27e(0x20c)]===!![];if(_0xe2e562==='attended')return _0x13e8f0===!![];if(_0xe2e562===_0x11c27e(0x2c6))return _0x13e8f0===![];return!![];}));_0x2c54dc&&(_0x536d05=_0x536d05[_0xa04664(0x168)](_0x3d86b0=>{const _0x3e91cd=_0xa04664;return _0x3d86b0[_0x3e91cd(0x341)][_0x3e91cd(0x309)]()[_0x3e91cd(0x39e)](_0x2c54dc)||_0x3d86b0[_0x3e91cd(0x320)]['toLowerCase']()[_0x3e91cd(0x39e)](_0x2c54dc)||_0x3d86b0[_0x3e91cd(0x2b3)]&&_0x3d86b0[_0x3e91cd(0x2b3)]['toLowerCase']()[_0x3e91cd(0x39e)](_0x2c54dc);}));if(activeAttendanceStudentId){const _0x14677d=_0x536d05['findIndex'](_0xae47cf=>_0xae47cf[_0xa04664(0x320)]===activeAttendanceStudentId);if(_0x14677d>-0x1){const [_0x39f7e3]=_0x536d05[_0xa04664(0x1b0)](_0x14677d,0x1);_0x536d05[_0xa04664(0x293)](_0x39f7e3);}else{const _0x26adc0=allStudents[_0xa04664(0x1a2)](_0x3a36ab=>_0x3a36ab[_0xa04664(0x320)]===activeAttendanceStudentId);_0x26adc0&&_0x536d05['unshift'](_0x26adc0);}}currentFilteredStudents=_0x536d05,btnWhatsAppUnattendedBulk&&unattendedCountBadge&&(unattendedCountBadge[_0xa04664(0x2ee)]=toEnglishDigits(_0x536d05[_0xa04664(0x36a)])),renderStudentsList(_0x536d05);}async function checkAndLoadTeacher(_0x375f71){const _0x35f11e=_0x564057;if(!_0x375f71||!inputTeacherName){if(!_0x375f71)showToast('تنبيه',_0x35f11e(0x19f),_0x35f11e(0x375));return;}showToast(_0x35f11e(0x27f),_0x35f11e(0x17e)+_0x375f71,_0x35f11e(0x2a5));const _0x17ee18=db['ref'](_0x35f11e(0x273)+_0x375f71);try{const _0x28d5e9=await _0x17ee18[_0x35f11e(0x374)]();if(_0x28d5e9[_0x35f11e(0x21b)]()){const _0x195186=_0x28d5e9[_0x35f11e(0x22c)]();if(inputTeacherName)inputTeacherName[_0x35f11e(0x246)]=_0x195186[_0x35f11e(0x341)]||'';if(inputTeacherSubject)inputTeacherSubject['value']=_0x195186[_0x35f11e(0x151)]||'';if(inputTeacherPhone)inputTeacherPhone[_0x35f11e(0x246)]=_0x195186[_0x35f11e(0x14c)]||'';if(inputTeacherNotes)inputTeacherNotes[_0x35f11e(0x246)]=_0x195186['notes']||'';setTeacherFormReadOnly(!![]);if(btnTeacherSave)btnTeacherSave[_0x35f11e(0x2ff)]=!![];if(btnTeacherEdit)btnTeacherEdit[_0x35f11e(0x2ff)]=![];if(btnTeacherDelete)btnTeacherDelete[_0x35f11e(0x2ff)]=![];showToast('معلم\x20مسجل',_0x35f11e(0x16f)+_0x195186[_0x35f11e(0x341)]+'\x20(انقر\x20\x27تعديل\x27\x20لفتح\x20البيانات\x20للتعديل)','success');}else{if(inputTeacherName)inputTeacherName[_0x35f11e(0x246)]='';if(inputTeacherSubject)inputTeacherSubject[_0x35f11e(0x246)]='';if(inputTeacherPhone)inputTeacherPhone[_0x35f11e(0x246)]='';if(inputTeacherNotes)inputTeacherNotes[_0x35f11e(0x246)]='';setTeacherFormReadOnly(![]);if(btnTeacherSave)btnTeacherSave['disabled']=![];if(btnTeacherEdit)btnTeacherEdit[_0x35f11e(0x2ff)]=!![];if(btnTeacherDelete)btnTeacherDelete[_0x35f11e(0x2ff)]=!![];showToast(_0x35f11e(0x19d),_0x35f11e(0x242),_0x35f11e(0x2a5));}}catch(_0x38d1e5){console['error']('Firebase\x20read\x20error:\x20',_0x38d1e5),showToast(_0x35f11e(0x16d),_0x35f11e(0x189),_0x35f11e(0x375));}}function saveTeacher(){const _0x45ae89=_0x564057;if(!inputTeacherAcademicId||!inputTeacherName)return;const _0xabfc7f=inputTeacherAcademicId[_0x45ae89(0x246)][_0x45ae89(0x31e)](),_0xe5e0f8=inputTeacherName[_0x45ae89(0x246)]['trim'](),_0x131ee8=inputTeacherSubject?inputTeacherSubject['value'][_0x45ae89(0x31e)]():'',_0x4450b4=inputTeacherPhone?inputTeacherPhone[_0x45ae89(0x246)][_0x45ae89(0x31e)]():'',_0xb83700=inputTeacherNotes?inputTeacherNotes[_0x45ae89(0x246)][_0x45ae89(0x31e)]():'';if(!_0xabfc7f||!_0xe5e0f8||!_0x131ee8||!_0x4450b4){showToast(_0x45ae89(0x34a),_0x45ae89(0x388),_0x45ae89(0x375));return;}const _0x4fd31e=db[_0x45ae89(0x349)](_0x45ae89(0x273)+_0xabfc7f);_0x4fd31e['set']({'name':_0xe5e0f8,'subject':_0x131ee8,'phone':_0x4450b4,'notes':_0xb83700})['then'](()=>{const _0x40d0a3=_0x45ae89;showToast(_0x40d0a3(0x39f),'تم\x20إضافة\x20المعلم\x20'+_0xe5e0f8+_0x40d0a3(0x32f),_0x40d0a3(0x255)),clearTeacherForm();})[_0x45ae89(0x3bc)](_0x39c1b9=>{const _0x28fcdd=_0x45ae89;console[_0x28fcdd(0x375)](_0x39c1b9),showToast(_0x28fcdd(0x356),_0x28fcdd(0x305)+_0x39c1b9[_0x28fcdd(0x27c)],_0x28fcdd(0x375));});}function editTeacher(){const _0x8af900=_0x564057;if(!inputTeacherAcademicId||!inputTeacherName)return;if(inputTeacherName[_0x8af900(0x2ff)]){setTeacherFormReadOnly(![]),inputTeacherName[_0x8af900(0x326)](),showToast(_0x8af900(0x1ef),_0x8af900(0x2c5),_0x8af900(0x2a5));return;}const _0x2d4e5f=inputTeacherAcademicId['value']['trim'](),_0x3146e4=inputTeacherName[_0x8af900(0x246)][_0x8af900(0x31e)](),_0x3f8213=inputTeacherSubject?inputTeacherSubject[_0x8af900(0x246)][_0x8af900(0x31e)]():'',_0x10ee30=inputTeacherPhone?inputTeacherPhone[_0x8af900(0x246)][_0x8af900(0x31e)]():'',_0x254902=inputTeacherNotes?inputTeacherNotes['value'][_0x8af900(0x31e)]():'';if(!_0x2d4e5f||!_0x3146e4||!_0x3f8213||!_0x10ee30){showToast(_0x8af900(0x34a),_0x8af900(0x238),_0x8af900(0x375));return;}const _0xe9472=db['ref']('teachers/'+_0x2d4e5f);_0xe9472[_0x8af900(0x1ca)]({'name':_0x3146e4,'subject':_0x3f8213,'phone':_0x10ee30,'notes':_0x254902})[_0x8af900(0x29c)](()=>{const _0x3fcea3=_0x8af900;showToast(_0x3fcea3(0x39a),_0x3fcea3(0x21d)+_0x3146e4+_0x3fcea3(0x2f3),_0x3fcea3(0x255)),setTeacherFormReadOnly(!![]);})[_0x8af900(0x3bc)](_0x146efe=>{const _0x3bcb20=_0x8af900;console['error'](_0x146efe),showToast('فشل\x20التعديل',_0x3bcb20(0x305)+_0x146efe[_0x3bcb20(0x27c)],_0x3bcb20(0x375));});}async function deleteTeacher(){const _0x54026d=_0x564057;if(!inputTeacherAcademicId)return;const _0x5bd742=inputTeacherAcademicId['value']['trim'](),_0x3a88db=inputTeacherName?inputTeacherName[_0x54026d(0x246)][_0x54026d(0x31e)]():'';if(!_0x5bd742)return;const _0x4b9adc=await showConfirmModal({'title':_0x54026d(0x385),'message':'هل\x20أنت\x20متأكد\x20من\x20رغبتك\x20في\x20حذف\x20المعلم\x20'+(_0x3a88db||_0x5bd742)+_0x54026d(0x386),'confirmText':'حذف\x20نهائياً','type':'danger'});if(_0x4b9adc){const _0x131614=db[_0x54026d(0x349)](_0x54026d(0x273)+_0x5bd742);_0x131614[_0x54026d(0x15e)]()[_0x54026d(0x29c)](()=>{const _0x34a833=_0x54026d;showToast(_0x34a833(0x3b4),'تمت\x20إزالة\x20المعلم\x20'+(_0x3a88db||_0x5bd742)+_0x34a833(0x38a),'success'),clearTeacherForm();})[_0x54026d(0x3bc)](_0x55840c=>{const _0x290394=_0x54026d;console['error'](_0x55840c),showToast('فشل\x20الحذف','خطأ:\x20'+_0x55840c['message'],_0x290394(0x375));});}}function clearTeacherForm(){const _0x3cc92a=_0x564057;if(inputTeacherAcademicId)inputTeacherAcademicId[_0x3cc92a(0x246)]='';if(inputTeacherName)inputTeacherName[_0x3cc92a(0x246)]='';if(inputTeacherSubject)inputTeacherSubject['value']='';if(inputTeacherPhone)inputTeacherPhone[_0x3cc92a(0x246)]='';if(inputTeacherNotes)inputTeacherNotes[_0x3cc92a(0x246)]='';setTeacherFormReadOnly(![]);if(btnTeacherSave)btnTeacherSave['disabled']=![];if(btnTeacherEdit)btnTeacherEdit[_0x3cc92a(0x2ff)]=!![];if(btnTeacherDelete)btnTeacherDelete['disabled']=!![];if(inputTeacherAcademicId)inputTeacherAcademicId['classList']['remove'](_0x3cc92a(0x34b));}function renderTeachersList(_0x3872f1){const _0x14adb1=_0x564057;if(!teachersListBody)return;teachersListBody[_0x14adb1(0x2aa)]='';if(teacherCountText)teacherCountText[_0x14adb1(0x2ee)]=_0x3872f1['length'];if(_0x3872f1[_0x14adb1(0x36a)]===0x0){teachersListBody['innerHTML']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22table-empty-row\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20colspan=\x225\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22empty-state-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-users-slash\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>لا\x20يوجد\x20معلمون\x20مسجلون\x20حالياً</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20';return;}_0x3872f1[_0x14adb1(0x315)](_0x5de5a9=>{const _0x12434f=_0x14adb1,_0x4fa2bf=document[_0x12434f(0x2f0)]('tr');_0x4fa2bf[_0x12434f(0x2aa)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><strong>'+escapeHTML(_0x5de5a9[_0x12434f(0x320)])+_0x12434f(0x248)+escapeHTML(_0x5de5a9[_0x12434f(0x341)])+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+escapeHTML(_0x5de5a9[_0x12434f(0x151)])+_0x12434f(0x2f5)+escapeHTML(_0x5de5a9['phone'])+_0x12434f(0x362),_0x4fa2bf['querySelector'](_0x12434f(0x36d))[_0x12434f(0x37b)](_0x12434f(0x1a0),_0x5b8353=>{const _0x4b3684=_0x12434f;_0x5b8353[_0x4b3684(0x18f)](),inputTeacherAcademicId['value']=_0x5de5a9['academicId'],inputTeacherName[_0x4b3684(0x246)]=_0x5de5a9['name'],inputTeacherSubject[_0x4b3684(0x246)]=_0x5de5a9['subject'],inputTeacherPhone[_0x4b3684(0x246)]=_0x5de5a9[_0x4b3684(0x14c)],inputTeacherNotes[_0x4b3684(0x246)]=_0x5de5a9[_0x4b3684(0x27e)]||'',setTeacherFormReadOnly(!![]),btnTeacherSave[_0x4b3684(0x2ff)]=!![],btnTeacherEdit['disabled']=![],btnTeacherDelete[_0x4b3684(0x2ff)]=![],document['getElementById'](_0x4b3684(0x18e))[_0x4b3684(0x2eb)]({'behavior':_0x4b3684(0x226)});}),_0x4fa2bf[_0x12434f(0x211)](_0x12434f(0x2cf))[_0x12434f(0x37b)](_0x12434f(0x1a0),_0x3ea838=>{const _0x45478b=_0x12434f;_0x3ea838[_0x45478b(0x18f)](),inputTeacherAcademicId['value']=_0x5de5a9[_0x45478b(0x320)],inputTeacherName['value']=_0x5de5a9['name'],deleteTeacher();}),teachersListBody[_0x12434f(0x308)](_0x4fa2bf);});}function filterTeachersList(){const _0x64aaa0=_0x564057,_0x3acdbf=inputTeacherSearch[_0x64aaa0(0x246)]['trim']()['toLowerCase']();if(!_0x3acdbf){renderTeachersList(allTeachers);return;}const _0x57f48d=allTeachers['filter'](_0x464eb2=>{const _0x335f3f=_0x64aaa0;return _0x464eb2['name'][_0x335f3f(0x309)]()[_0x335f3f(0x39e)](_0x3acdbf)||_0x464eb2[_0x335f3f(0x320)][_0x335f3f(0x309)]()[_0x335f3f(0x39e)](_0x3acdbf)||_0x464eb2[_0x335f3f(0x151)]&&_0x464eb2[_0x335f3f(0x151)][_0x335f3f(0x309)]()[_0x335f3f(0x39e)](_0x3acdbf);});renderTeachersList(_0x57f48d);}function loadStudentProfile(_0xb05096){const _0x15360d=_0x564057;selectedStudent=_0xb05096;if(!sectionStudentProfile)return;sectionStudentProfile[_0x15360d(0x177)][_0x15360d(0x15e)](_0x15360d(0x2f4));if(profileStudentName)profileStudentName[_0x15360d(0x2ee)]=_0xb05096[_0x15360d(0x341)];if(profileStudentId)profileStudentId[_0x15360d(0x2aa)]='<strong>الرقم\x20الأكاديمي:</strong>\x20'+escapeHTML(_0xb05096[_0x15360d(0x320)]);if(profileStudentGrade)profileStudentGrade['innerHTML']=_0x15360d(0x2d9)+escapeHTML(_0xb05096[_0x15360d(0x2b3)]||_0x15360d(0x3e7));if(profileStudentPhone)profileStudentPhone[_0x15360d(0x2aa)]=_0x15360d(0x404)+escapeHTML(_0xb05096[_0x15360d(0x14c)]||_0x15360d(0x2dc));renderMonthlyRecords(),sectionStudentProfile['scrollIntoView']({'behavior':'smooth'});}function renderMonthlyRecords(){const _0x48cd42=_0x564057;if(!selectedStudent)return;const _0x1d38ca=selectedStudent[_0x48cd42(0x3ef)]||{},_0xfc0854=_0x1d38ca[selectedMonth]||{'paid':![],'paidAmount':0x0,'sessions':{}};paymentPaidCheckbox[_0x48cd42(0x22f)]=_0xfc0854['paid']||![],paymentAmountInput[_0x48cd42(0x246)]=_0xfc0854[_0x48cd42(0x155)]||0x0,updatePaymentLabel(_0xfc0854['paid']||![]),sessionsGridContainer[_0x48cd42(0x2aa)]='';for(let _0x3efd5d=0x1;_0x3efd5d<=0x8;_0x3efd5d++){const _0x5c0a81=_0xfc0854['sessions']&&_0xfc0854[_0x48cd42(0x2af)][_0x3efd5d]||{'attended':![],'examGrade':'','attendanceDate':''},_0x3710a6=document[_0x48cd42(0x2f0)](_0x48cd42(0x252));_0x3710a6[_0x48cd42(0x313)]=_0x48cd42(0x23f)+(_0x5c0a81[_0x48cd42(0x20c)]?_0x48cd42(0x20c):'');const _0xd2d98=_0x5c0a81[_0x48cd42(0x20c)]?'attended':_0x48cd42(0x3f1),_0x2591a9=_0x5c0a81[_0x48cd42(0x20c)]?_0x48cd42(0x369):_0x48cd42(0x1eb),_0x232e3f=_0x5c0a81[_0x48cd42(0x3c9)]?'التاريخ:\x20'+_0x5c0a81[_0x48cd42(0x3c9)]:_0x48cd42(0x366),_0x4b9277=_0x5c0a81['examGrade']!==undefined?_0x5c0a81[_0x48cd42(0x34f)]:'';_0x3710a6['innerHTML']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22session-card-header\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22session-title\x22>الحصة\x20'+_0x3efd5d+_0x48cd42(0x3f7)+_0xd2d98+'\x22>'+_0x2591a9+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22session-card-body\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22session-date-text\x22>'+_0x232e3f+_0x48cd42(0x2b5)+_0x3efd5d+'\x22\x20value=\x22'+_0x4b9277+_0x48cd42(0x167)+(!_0x5c0a81[_0x48cd42(0x20c)]?_0x48cd42(0x3cc)+_0x3efd5d+_0x48cd42(0x2e6):_0x48cd42(0x28f)+_0x3efd5d+_0x48cd42(0x300))+_0x48cd42(0x1ee)+_0x3efd5d+_0x48cd42(0x14a),sessionsGridContainer[_0x48cd42(0x308)](_0x3710a6);}}function quickMarkAttendance(_0xb835f9,_0x25bfd1){const _0x1360bd=_0x564057;if(!selectedStudent)return;const _0x47e9c0=selectedStudent[_0x1360bd(0x320)],_0x31cad5=_0x25bfd1?new Date()['toLocaleDateString'](_0x1360bd(0x2bc),{'year':_0x1360bd(0x244),'month':_0x1360bd(0x244),'day':_0x1360bd(0x244)}):'';db[_0x1360bd(0x349)]('students/'+_0x47e9c0+_0x1360bd(0x3d9)+selectedMonth+_0x1360bd(0x1fb)+_0xb835f9+_0x1360bd(0x1bb))[_0x1360bd(0x3bf)](_0x25bfd1),db[_0x1360bd(0x349)](_0x1360bd(0x30d)+_0x47e9c0+'/records/'+selectedMonth+_0x1360bd(0x1fb)+_0xb835f9+'/attendanceDate')['set'](_0x31cad5)[_0x1360bd(0x29c)](()=>{const _0x5ebed4=_0x1360bd;showToast(_0x5ebed4(0x142),_0x5ebed4(0x152)+_0xb835f9+'\x20كـ\x20'+(_0x25bfd1?_0x5ebed4(0x195):_0x5ebed4(0x35f))+_0x5ebed4(0x217)+_0x47e9c0,'success');})[_0x1360bd(0x3bc)](_0x35d64c=>{const _0x1a27ee=_0x1360bd;showToast(_0x1a27ee(0x17a),_0x35d64c[_0x1a27ee(0x27c)],'error');});}function saveSessionGrade(_0x141567){const _0xbc4d89=_0x564057;if(!selectedStudent)return;const _0x277f43=selectedStudent[_0xbc4d89(0x320)],_0x1942e8=document[_0xbc4d89(0x391)](_0xbc4d89(0x3f3)+_0x141567),_0xcb913c=_0x1942e8['value'][_0xbc4d89(0x31e)]();if(_0xcb913c===''){db['ref']('students/'+_0x277f43+_0xbc4d89(0x3d9)+selectedMonth+_0xbc4d89(0x1fb)+_0x141567+_0xbc4d89(0x2ca))[_0xbc4d89(0x15e)]()[_0xbc4d89(0x29c)](()=>{const _0x520296=_0xbc4d89;showToast(_0x520296(0x1ac),'تم\x20مسح\x20درجة\x20امتحان\x20الحصة\x20'+_0x141567,_0x520296(0x255));});return;}const _0x187321=parseFloat(_0xcb913c);if(isNaN(_0x187321)||_0x187321<0x0){showToast('خطأ',_0xbc4d89(0x1a1),_0xbc4d89(0x375));return;}db['ref'](_0xbc4d89(0x30d)+_0x277f43+'/records/'+selectedMonth+_0xbc4d89(0x1fb)+_0x141567+'/examGrade')[_0xbc4d89(0x3bf)](_0x187321)[_0xbc4d89(0x29c)](()=>{const _0x5cd37b=_0xbc4d89;showToast(_0x5cd37b(0x1c6),_0x5cd37b(0x292)+_0x187321+_0x5cd37b(0x2d0)+_0x141567,'success');})['catch'](_0x43ab6c=>{const _0x39e520=_0xbc4d89;showToast(_0x39e520(0x17a),_0x43ab6c['message'],_0x39e520(0x375));});}function quickAttendToday(){const _0x1caaa1=_0x564057;if(!selectedStudent){showToast(_0x1caaa1(0x18b),_0x1caaa1(0x199),_0x1caaa1(0x375));return;}const _0xfbc39b=selectedStudent['records']||{},_0x36c9a0=_0xfbc39b[selectedMonth]||{'sessions':{}},_0x186f50=_0x36c9a0[_0x1caaa1(0x2af)]||{};let _0x42e4a2=-0x1;for(let _0x1f6f36=0x1;_0x1f6f36<=0x8;_0x1f6f36++){if(!_0x186f50[_0x1f6f36]||!_0x186f50[_0x1f6f36][_0x1caaa1(0x20c)]){_0x42e4a2=_0x1f6f36;break;}}if(_0x42e4a2===-0x1){showToast('تنبيه',_0x1caaa1(0x1f4),_0x1caaa1(0x256));return;}quickMarkAttendance(_0x42e4a2,!![]);}async function saveMonthlyPayment(){const _0x5c824a=_0x564057;if(!selectedStudent)return;const _0x564ac6=selectedStudent[_0x5c824a(0x320)],_0x250bcf=paymentPaidCheckbox['checked'],_0x5ab18e=paymentAmountInput['value']['trim'](),_0x202aa8=_0x5ab18e===''?0x0:parseFloat(_0x5ab18e),_0x210373=_0x250bcf?new Date()['toLocaleDateString']('ar-EG'):'',_0x2c283d=getArabicMonthName(selectedMonth),_0x5584d0=_0x250bcf?'تأكيد\x20دفع\x20مصروفات\x20شهر\x20'+_0x2c283d:'إلغاء\x20دفع\x20مصروفات\x20شهر\x20'+_0x2c283d,_0x5650df=await showConfirmModal({'title':_0x250bcf?_0x5c824a(0x299):'إلغاء\x20دفع\x20المصروفات','message':_0x5c824a(0x3ad)+_0x5584d0+_0x5c824a(0x3b8)+selectedStudent[_0x5c824a(0x341)]+')؟','confirmText':_0x250bcf?'تأكيد\x20الدفع':_0x5c824a(0x363),'type':_0x250bcf?_0x5c824a(0x1d0):_0x5c824a(0x256)});if(!_0x5650df)return;if(isNaN(_0x202aa8)||_0x202aa8<0x0){showToast('خطأ',_0x5c824a(0x312),'error');return;}db[_0x5c824a(0x349)](_0x5c824a(0x30d)+_0x564ac6+'/records/'+selectedMonth)[_0x5c824a(0x1ca)]({'paid':_0x250bcf,'paidAmount':_0x202aa8,'paymentDate':_0x210373})[_0x5c824a(0x29c)](()=>{const _0x279a05=_0x5c824a;selectedStudent[_0x279a05(0x3ef)]&&selectedStudent[_0x279a05(0x3ef)][selectedMonth]&&(selectedStudent['records'][selectedMonth][_0x279a05(0x2fe)]=_0x250bcf,selectedStudent[_0x279a05(0x3ef)][selectedMonth]['paidAmount']=_0x202aa8,selectedStudent[_0x279a05(0x3ef)][selectedMonth][_0x279a05(0x1e7)]=_0x210373),showToast(_0x279a05(0x33f),_0x279a05(0x36f)+selectedMonth,_0x279a05(0x255));})[_0x5c824a(0x3bc)](_0x4b12bd=>{const _0x38650e=_0x5c824a;showToast('خطأ',_0x4b12bd[_0x38650e(0x27c)],_0x38650e(0x375));});}function updatePaymentLabel(_0x16672c){const _0x2eb12c=_0x564057;_0x16672c?(paymentStatusLabel[_0x2eb12c(0x2ee)]='تم\x20دفع\x20مصروفات\x20الشهر',paymentStatusLabel[_0x2eb12c(0x313)]=_0x2eb12c(0x370)):(paymentStatusLabel['textContent']=_0x2eb12c(0x329),paymentStatusLabel[_0x2eb12c(0x313)]='payment-status-label\x20unpaid');}function updateDashboardStats(){const _0x1e2eae=_0x564057;if(statTotalStudents)statTotalStudents[_0x1e2eae(0x2ee)]=allStudents[_0x1e2eae(0x36a)];if(statTotalTeachers)statTotalTeachers['textContent']=allTeachers[_0x1e2eae(0x36a)];if(!statTodayAttendance)return;let _0x4b3538=0x0;const _0x3ca35f=new Date()['toLocaleDateString']('ar-EG',{'year':_0x1e2eae(0x244),'month':'numeric','day':_0x1e2eae(0x244)});allStudents[_0x1e2eae(0x315)](_0x13fc2c=>{const _0x44a0e3=_0x1e2eae,_0x206743=_0x13fc2c['records']||{};for(const _0xf2049e in _0x206743){const _0x5aa8c3=_0x206743[_0xf2049e][_0x44a0e3(0x2af)]||{};for(const _0x4787ee in _0x5aa8c3){_0x5aa8c3[_0x4787ee]['attended']&&_0x5aa8c3[_0x4787ee][_0x44a0e3(0x3c9)]===_0x3ca35f&&_0x4b3538++;}}}),statTodayAttendance[_0x1e2eae(0x2ee)]=_0x4b3538;}function showToast(_0x4d6e75,_0x4c7d2c,_0x3fc353=_0x564057(0x2a5)){const _0x546cea=_0x564057,_0x333871=document[_0x546cea(0x391)]('toast-container');_0x333871&&(_0x333871[_0x546cea(0x2aa)]='');const _0x36fd8b=document[_0x546cea(0x2f0)](_0x546cea(0x252));_0x36fd8b[_0x546cea(0x313)]='toast\x20toast-'+_0x3fc353;let _0x3c0900=_0x546cea(0x2c0);if(_0x3fc353===_0x546cea(0x255))_0x3c0900=_0x546cea(0x287);else _0x3fc353===_0x546cea(0x375)&&(_0x3c0900=_0x546cea(0x193));_0x36fd8b[_0x546cea(0x2aa)]=_0x546cea(0x16b)+_0x3c0900+_0x546cea(0x3c1)+escapeHTML(_0x4d6e75)+_0x546cea(0x2c8)+escapeHTML(_0x4c7d2c)+_0x546cea(0x3ff),_0x333871[_0x546cea(0x308)](_0x36fd8b),setTimeout(()=>{const _0x1ebd63=_0x546cea;_0x36fd8b[_0x1ebd63(0x3ea)][_0x1ebd63(0x35c)]='0',_0x36fd8b[_0x1ebd63(0x3ea)]['transform']=_0x1ebd63(0x17f),setTimeout(()=>{const _0x1f3562=_0x1ebd63;_0x36fd8b[_0x1f3562(0x15e)]();},0x12c);},0xfa0);}function formatWhatsAppPhone(_0x40d203){const _0x7872c9=_0x564057;if(!_0x40d203)return'';let _0x4bd5cf=_0x40d203[_0x7872c9(0x21c)](/\D/g,'');if(!_0x4bd5cf)return'';if(_0x4bd5cf['startsWith']('0'))_0x4bd5cf='2'+_0x4bd5cf;else!_0x4bd5cf[_0x7872c9(0x1d6)]('20')&&_0x4bd5cf[_0x7872c9(0x36a)]===0xa&&(_0x4bd5cf='20'+_0x4bd5cf);return _0x4bd5cf;}function getWhatsAppConfig(){const _0x29b0cd=_0x564057,_0x1da00e=localStorage['getItem'](_0x29b0cd(0x2be))||_0x29b0cd(0x29b);let _0x4d8dd6=localStorage[_0x29b0cd(0x24d)]('wa_api_url'),_0x396940=localStorage[_0x29b0cd(0x24d)](_0x29b0cd(0x20e)),_0x3ddc70=localStorage[_0x29b0cd(0x24d)]('wa_token');if(_0x1da00e===_0x29b0cd(0x29b)&&!_0x4d8dd6)_0x4d8dd6=_0x29b0cd(0x277);else _0x1da00e==='ultramsg'&&!_0x4d8dd6&&(_0x4d8dd6=_0x29b0cd(0x364),_0x396940=_0x29b0cd(0x354),_0x3ddc70=_0x29b0cd(0x3af));return{'provider':_0x1da00e,'apiUrl':_0x4d8dd6||'','instanceId':_0x396940||'','token':_0x3ddc70||''};}function updateWaBulkButtonVisibility(){const _0x581cce=_0x564057;if(!btnWhatsAppUnattendedBulk)return;const _0x2c8c5b=getWhatsAppConfig();_0x2c8c5b[_0x581cce(0x33b)]===_0x581cce(0x3bb)?btnWhatsAppUnattendedBulk[_0x581cce(0x3ea)][_0x581cce(0x303)]=_0x581cce(0x2db):btnWhatsAppUnattendedBulk[_0x581cce(0x3ea)][_0x581cce(0x303)]=_0x581cce(0x1b8);}function saveWhatsAppConfig(_0x4822fc,_0xace8ed,_0x58c2b9,_0x5e1fc0){const _0x52359c=_0x564057;localStorage[_0x52359c(0x1fd)](_0x52359c(0x2be),_0x4822fc),localStorage[_0x52359c(0x1fd)]('wa_api_url',_0xace8ed['trim']()),localStorage['setItem'](_0x52359c(0x20e),_0x58c2b9[_0x52359c(0x31e)]()),localStorage[_0x52359c(0x1fd)]('wa_token',_0x5e1fc0[_0x52359c(0x31e)]()),updateWaBulkButtonVisibility();}async function sendWhatsAppAbsentNotice(_0x59aaaa,_0x58b518){const _0x79a1d0=_0x564057;if(!_0x59aaaa)return;const _0x1edc1e=_0x59aaaa[_0x79a1d0(0x2d5)]||_0x59aaaa[_0x79a1d0(0x14c)]||'',_0x2239b1=formatWhatsAppPhone(_0x1edc1e);if(!_0x2239b1){showToast(_0x79a1d0(0x380),'لا\x20يوجد\x20رقم\x20هاتف\x20متاح\x20لولي\x20أمر\x20الطالب:\x20'+_0x59aaaa[_0x79a1d0(0x341)],_0x79a1d0(0x375));return;}const _0x260a92=_0x58b518?_0x79a1d0(0x2d4)+_0x58b518+')':'',_0x12996d=_0x79a1d0(0x39d)+_0x59aaaa[_0x79a1d0(0x341)]+'\x0aلم\x20يتم\x20حضورة\x20درس\x20اللغة\x20العربية\x20اليوم'+_0x260a92+_0x79a1d0(0x148),_0x3e7bda=getWhatsAppConfig();if(_0x3e7bda[_0x79a1d0(0x33b)]==='direct'){openWhatsAppDirectLink(_0x2239b1,_0x12996d);return;}let _0x3a8c5e=_0x3e7bda['apiUrl']?_0x3e7bda[_0x79a1d0(0x274)][_0x79a1d0(0x31e)]():'',_0x3f1353=_0x3e7bda[_0x79a1d0(0x232)]?_0x3e7bda['instanceId'][_0x79a1d0(0x31e)]():'',_0x4d1907=_0x3e7bda[_0x79a1d0(0x368)]?_0x3e7bda[_0x79a1d0(0x368)][_0x79a1d0(0x31e)]():'';if(_0x3a8c5e['includes'](_0x79a1d0(0x1aa))){const _0x1b3f44=_0x3a8c5e[_0x79a1d0(0x221)](/(instance\d+)/i);_0x1b3f44&&!_0x3f1353&&(_0x3f1353=_0x1b3f44[0x1]);}if(_0x3a8c5e||_0x3f1353&&_0x4d1907)try{showToast('جاري\x20الإرسال\x20التلقائي...','جاري\x20إرسال\x20الإشعار\x20لولي\x20أمر\x20'+_0x59aaaa['name']+'\x20عبر\x20الواتساب...',_0x79a1d0(0x2a5));let _0x4f581c=_0x3a8c5e,_0x2b8e3f={};if(_0x3a8c5e[_0x79a1d0(0x39e)]('localhost')||_0x3a8c5e[_0x79a1d0(0x39e)]('127.0.0.1')||_0x3a8c5e['includes'](_0x79a1d0(0x16e))||_0x3e7bda[_0x79a1d0(0x33b)]===_0x79a1d0(0x29b)){let _0x8f5e32=_0x3a8c5e||'http://127.0.0.1:3000/send';!_0x8f5e32[_0x79a1d0(0x2b0)](_0x79a1d0(0x25e))&&!_0x8f5e32[_0x79a1d0(0x2b0)]('/')&&(_0x8f5e32=_0x8f5e32+_0x79a1d0(0x25e)),_0x4f581c=_0x8f5e32,_0x2b8e3f={'method':_0x79a1d0(0x39b),'headers':{'Content-Type':_0x79a1d0(0x336),'ngrok-skip-browser-warning':_0x79a1d0(0x3c4),'X-API-KEY':_0x79a1d0(0x3c0)},'body':JSON[_0x79a1d0(0x3fb)]({'phone':_0x2239b1,'to':_0x2239b1,'message':_0x12996d,'body':_0x12996d})};}else{if(_0x3a8c5e[_0x79a1d0(0x39e)](_0x79a1d0(0x1f2))||_0x3e7bda[_0x79a1d0(0x33b)]===_0x79a1d0(0x1f2))_0x4f581c=_0x3a8c5e||_0x79a1d0(0x26e),_0x2b8e3f={'method':'POST','headers':{'Content-Type':_0x79a1d0(0x336)},'body':JSON[_0x79a1d0(0x3fb)]({'phone':'+'+_0x2239b1,'to':'+'+_0x2239b1,'message':_0x12996d,'text':_0x12996d})};else{if(_0x3a8c5e['includes'](_0x79a1d0(0x20b))){const _0x216611=_0x4d1907||_0x3f1353,_0x56a636=_0x2239b1[_0x79a1d0(0x1d6)]('+')?_0x2239b1:'+'+_0x2239b1;_0x4f581c=_0x79a1d0(0x214)+encodeURIComponent(_0x56a636)+_0x79a1d0(0x276)+encodeURIComponent(_0x12996d)+_0x79a1d0(0x2ea)+encodeURIComponent(_0x216611),_0x2b8e3f={'method':_0x79a1d0(0x175),'mode':_0x79a1d0(0x174)};}else{if(_0x3a8c5e[_0x79a1d0(0x39e)]('ultramsg.com')||_0x3f1353&&_0x3f1353[_0x79a1d0(0x1d6)]('instance')){let _0x42ee1f=_0x3f1353||_0x79a1d0(0x354);if(!_0x42ee1f&&_0x3a8c5e[_0x79a1d0(0x39e)](_0x79a1d0(0x297))){const _0x3518e5=_0x3a8c5e[_0x79a1d0(0x402)]('/'),_0x36b2cc=_0x3518e5[_0x79a1d0(0x1a2)](_0x13bf67=>_0x13bf67[_0x79a1d0(0x1d6)](_0x79a1d0(0x297)));if(_0x36b2cc)_0x42ee1f=_0x36b2cc;}_0x4f581c=_0x79a1d0(0x333)+_0x42ee1f+_0x79a1d0(0x181);const _0x35d522=new URLSearchParams();if(_0x4d1907)_0x35d522[_0x79a1d0(0x2e8)](_0x79a1d0(0x368),_0x4d1907);_0x35d522[_0x79a1d0(0x2e8)]('to','+'+_0x2239b1),_0x35d522[_0x79a1d0(0x2e8)](_0x79a1d0(0x3cd),_0x12996d),_0x35d522['append'](_0x79a1d0(0x3b9),'10'),_0x2b8e3f={'method':_0x79a1d0(0x39b),'headers':{'Content-Type':_0x79a1d0(0x1ad)},'body':_0x35d522};}else _0x3a8c5e[_0x79a1d0(0x39e)](_0x79a1d0(0x3d3))||_0x3a8c5e[_0x79a1d0(0x39e)]('greenapi')?(!_0x3a8c5e[_0x79a1d0(0x39e)](_0x79a1d0(0x371))&&(_0x4f581c='https://api.green-api.com/waInstance'+_0x3f1353+'/sendMessage/'+_0x4d1907),_0x2b8e3f={'method':_0x79a1d0(0x39b),'headers':{'Content-Type':_0x79a1d0(0x336)},'body':JSON[_0x79a1d0(0x3fb)]({'chatId':_0x2239b1+_0x79a1d0(0x2ba),'message':_0x12996d})}):_0x2b8e3f={'method':_0x79a1d0(0x39b),'headers':{'Content-Type':_0x79a1d0(0x336)},'body':JSON['stringify']({'to':'+'+_0x2239b1,'phone':_0x2239b1,'body':_0x12996d,'message':_0x12996d,'token':_0x4d1907,'instance_id':_0x3f1353})};}}}const _0x2a7f92=await fetch(_0x4f581c,_0x2b8e3f),_0x5bbe29=await _0x2a7f92[_0x79a1d0(0x267)]()[_0x79a1d0(0x3bc)](()=>({}));_0x2a7f92['ok']||_0x2a7f92[_0x79a1d0(0x403)]===0xc8||_0x2a7f92[_0x79a1d0(0x403)]===0xc9||_0x5bbe29&&(_0x5bbe29[_0x79a1d0(0x255)]===!![]||_0x5bbe29[_0x79a1d0(0x1b4)]===_0x79a1d0(0x3c4)||_0x5bbe29['id']||_0x5bbe29[_0x79a1d0(0x403)]===_0x79a1d0(0x255))?showToast(_0x79a1d0(0x1da),_0x79a1d0(0x1d8)+_0x59aaaa['name'],_0x79a1d0(0x255)):(console[_0x79a1d0(0x182)](_0x79a1d0(0x2a1),_0x5bbe29),showToast(_0x79a1d0(0x338),_0x79a1d0(0x37e)+_0x59aaaa[_0x79a1d0(0x341)]+'\x20('+(_0x5bbe29[_0x79a1d0(0x375)]||_0x79a1d0(0x383))+').',_0x79a1d0(0x375)));}catch(_0xad661b){console[_0x79a1d0(0x375)](_0x79a1d0(0x259),_0xad661b),showToast(_0x79a1d0(0x2cb),'يرجى\x20تشغيل\x20ملف\x20(start-whatsapp-server.bat)\x20على\x20جهازك\x20للإرسال\x20التلقائي\x20دون\x20فتح\x20تابات.',_0x79a1d0(0x375));}else showToast('تنبيه\x20الإعدادات\x20⚠️',_0x79a1d0(0x37c),_0x79a1d0(0x256));}function openWhatsAppDirectLink(_0x5dea2e,_0x11cfa8){const _0x198df6=_0x564057,_0x4f9cbc=encodeURIComponent(_0x11cfa8),_0x1c69c8=_0x198df6(0x28c)+_0x5dea2e+_0x198df6(0x1cb)+_0x4f9cbc;window[_0x198df6(0x32e)](_0x1c69c8,_0x198df6(0x30f));}async function copyImageToClipboard(_0x14d924){const _0x4453db=_0x564057;if(!_0x14d924)return![];try{const _0x1ef8f0=await new Promise(_0x59f6dd=>_0x14d924[_0x4453db(0x154)](_0x59f6dd,_0x4453db(0x15c)));if(!_0x1ef8f0)return![];if(navigator[_0x4453db(0x387)]&&typeof window[_0x4453db(0x1b6)]!==_0x4453db(0x24e)&&navigator[_0x4453db(0x387)][_0x4453db(0x14e)]){const _0x5b3b59=new ClipboardItem({'image/png':_0x1ef8f0});return await navigator[_0x4453db(0x387)][_0x4453db(0x14e)]([_0x5b3b59]),!![];}}catch(_0x4713de){console[_0x4453db(0x182)](_0x4453db(0x30e),_0x4713de);}return![];}function populateReportCardHTML(_0x2c2423){const _0x214eeb=_0x564057;if(!_0x2c2423)return;const _0x135cda=document[_0x214eeb(0x391)](_0x214eeb(0x208)),_0x3b2b5a=document[_0x214eeb(0x391)](_0x214eeb(0x395)),_0x3a3c24=document[_0x214eeb(0x391)](_0x214eeb(0x18c)),_0x188146=document[_0x214eeb(0x391)]('report-student-phone'),_0x286604=document[_0x214eeb(0x391)]('report-date'),_0x285cdc=document[_0x214eeb(0x391)](_0x214eeb(0x209)),_0x588489=document[_0x214eeb(0x391)](_0x214eeb(0x222)),_0x3be6d6=document[_0x214eeb(0x391)](_0x214eeb(0x30a)),_0x103b6b=document[_0x214eeb(0x391)]('report-paid-amount'),_0x286f76=document[_0x214eeb(0x391)](_0x214eeb(0x393));if(_0x135cda)_0x135cda['textContent']=_0x2c2423['name']||_0x214eeb(0x390);if(_0x3b2b5a)_0x3b2b5a[_0x214eeb(0x2ee)]=toEnglishDigits(_0x2c2423[_0x214eeb(0x320)]||'');if(_0x3a3c24)_0x3a3c24[_0x214eeb(0x2ee)]=_0x2c2423[_0x214eeb(0x2b3)]||'الصف\x20الأول\x20الإعدادي';if(_0x188146)_0x188146[_0x214eeb(0x2ee)]=toEnglishDigits(_0x2c2423[_0x214eeb(0x2d5)]||_0x2c2423[_0x214eeb(0x14c)]||_0x214eeb(0x372));const _0x15e674=new Date()[_0x214eeb(0x2ac)]('en-GB');if(_0x286604)_0x286604[_0x214eeb(0x2ee)]=toEnglishDigits(_0x15e674);const _0x4d2497=getSelectedMonthText();if(_0x285cdc)_0x285cdc['textContent']=_0x4d2497+_0x214eeb(0x260);const _0x46259c=_0x2c2423[_0x214eeb(0x3ef)]&&_0x2c2423['records'][selectedMonth]||{'paid':![],'paidAmount':0x0,'sessions':{}},_0x1d4ef7=_0x46259c[_0x214eeb(0x2af)]||{};let _0x451a24=0x0,_0x29f9e0='';for(let _0x34563c=0x1;_0x34563c<=0x8;_0x34563c++){const _0x376154=_0x1d4ef7[_0x34563c]||{},_0x26ab36=_0x376154[_0x214eeb(0x20c)]===!![];if(_0x26ab36)_0x451a24++;const _0x106ed8=_0x376154[_0x214eeb(0x3c9)]?toEnglishDigits(_0x376154[_0x214eeb(0x3c9)]):_0x214eeb(0x372);let _0xfd6198=_0x214eeb(0x3f2)+_0x34563c;if(_0x376154['examGrade'])_0xfd6198='حصة\x20'+_0x34563c+_0x214eeb(0x254);if(!_0x26ab36)_0xfd6198='غياب';let _0x246277='---';_0x376154['examGrade']&&(_0x246277=_0x214eeb(0x36e)+toEnglishDigits(_0x376154[_0x214eeb(0x34f)])+_0x214eeb(0x228)),_0x29f9e0+=_0x214eeb(0x3fa)+_0x106ed8+_0x214eeb(0x15a)+_0xfd6198+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x246277+_0x214eeb(0x185);}if(_0x588489)_0x588489[_0x214eeb(0x2aa)]=_0x29f9e0;if(_0x3be6d6)_0x3be6d6[_0x214eeb(0x2ee)]=toEnglishDigits(_0x451a24);const _0x5e8a41=document[_0x214eeb(0x391)](_0x214eeb(0x31c)),_0x54325c=document[_0x214eeb(0x391)]('report-summary-bar-financial');if(_0x5e8a41){if(_0x46259c[_0x214eeb(0x2fe)]){_0x5e8a41[_0x214eeb(0x2aa)]='<strong>السجل\x20المالي:</strong>\x20تم\x20دفع\x20المصروفات\x20لـ\x20('+_0x4d2497+_0x214eeb(0x3f9);if(_0x54325c)_0x54325c[_0x214eeb(0x313)]=_0x214eeb(0x1e3);}else{_0x5e8a41[_0x214eeb(0x2aa)]=_0x214eeb(0x201)+_0x4d2497+_0x214eeb(0x325);if(_0x54325c)_0x54325c[_0x214eeb(0x313)]=_0x214eeb(0x1e4);}}}async function sendWhatsAppCustomNotice(_0x3c759c,_0x2d7109){const _0x15930d=_0x564057;if(!_0x3c759c)return![];const _0x598807=_0x3c759c[_0x15930d(0x2d5)]||_0x3c759c[_0x15930d(0x14c)]||'',_0x5a6228=formatWhatsAppPhone(_0x598807);if(!_0x5a6228)return showToast('رقم\x20الهاتف\x20غير\x20متاح\x20⚠️',_0x15930d(0x2e1)+_0x3c759c[_0x15930d(0x341)],_0x15930d(0x375)),![];const _0x1e63b6=getSelectedMonthText(),_0x1d1f09=getSelectedSessionText(),_0x53f406=_0x3c759c[_0x15930d(0x3ef)]&&_0x3c759c[_0x15930d(0x3ef)][selectedMonth]||{'paid':![],'paidAmount':0x0,'sessions':{}},_0x364e2d=_0x53f406[_0x15930d(0x2af)]||{};let _0x11524b=0x0;for(let _0x4332d5=0x1;_0x4332d5<=0x8;_0x4332d5++){if(_0x364e2d[_0x4332d5]&&_0x364e2d[_0x4332d5][_0x15930d(0x20c)])_0x11524b++;}const _0x437f8f=_0x53f406[_0x15930d(0x2fe)]?_0x15930d(0x263)+(_0x53f406['paidAmount']||0x64)+'\x20ج.م)':_0x15930d(0x3f6),_0x404db6=_0x3c759c['notes']&&_0x3c759c['notes'][_0x15930d(0x31e)]()?_0x3c759c['notes']['trim']():_0x15930d(0x144),_0x4a6fe3=_0x2d7109[_0x15930d(0x21c)](/\{student_name\}/g,_0x3c759c[_0x15930d(0x341)])[_0x15930d(0x21c)](/\{name\}/g,_0x3c759c[_0x15930d(0x341)])[_0x15930d(0x21c)](/\[اسم الطالب\]/g,_0x3c759c[_0x15930d(0x341)])[_0x15930d(0x21c)](/\{month_name\}/g,_0x1e63b6)[_0x15930d(0x21c)](/\{month\}/g,_0x1e63b6)[_0x15930d(0x21c)](/\[الشهر\]/g,_0x1e63b6)['replace'](/\{session_name\}/g,_0x1d1f09)[_0x15930d(0x21c)](/\{session\}/g,_0x1d1f09)[_0x15930d(0x21c)](/\[الحصة\]/g,_0x1d1f09)[_0x15930d(0x21c)](/\{attended_count\}/g,toEnglishDigits(_0x11524b))['replace'](/\{total_sessions\}/g,'8')[_0x15930d(0x21c)](/\{paid_status\}/g,_0x437f8f)[_0x15930d(0x21c)](/\{paid_summary\}/g,_0x437f8f)['replace'](/\{notes\}/g,_0x404db6);populateReportCardHTML(_0x3c759c);let _0x49cc02='',_0x342782=null;try{const _0x443612=document['getElementById'](_0x15930d(0x316));_0x443612&&typeof html2canvas===_0x15930d(0x2b1)&&(_0x342782=await html2canvas(_0x443612,{'scale':0x2,'backgroundColor':'#ffffff','logging':![],'useCORS':!![],'allowTaint':!![]}),_0x49cc02=_0x342782[_0x15930d(0x1d1)](_0x15930d(0x15c)));}catch(_0xb2e402){console[_0x15930d(0x182)](_0x15930d(0x397),_0xb2e402);}const _0x1c26ec=getWhatsAppConfig();let _0x57fe1d=_0x1c26ec[_0x15930d(0x274)]?_0x1c26ec[_0x15930d(0x274)][_0x15930d(0x31e)]():'',_0x2b9858=_0x1c26ec[_0x15930d(0x232)]?_0x1c26ec[_0x15930d(0x232)][_0x15930d(0x31e)]():'',_0x1d057b=_0x1c26ec[_0x15930d(0x368)]?_0x1c26ec['token'][_0x15930d(0x31e)]():'';if(_0x1c26ec[_0x15930d(0x33b)]===_0x15930d(0x3bb)||!_0x57fe1d&&!_0x2b9858&&!_0x1d057b&&_0x1c26ec['provider']!==_0x15930d(0x29b)){if(_0x342782){const _0x4dffd2=await copyImageToClipboard(_0x342782);_0x4dffd2?showToast(_0x15930d(0x173),'تم\x20نسخ\x20صورة\x20تقرير\x20الطالب\x20('+_0x3c759c[_0x15930d(0x341)]+_0x15930d(0x3e1),_0x15930d(0x255)):showToast(_0x15930d(0x37a),_0x15930d(0x3d7)+_0x3c759c[_0x15930d(0x341)]+_0x15930d(0x327),'info');}return openWhatsAppDirectLink(_0x5a6228,_0x4a6fe3),!![];}if(_0x57fe1d[_0x15930d(0x39e)](_0x15930d(0x1aa))){const _0x21d706=_0x57fe1d[_0x15930d(0x221)](/(instance\d+)/i);_0x21d706&&!_0x2b9858&&(_0x2b9858=_0x21d706[0x1]);}try{let _0x112bbf=_0x57fe1d,_0x55fd09={};if(_0x57fe1d['includes'](_0x15930d(0x1cc))||_0x57fe1d[_0x15930d(0x39e)](_0x15930d(0x3a0))||_0x57fe1d[_0x15930d(0x39e)]('ngrok')||_0x1c26ec['provider']===_0x15930d(0x29b)||!_0x57fe1d){let _0x2b6343=_0x57fe1d||_0x15930d(0x2ab);!_0x2b6343[_0x15930d(0x2b0)](_0x15930d(0x25e))&&!_0x2b6343[_0x15930d(0x2b0)]('/')&&(_0x2b6343=_0x2b6343+'/send'),_0x112bbf=_0x2b6343,_0x55fd09={'method':'POST','headers':{'Content-Type':'application/json','ngrok-skip-browser-warning':_0x15930d(0x3c4),'X-API-KEY':_0x15930d(0x3c0)},'body':JSON['stringify']({'phone':_0x5a6228,'to':_0x5a6228,'message':_0x4a6fe3,'body':_0x4a6fe3,'imageBase64':_0x49cc02})};}else{if(_0x57fe1d[_0x15930d(0x39e)](_0x15930d(0x1aa))||_0x2b9858&&_0x2b9858['startsWith'](_0x15930d(0x297))){let _0x41e7af=_0x2b9858||_0x15930d(0x354);if(!_0x41e7af&&_0x57fe1d[_0x15930d(0x39e)](_0x15930d(0x297))){const _0x253e36=_0x57fe1d['split']('/'),_0xd6a187=_0x253e36[_0x15930d(0x1a2)](_0xbb0c13=>_0xbb0c13[_0x15930d(0x1d6)]('instance'));if(_0xd6a187)_0x41e7af=_0xd6a187;}if(_0x49cc02){_0x112bbf=_0x15930d(0x333)+_0x41e7af+_0x15930d(0x1fc);const _0x22bf65=new URLSearchParams();if(_0x1d057b)_0x22bf65[_0x15930d(0x2e8)](_0x15930d(0x368),_0x1d057b);_0x22bf65[_0x15930d(0x2e8)]('to','+'+_0x5a6228),_0x22bf65[_0x15930d(0x2e8)](_0x15930d(0x224),_0x49cc02),_0x22bf65[_0x15930d(0x2e8)]('caption',_0x4a6fe3),_0x22bf65[_0x15930d(0x2e8)]('priority','10'),_0x55fd09={'method':'POST','headers':{'Content-Type':_0x15930d(0x1ad)},'body':_0x22bf65};}else{_0x112bbf=_0x15930d(0x333)+_0x41e7af+_0x15930d(0x181);const _0x104462=new URLSearchParams();if(_0x1d057b)_0x104462[_0x15930d(0x2e8)](_0x15930d(0x368),_0x1d057b);_0x104462[_0x15930d(0x2e8)]('to','+'+_0x5a6228),_0x104462[_0x15930d(0x2e8)](_0x15930d(0x3cd),_0x4a6fe3),_0x104462['append'](_0x15930d(0x3b9),'10'),_0x55fd09={'method':_0x15930d(0x39b),'headers':{'Content-Type':_0x15930d(0x1ad)},'body':_0x104462};}}else _0x57fe1d['includes'](_0x15930d(0x3d3))||_0x57fe1d['includes'](_0x15930d(0x2d3))?(!_0x57fe1d[_0x15930d(0x39e)](_0x15930d(0x371))&&(_0x112bbf='https://api.green-api.com/waInstance'+_0x2b9858+_0x15930d(0x1ba)+_0x1d057b),_0x55fd09={'method':_0x15930d(0x39b),'headers':{'Content-Type':'application/json'},'body':JSON[_0x15930d(0x3fb)]({'chatId':_0x5a6228+_0x15930d(0x2ba),'message':_0x4a6fe3})}):_0x55fd09={'method':_0x15930d(0x39b),'headers':{'Content-Type':_0x15930d(0x336)},'body':JSON[_0x15930d(0x3fb)]({'to':'+'+_0x5a6228,'phone':_0x5a6228,'body':_0x4a6fe3,'message':_0x4a6fe3,'token':_0x1d057b,'instance_id':_0x2b9858})};}const _0x4f8624=await fetch(_0x112bbf,_0x55fd09),_0x1fc463=await _0x4f8624[_0x15930d(0x267)]()['catch'](()=>({})),_0x2b3237=(_0x4f8624['ok']||_0x4f8624[_0x15930d(0x403)]===0xc8||_0x4f8624['status']===0xc9)&&(_0x1fc463[_0x15930d(0x255)]===!![]||_0x1fc463[_0x15930d(0x1b4)]===_0x15930d(0x3c4)||_0x1fc463['id']||_0x1fc463[_0x15930d(0x403)]==='success'||!_0x1fc463[_0x15930d(0x375)]);if(_0x2b3237)return showToast(_0x15930d(0x290),_0x15930d(0x23c)+_0x3c759c[_0x15930d(0x341)],_0x15930d(0x255)),!![];else{console[_0x15930d(0x182)](_0x15930d(0x2a1),_0x1fc463);const _0x430092=_0x1fc463[_0x15930d(0x375)]||_0x15930d(0x3de);return showToast(_0x15930d(0x338),_0x15930d(0x37e)+_0x3c759c['name']+'\x20('+_0x430092+').',_0x15930d(0x375)),![];}}catch(_0x58f282){return console['error'](_0x15930d(0x259),_0x58f282),showToast('سيرفر\x20الواتساب\x20المحلي\x20غير\x20متصل\x20🔴',_0x15930d(0x262),'error'),![];}}function setupWhatsAppBulkModal(){const _0x23b2f6=_0x564057,_0x2392c6=document['getElementById'](_0x23b2f6(0x22e)),_0x28b252=document[_0x23b2f6(0x391)](_0x23b2f6(0x331)),_0x47275a=document[_0x23b2f6(0x391)](_0x23b2f6(0x2ef)),_0x153279=document[_0x23b2f6(0x391)](_0x23b2f6(0x229)),_0x45880e=document['getElementById']('wa-bulk-msg-preview'),_0x4e7540=document[_0x23b2f6(0x34c)](_0x23b2f6(0x3c8));if(!_0x2392c6)return;const _0xae46d6=()=>{const _0x5f5446=_0x23b2f6;_0x2392c6[_0x5f5446(0x177)][_0x5f5446(0x288)](_0x5f5446(0x2f4));};if(_0x28b252)_0x28b252[_0x23b2f6(0x37b)](_0x23b2f6(0x1a0),_0xae46d6);if(_0x47275a)_0x47275a[_0x23b2f6(0x37b)](_0x23b2f6(0x1a0),_0xae46d6);_0x2392c6[_0x23b2f6(0x37b)](_0x23b2f6(0x1a0),_0x4f0660=>{const _0x25d068=_0x23b2f6;if(_0x4f0660[_0x25d068(0x15b)]===_0x2392c6)_0xae46d6();});const _0x9868a0=document[_0x23b2f6(0x34c)](_0x23b2f6(0x376));_0x9868a0[_0x23b2f6(0x315)](_0x3d6033=>{const _0x2756d3=_0x23b2f6;_0x3d6033[_0x2756d3(0x37b)](_0x2756d3(0x1a0),()=>{const _0x24b1d1=_0x2756d3,_0xa117d6=_0x3d6033['querySelector'](_0x24b1d1(0x3ce));_0xa117d6&&(_0xa117d6['checked']=!![],selectedWaBulkTemplateKey=_0xa117d6[_0x24b1d1(0x246)]),_0x9868a0['forEach'](_0x5c41ca=>_0x5c41ca['classList']['remove']('active')),_0x3d6033[_0x24b1d1(0x177)]['add']('active');});}),_0x4e7540['forEach'](_0x27071c=>{const _0x342af0=_0x23b2f6;_0x27071c[_0x342af0(0x37b)](_0x342af0(0x3a7),_0x5795fc=>{const _0x2b24d9=_0x342af0;selectedWaBulkTemplateKey=_0x5795fc[_0x2b24d9(0x15b)][_0x2b24d9(0x246)],_0x9868a0['forEach'](_0x2de39a=>_0x2de39a['classList'][_0x2b24d9(0x15e)](_0x2b24d9(0x2c3)));const _0x4c8038=document[_0x2b24d9(0x391)](_0x2b24d9(0x3ab)+selectedWaBulkTemplateKey);if(_0x4c8038)_0x4c8038[_0x2b24d9(0x177)][_0x2b24d9(0x288)](_0x2b24d9(0x2c3));});}),_0x153279&&_0x153279['addEventListener'](_0x23b2f6(0x1a0),()=>{const _0x51a082=_0x23b2f6,_0x29af7b=document[_0x51a082(0x211)](_0x51a082(0x392)),_0x13ba83=selectedWaBulkTemplateKey||(_0x29af7b?_0x29af7b[_0x51a082(0x246)]:null);if(!_0x13ba83){showToast('يرجى\x20اختيار\x20رسالة\x20⚠️',_0x51a082(0x26b),_0x51a082(0x256));return;}if(!currentBulkTargetStudents||currentBulkTargetStudents[_0x51a082(0x36a)]===0x0){showToast(_0x51a082(0x318),_0x51a082(0x2d7),_0x51a082(0x256)),_0xae46d6();return;}const _0x14fcc5=getWaBulkTemplates(),_0x2820e9=_0x14fcc5[_0x13ba83];if(!_0x2820e9){showToast(_0x51a082(0x33a),_0x51a082(0x384),_0x51a082(0x256));return;}_0xae46d6();const _0x4f4978=currentBulkTargetStudents[_0x51a082(0x36a)],_0x19f413=getWhatsAppConfig(),_0x299ae2=_0x19f413[_0x51a082(0x33b)]!=='direct'&&(!!_0x19f413['apiUrl']||!!_0x19f413[_0x51a082(0x368)]||_0x19f413[_0x51a082(0x33b)]===_0x51a082(0x29b));currentBulkTargetStudents['forEach']((_0x5b3fa5,_0x692304)=>{setTimeout(()=>{sendWhatsAppCustomNotice(_0x5b3fa5,_0x2820e9);},_0x692304*(_0x299ae2?0x12c:0x320));});if(_0x4f4978===0x1){const _0x358116=currentBulkTargetStudents[0x0][_0x51a082(0x341)];_0x299ae2?showToast('جاري\x20الإرسال\x20التلقائي\x20🟢',_0x51a082(0x343)+_0x358116+_0x51a082(0x327),'success'):showToast(_0x51a082(0x37a),_0x51a082(0x3d7)+_0x358116+_0x51a082(0x327),'info');}else _0x299ae2?showToast(_0x51a082(0x216),_0x51a082(0x163)+_0x4f4978+'\x20طالب...',_0x51a082(0x255)):showToast('جاري\x20فتح\x20الواتساب',_0x51a082(0x16c)+_0x4f4978+'\x20طالب...',_0x51a082(0x2a5));});}function openWhatsAppBulkModal(_0x73db8c=null){const _0x311c61=_0x564057,_0x479aed=document[_0x311c61(0x391)](_0x311c61(0x22e)),_0x32c8bb=document[_0x311c61(0x391)]('wa-bulk-target-count'),_0x348412=document['getElementById'](_0x311c61(0x2fc)),_0x4081c7=document[_0x311c61(0x391)]('wa-bulk-msg-preview');if(!_0x479aed)return;currentBulkTargetStudents=_0x73db8c||currentFilteredStudents||[];const _0x8e7f70=currentBulkTargetStudents[_0x311c61(0x36a)];if(_0x8e7f70===0x0){showToast(_0x311c61(0x318),_0x311c61(0x2d7),_0x311c61(0x256));return;}if(_0x32c8bb)_0x32c8bb[_0x311c61(0x2ee)]=toEnglishDigits(_0x8e7f70);if(_0x348412)_0x348412['textContent']=toEnglishDigits(_0x8e7f70);const _0x1678e7=getWaBulkTemplates(),_0x1cfb61=document[_0x311c61(0x211)](_0x311c61(0x296)),_0x109208=document['querySelector'](_0x311c61(0x1c7)),_0x39e0f8=document[_0x311c61(0x211)](_0x311c61(0x213)),_0x468f86=document[_0x311c61(0x211)](_0x311c61(0x281)),_0x1924c5=document['querySelector']('#card-msg-report\x20.msg-preview-text');if(_0x1cfb61&&_0x1678e7['attendance'])_0x1cfb61['textContent']=_0x1678e7['attendance']['replace'](_0x311c61(0x236),_0x311c61(0x157))[_0x311c61(0x402)]('\x0a\x0a')[0x1];if(_0x109208&&_0x1678e7['absent'])_0x109208[_0x311c61(0x2ee)]=_0x1678e7[_0x311c61(0x3f1)][_0x311c61(0x21c)]('{student_name}',_0x311c61(0x157))['split']('\x0a\x0a')[0x1];if(_0x39e0f8&&_0x1678e7[_0x311c61(0x2fe)])_0x39e0f8['textContent']=_0x1678e7[_0x311c61(0x2fe)][_0x311c61(0x21c)]('{student_name}',_0x311c61(0x157))[_0x311c61(0x402)]('\x0a\x0a')[0x1];if(_0x468f86&&_0x1678e7['unpaid'])_0x468f86[_0x311c61(0x2ee)]=_0x1678e7[_0x311c61(0x2a4)][_0x311c61(0x21c)]('{student_name}',_0x311c61(0x157))[_0x311c61(0x402)]('\x0a\x0a')[0x1];if(_0x1924c5&&_0x1678e7[_0x311c61(0x3b5)])_0x1924c5[_0x311c61(0x2ee)]=_0x1678e7[_0x311c61(0x3b5)][_0x311c61(0x21c)](_0x311c61(0x236),'[اسم\x20الطالب]')[_0x311c61(0x402)]('\x0a\x0a')[0x1];selectedWaBulkTemplateKey=null,document['querySelectorAll'](_0x311c61(0x3c8))['forEach'](_0x53cae2=>_0x53cae2['checked']=![]),document['querySelectorAll'](_0x311c61(0x376))[_0x311c61(0x315)](_0x5b1faf=>_0x5b1faf[_0x311c61(0x177)][_0x311c61(0x15e)](_0x311c61(0x2c3))),_0x4081c7&&(_0x4081c7[_0x311c61(0x246)]=''),_0x479aed[_0x311c61(0x177)][_0x311c61(0x15e)](_0x311c61(0x2f4));}function _0x2d10(){const _0x35b49a=['</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22toast-message\x22>','bar','/examGrade','سيرفر\x20الواتساب\x20المحلي\x20غير\x20متصل\x20🔴','createOscillator','#f97316','الحصة\x206','.btn-table-action.delete',')\x20بنجاح\x20للحصة\x20','إلغاء\x20دفع\x20مصروفات\x20شهر\x20','بيانات\x20الطلاب','greenapi','\x20(الحصة\x20','guardianPhone','status-text','لا\x20يوجد\x20طلاب\x20محددين\x20لإرسال\x20الرسائل\x20لهم.',')\x20للطالب/ـة:\x20{student_name}\x20بنجاح.\x0a\x0aتحت\x20إشراف\x20مستر\x20هيثم\x20فؤاد','<strong>الصف\x20الدراسي:</strong>\x20','تم\x20دفع\x20مصروفات\x20شهر\x20','none','لا\x20يوجد','fa-circle-check','\x22></i>\x20','.xlsx','عدد\x20الطلاب\x20الحاضرين','لا\x20يوجد\x20رقم\x20هاتف\x20متاح\x20لولي\x20أمر\x20الطالب:\x20','>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22session-num-lbl\x22>حصة\x20','\x22\x20title=\x22عرض/إخفاء\x20الحضور\x20والمصروفات\x22\x20data-id=\x22','confirm-modal-overlay','teacher-name',',\x20true)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-check\x22></i>\x20حضور\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22top-students-empty\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-graduation-cap\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>لا\x20توجد\x20درجات\x20اختبارات\x20مسجلة\x20لهذه\x20المرحلة\x20بعد</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','append','rgba(6,\x20182,\x20212,\x200.65)','&apikey=','scrollIntoView','data-id','btn-close-wa-modal','textContent','btn-cancel-wa-bulk-send','createElement','profile-student-name','student-name','\x20بنجاح.','hidden','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','tab-students','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20','padStart','كافة\x20الصفوف\x20الدراسية','wa-api-url','student-count','wa-bulk-send-count','وضع\x20التعديل\x20مفعل\x20✏️','paid','disabled',',\x20false)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-xmark\x22></i>\x20غياب\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','btn-whatsapp-unattended-bulk','card-provider-ultramsg','display','تنبيه\x20أمان\x20⚠️','خطأ:\x20','kpi-attended-today','السلام\x20عليكم\x20ورحمة\x20الله\x20وبركاته،\x0a\x0a📊\x20تقرير\x20أداء\x20الطالب/ـة:\x20{student_name}\x0aدرس\x20اللغة\x20العربية\x20(','appendChild','toLowerCase','report-attended-count','https://realsystem-12c37-default-rtdb.firebaseio.com','تم\x20اختيار\x20CallMeBot.\x20قم\x20بكتابة\x20الـ\x20API\x20Key\x20الخاص\x20بك\x20في\x20خانة\x20(كود\x20الأمان)\x20واضغط\x20حفظ.','students/','Clipboard\x20image\x20write\x20failed/not\x20allowed:','_blank','لم\x20يتم\x20دفع\x20المصروفات\x20لشهر\x20','fee-main-toggle\x20','يرجى\x20إدخال\x20مبلغ\x20دفع\x20صالح','className','unattended-count-badge','forEach','student-report-card','تأكيد\x20الدفع','الكشف\x20فارغ\x20⚠️','btn-teacher-save','top-students-list','تم\x20تغيير\x20كلمة\x20المرور،\x20تم\x20تسجيل\x20الخروج\x20تلقائياً.','report-financial-status','sine','trim','radio-provider-ultramsg','academicId','stat-total-teachers','btn-edit','removeItem','destroy',')\x20حتى\x20الآن','focus','...','السلام\x20عليكم\x20ورحمة\x20الله\x20وبركاته،\x0a\x0aتم\x20بحمد\x20الله\x20سداد\x20مصروفات\x20درس\x20اللغة\x20العربية\x20(','غير\x20مدفوع\x20للشهر\x20المختار','is-active-target','تمت\x20إزالة\x20الطالب\x20','>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22slider-sm\x22></span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22fee-status-badge\x20','profile-student-id','open','\x20بنجاح\x20إلى\x20قاعدة\x20البيانات.','dashboard-analytics-section','btn-close-wa-bulk-modal','.fee-main-toggle','https://api.ultramsg.com/','adminAuth','doughnut','application/json','.fee-status-badge','لم\x20يتم\x20الإرسال\x20🔴','kpi-total-students','نص\x20الرسالة\x20فارغ\x20⚠️','provider','utils','&gt;','تم\x20تعديل\x20بيانات\x20الطالب\x20','تم\x20حفظ\x20المدفوعات','btn-teacher-clear','name','متصل\x20بقاعدة\x20البيانات','جاري\x20إرسال\x20إشعار\x20الواتساب\x20لولي\x20أمر:\x20','filter-month-select','السلام\x20عليكم\x20ورحمة\x20الله\x20وبركاته،\x0a\x0aنحيطكم\x20علماً\x20لم\x20يتم\x20حضور\x20الطالب/ـة:\x20{student_name}\x20درس\x20اللغة\x20العربية\x20اليوم\x20(','\x22\x20title=\x22تغيير\x20حالة\x20المصروفات\x20لشهر\x20','sort','setValueAtTime','ref','حقول\x20ناقصة','pulse-highlight','querySelectorAll','btn-open-wa-settings','btn-save-wa-config','examGrade','teacher-notes','card-provider-local','book_append_sheet','custom-btn\x20btn-modal-confirm\x20danger','instance188259','getAttribute','فشل\x20الحفظ','search-input','key',').\x20لا\x20يمكن\x20التكرار\x20نهائياً!','يرجى\x20إدخال\x20الرقم\x20الأكاديمي\x20للبحث\x20عنه','teachers','opacity','تم\x20تسجيل\x20الدخول\x20بنجاح\x20🔓','متوسط\x20درجة\x20الطلاب','غياب','شهر\x20','.btn-quick-attend-action','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22actions-col\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22actions-col-cell\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-table-action\x20edit\x22\x20title=\x22تعديل\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-pencil\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-table-action\x20delete\x22\x20title=\x22حذف\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-trash\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','تأكيد\x20الإلغاء','https://api.ultramsg.com/instance188259/messages/chat','btn-logout','لم\x20يحضر\x20بعد','assign','token','حاضر','length','card-provider-callmebot','اختبار\x204','.btn-table-action.edit','<strong\x20style=\x22color:\x20#10b981;\x22>','تم\x20حفظ\x20حالة\x20الدفع\x20لشهر\x20','payment-status-label\x20paid','sendMessage','---','1396358rRuKaZ','get','error','.msg-template-card','حذف\x20طالب\x20نهائياً','currentTime','selectedIndex','جاري\x20فتح\x20الواتساب','addEventListener','يرجى\x20تحديد\x20طريقة\x20الإرسال\x20من\x20زر\x20(ربط\x20الواتساب\x20⚙️)\x20أعلى\x20الصفحة.','#ef4444','فشل\x20الإرسال\x20للطالب:\x20','kpi-attended-rate','رقم\x20الهاتف\x20غير\x20متاح','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><strong>','تأكيد','تأكد\x20من\x20تشغيل\x20السيرفر','يرجى\x20اختيار\x20رسالة\x20أو\x20التأكد\x20من\x20إعدادات\x20النص.','حذف\x20معلم\x20نهائياً','\x20نهائياً؟','clipboard','يرجى\x20ملء\x20جميع\x20الحقول\x20الأساسية\x20لحفظ\x20المعلم','تنبيه\x20⚠️','\x20من\x20قاعدة\x20البيانات.','from','getFullYear',')</span>','fa-solid\x20fa-chevron-up','\x20طالب\x20إلى\x20ملف\x20إكسيل\x20بنجاح!','طالب','getElementById','input[name=\x22wa-msg-template\x22]:checked','report-teacher-notes','\x20fee-main-icon\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22fee-main-label\x22>','report-student-id','login-modal-overlay','Failed\x20to\x20render\x20report\x20card\x20image\x20via\x20html2canvas:','join','gain','تم\x20التعديل\x20بنجاح','POST','confirm','السلام\x20عليكم\x20ورحمة\x20الله\x20وبركاته،\x0a\x0aالطالب/ة:\x20','includes','تم\x20الحفظ\x20بنجاح','127.0.0.1','12098216zkVSVc','9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0','الرقم\x20الأكاديمي\x20للمعلم:\x20','input','examCount','closest','change','dash-filter-month','btn-preset-callmebot','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','card-msg-','push','هل\x20أنت\x20متأكد\x20من\x20','&lt;','0o0d69ndrg6kjver','confirm-modal-btn-cancel','&#039;','teacher-count','wa-auth-modal-overlay','تم\x20الحذف','report','فشل\x20تسجيل\x20الحضور\x20في\x20قاعدة\x20البيانات','fa-user-check','\x20للطالب:\x20(','priority','preventDefault','direct','catch','حدث\x20فشل\x20أثناء\x20التحقق\x20من\x20الطالب\x20في\x20قاعدة\x20البيانات','username','set','IbnAlSaqr_Secured_WA_Key_2026_x89','\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22toast-body\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22toast-title\x22>','round','fa-chevron-down','true','785083627306','لم\x20يتم\x20دفع\x20مصروفات\x20شهر\x20','\x20ج.م)','input[name=\x22wa-msg-template\x22]','attendanceDate','subtle','Excel\x20Export\x20Error:','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-session-action\x20mark-present\x22\x20onclick=\x22quickMarkAttendance(','body','input[type=\x22radio\x22]','contains','كلمة\x20المرور\x20غير\x20صحيحة\x20🔴','تأكيد\x20الخروج','type','green-api.com','<i\x20class=\x22fa-solid\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22table-empty-row\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20colspan=\x224\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22empty-state-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20fa-users-slash\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>لا\x20يوجد\x20طلاب\x20مسجلين\x20حالياً</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','الحصة\x202','جاري\x20فتح\x20محادثة\x20الواتساب\x20لولي\x20أمر:\x20','feesChart','/records/','btn-success',')\x20مسجل\x20بالفعل\x20للطالب:\x20(','\x20fee-main-icon','btn-table-action\x20btn-quick-attend-action\x20','يرجى\x20فتح\x20نافذة\x20السيرفر\x20وتأكيد\x20الاتصال\x20بكود\x20QR','شهر\x203','connect',')\x20للحافظة!\x20فقط\x20اضغط\x20(Ctrl\x20+\x20V)\x20داخل\x20شات\x20الواتساب\x20للصقها\x20فوراً.','تم\x20تفعيل\x20خدمة\x20','wa-auth-btn-confirm','يرجى\x20إدخال\x20كلمة\x20المرور\x20الصحيحة\x20لفتح\x20الإعدادات.','btn-export-excel','getMonth','غير\x20محدد','٠١٢٣٤٥٦٧٨٩','خروج','style','pulse-highlight-row','<i\x20class=\x22fa-solid\x20fa-pen-to-square\x22></i>\x20تعديل','profile-month-select','DOMContentLoaded','records','attendanceChart','absent','حصة\x20','grade-input-','dashboard','حدث\x20خطأ\x20أثناء\x20إنشاء\x20ملف\x20الإكسيل.','لم\x20يتم\x20السداد\x20حتى\x20الآن','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22session-status-badge\x20','>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20',')\x20بنجاح','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','stringify','dblclick','%\x20من\x20الإجمالي\x20(حصة\x20','\x22\x20data-session=\x22','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20','.student-main-row[data-id=\x22','الحصة\x207','split','status','<strong>رقم\x20الهاتف:</strong>\x20','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22top-student-details\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22detail-id\x22><i\x20class=\x22fa-solid\x20fa-id-card\x22></i>\x20','تم\x20تصدير\x20','radio-provider-local','.info/connected','callmebot','تحديث\x20الحضور','#1e293b','الطالب\x20يتابع\x20دروسه\x20بانتظام\x20واجتهاد.','2249723fTlRgV','اختبار\x207','تم\x20التعديل\x20بنجاح\x20🟢','\x20تحت\x20إشراف\x20مستر\x20هيثم.','اختبار\x208',')\x22>حفظ</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','writeFile','phone','الحصة\x201','write','لم\x20يتم\x20الدفع','keydown','subject','تم\x20تسجيل\x20الحصة\x20','fee-status-badge\x20','toBlob','paidAmount','submit','[اسم\x20الطالب]','student-list-section','timestamp','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','target','image/png','شهر\x208','remove','guardian-phone','top-student-item','.fee-main-icon','شهر\x204','جاري\x20إرسال\x20الرسائل\x20في\x20الخلفية\x20لـ\x20','.custom-select-wrapper','تم\x20تصدير\x20الإكسيل\x20📊🟢','btn-clear','\x22\x20min=\x220\x22\x20max=\x22100\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22session-actions\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','filter','center','toFixed','\x0a\x20\x20\x20\x20\x20\x20\x20\x20','جاري\x20فتح\x20محادثات\x20الواتساب\x20لـ\x20','خطأ\x20في\x20الاتصال','ngrok','تم\x20العثور\x20على\x20المعلم:\x20','btn-save-payment','266808sCowzm','تعبئة\x20CallMeBot\x20⚡','تم\x20نسخ\x20صورة\x20التقرير\x20📋🖼️','no-cors','GET','\x20<span\x20class=\x22fee-date-tag\x22>(بتاريخ\x20','classList','اسم\x20المستخدم\x20أو\x20كلمة\x20المرور\x20غير\x20صحيحة\x20🔴','</strong></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><span\x20class=\x22student-name-title\x22>','خطأ','تم\x20عرض\x20البيانات\x20الأساسية\x20للطالب:\x20','start',')\x0a\x0aتحت\x20إشراف\x20مستر\x20هيثم\x20فؤاد','البحث\x20عن\x20الرقم:\x20','translateX(-120%)','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-table-action\x20btn-whatsapp-action\x22\x20title=\x22إرسال\x20إشعار\x20غياب\x20عبر\x20الواتساب\x20لولي\x20الأمر\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-brands\x20fa-whatsapp\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-toggle-subrow\x20','/messages/chat','warn','custom-btn\x20btn-modal-confirm\x20primary','wa-token','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','map','Enter','rank-other','حدث\x20فشل\x20أثناء\x20التحقق\x20من\x20المعلم\x20في\x20قاعدة\x20البيانات','شهر\x201','تنبيه','report-student-grade','block','teacher-form-section','stopPropagation','card-provider-whatsauto','fa-chevron-up','هل\x20أنت\x20متأكد\x20من\x20رغبتك\x20في\x20حذف\x20الطالب\x20','<i\x20class=\x22fa-solid\x20fa-circle-xmark\x20toast-icon\x22></i>','غير\x20متصل\x20بقاعدة\x20البيانات','حضور','إلغاء\x20دفع\x20المصروفات','AudioContext','now','يرجى\x20اختيار\x20طالب\x20أولاً','teachers-list-body','يجب\x20أن\x20يتكون\x20رقم\x20هاتف\x20ولي\x20الأمر\x20من\x2011\x20رقماً\x20بالضبط\x20(مثال:\x2001012345678)','rgba(255,\x20255,\x20255,\x200.05)','معلم\x20جديد','فشل\x20التعديل','يرجى\x20إدخال\x20الرقم\x20الأكاديمي\x20للمعلم\x20للبحث\x20عنه','click','يرجى\x20إدخال\x20درجة\x20صحيحة','find','defaultValue','custom-btn\x20btn-modal-confirm\x20warning','text','9YBiSNC','\x20بنجاح\x20برقم\x20أكاديمي:\x20','students-list-body','profile-student-phone','ultramsg.com','تأكيد\x20دفع\x20مصروفات\x20شهر\x20','تم\x20إزالة\x20الدرجة','application/x-www-form-urlencoded','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22detail-grade\x22><i\x20class=\x22fa-solid\x20fa-school\x22></i>\x20','login-form','splice','kpi-paid-count-text','تم\x20إضافة\x20الطالب\x20','\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','sent','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20colspan=\x224\x22\x20class=\x22attendance-subrow-cell\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22attendance-card-inline\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22sessions-8-grid\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','ClipboardItem','status-dot\x20online','inline-flex','\x20تم\x20الدفع\x20/\x20','/sendMessage/','/attended','student-form-section','setAttribute','تم\x20دفع\x20المصروفات','تم\x20جلب\x20البيانات\x20🟢','option','label','.student-attendance-subrow[data-id=\x22','confirm-modal-message','scanned_code','كشف_بيانات_الطلاب_','حفظ\x20الدرجة','#card-msg-absent\x20.msg-preview-text','button','confirm-modal-close','update','?text=','localhost','#06b6d4','wa-modal-overlay','btn-warning','primary','toDataURL','رقم\x20هاتف\x20ولي\x20الأمر\x20غير\x20صالح\x20⚠️','students','<i\x20class=\x22fa-solid\x20fa-floppy-disk\x22></i>\x20حفظ\x20التعديل','wa-auth-error-msg','startsWith','تم\x20فتح\x20إعدادات\x20ربط\x20الواتساب.','تم\x20إرسال\x20إشعار\x20الغياب\x20بنجاح\x20عبر\x20الواتساب\x20للطالب:\x20','custom-modal-icon-box\x20danger','تم\x20الإرسال\x20التلقائي\x20🟢','slice','wa-auth-password','removeEventListener','btn-manual-search','5629416awEJuU','يجب\x20أن\x20يتكون\x20رقم\x20هاتف\x20الطالب\x20من\x2011\x20رقماً\x20بالضبط\x20(مثال:\x2001012345678)','database','تم\x20اختيار\x20الإرسال\x20عبر\x20المتصفح\x20العادي\x20(WhatsApp\x20Web\x20المباشر)\x20بدون\x20الحاجة\x20لأي\x20سيرفر.','report-summary-bar\x20green','report-summary-bar\x20orange','شهر\x2012','رقم\x20هاتف\x20الطالب\x20غير\x20صالح\x20⚠️','paymentDate','تم\x20خروجك\x20من\x20نظام\x20الأكاديمية\x20بنجاح.','kpi-paid-students-rate','Audio\x20beep\x20error:','غائب','realsystem-12c37','تم\x20تسجيل\x20الخروج\x20🔒','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-session-save\x22\x20onclick=\x22saveSessionGrade(','وضع\x20التعديل\x20مفعل','شهر\x207','الرقم\x20الأكاديمي\x20مكرر\x20⚠️','whatsauto','stop','جميع\x20الحصص\x20الـ\x208\x20مسجلة\x20كحضور\x20بالفعل\x20لهذا\x20الشهر!','تم\x20الدفع\x20(','encode','frequency','G-3DEK0Y1KPY','rank-3','btn-test-wa-config','/sessions/','/messages/image','setItem','fa-circle-xmark','student-profile-section','0000','<strong>السجل\x20المالي:</strong>\x20لم\x20يتم\x20سداد\x20المصروفات\x20لـ\x20(','sessionPassword','stat-total-students','login-username','تم\x20حضور\x20(حصة\x20','شهر\x205','avgScore','report-student-name','report-month-subject','confirm-modal-icon-box','callmebot.com','attended','يرجى\x20ملء\x20جميع\x20الحقول\x20المطلوبة\x20لحفظ\x20الطالب','wa_instance_id','filter-grade-select','#94a3b8','querySelector','%\x20من\x20إجمالي\x20الطلاب','#card-msg-paid\x20.msg-preview-text','https://api.callmebot.com/whatsapp.php?phone=','book_new','جاري\x20الإرسال\x20التلقائي\x20🟢','\x20للثنائي\x20الأكاديمي\x20','fa-solid\x20fa-chevron-down','الحصة\x208','16602957DQVzzZ','exists','replace','تم\x20تعديل\x20بيانات\x20المعلم\x20','تأكيد\x20الإجراء','هذا\x20الشهر','\x22\x20placeholder=\x22الدرجة\x22\x20value=\x22','match','report-table-body','Escape','image','حذف\x20نهائياً','smooth','!cols','\x20/\x2020</strong>','btn-confirm-wa-bulk-send','1:785083627306:web:0466af9f6a83f82cff5053','لم\x20يدفع','val','wa-instance-id','wa-bulk-modal-overlay','checked','danger','تم\x20تسجيل\x20حضور\x20الطالب:\x20','instanceId','teacher-subject','btn-teacher-edit','isLoggedIn','{student_name}','https://api.callmebot.com/whatsapp.php','يرجى\x20التأكد\x20من\x20ملء\x20جميع\x20الحقول\x20الأساسية','sessions-grid-container','toUpperCase','dash-filter-grade','تم\x20إرسال\x20الرسالة\x20بنجاح\x20لـ\x20ولي\x20أمر:\x20','خطأ\x20أثناء\x20التصدير\x20🔴','اختبار\x201','session-card\x20','dataset','20ucQcAV','الرقم\x20الأكاديمي\x20غير\x20مسجل،\x20يمكنك\x20كتابة\x20بيانات\x20المعلم\x20وإضافته.','هل\x20أنت\x20تأكد\x20من\x20تسجيل\x20الخروج\x20من\x20النظام؟','numeric','SHA-256','value','gradesChart','</strong></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','Tajawal','المتصفح\x20المباشر\x20🌐','options','تم\x20تسجيل\x20الدرجة\x20والحضور','getItem','undefined','student-grade','.exam-grade-input-mini','.btn-toggle-subrow','div','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22grade-input-box\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20class=\x22exam-grade-input-mini\x22\x20data-id=\x22','\x20+\x20امتحان','success','warning','profile-student-grade','شهر\x202','WhatsApp\x20API\x20Error:\x20','saveSessionGrade','مرحباً\x20بك\x20يا\x20مستر\x20','test','الحصة\x205','/send','dispatchEvent','\x20في\x20مادة\x20اللغة\x20العربية','رمز\x20QR\x20جديد\x20ممسوح','يرجى\x20تشغيل\x20ملف\x20(start-whatsapp-server.bat)\x20على\x20جهازك\x20للإرسال\x20التلقائي\x20دون\x20فتح\x20تابات.','تم\x20سداد\x20المصروفات\x20بنجاح\x20(','تم\x20دفع\x20المصروفات\x20لشهر\x20','sessionUsername','اختبار\x203','json','hasOwnProperty','.fee-main-label','is-open','قم\x20باختيار\x20إحدى\x20الرسائل\x20الـ\x204\x20أولاً\x20للإرسال.','radio-provider-whatsauto','\x20غير\x20مدفوع','http://192.168.1.100:8080/send','teacher-academic-id','شهر\x2010','&quot;','has-selected-value','teachers/','apiUrl','sessionPassHash','&text=','http://localhost:3000/send','login-error-msg','toString','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa-solid\x20','AIzaSyDmMZPPD16KgYD2JlgLfB3u1-hplVLcScg','message','filter-fee-select','notes','جاري\x20الاستعلام...','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22score-unit\x22>متوسط\x20الدرجة</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','#card-msg-unpaid\x20.msg-preview-text','الرقم\x20الأكاديمي\x20غير\x20مسجل،\x20يمكنك\x20كتابة\x20بيانات\x20الطالب\x20وإضافته.','destination','.chk-fee-status','يرجى\x20التأكد\x20من\x20اسم\x20المستخدم\x20وكلمة\x20المرور.','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22checkbox\x22\x20class=\x22chk-fee-main\x22\x20data-id=\x22','<i\x20class=\x22fa-solid\x20fa-circle-check\x20toast-icon\x22></i>','add',').\x0a\x0aتحت\x20إشراف\x20مستر\x20هيثم\x20فؤاد','تم\x20الدفع','btn-save','https://wa.me/','haitham','لا\x20يوجد\x20طلاب\x20متاحين\x20لتصديرهم\x20في\x20ملف\x20إكسيل.','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-session-action\x20mark-absent\x22\x20onclick=\x22quickMarkAttendance(','تم\x20الإرسال\x20🟢','json_to_sheet','تم\x20تسجيل\x20الدرجة\x20(','unshift','radio-provider-callmebot','rank-2','#card-msg-attendance\x20.msg-preview-text','instance','الرقم\x20الأكاديمي\x20(','تأكيد\x20دفع\x20المصروفات','passwordHash','local','then','#f8fafc','is-attended','radio-provider-direct','confirm-modal-icon','WhatsApp\x20API\x20Gateway\x20response\x20non-OK:\x20','تم\x20التحقق\x20بنجاح\x20🔓','حضور\x20(حصة\x20','unpaid','info','\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','active-session-select','wa-auth-modal-close','شهر\x2011','innerHTML','http://127.0.0.1:3000/send','toLocaleDateString','adminAuth/password','.chk-fee-main','sessions','endsWith','function','teacher-phone','grade','bottom','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22session-grade-input-group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label>درجة\x20الامتحان:</label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20class=\x22session-grade-input\x22\x20id=\x22grade-input-','fa-solid\x20fa-circle-check','btn-delete','line','flex','@c.us','شهر\x206','ar-EG','975538zHOkyj','wa_provider','btn-teacher-manual-search','<i\x20class=\x22fa-solid\x20fa-circle-info\x20toast-icon\x22></i>','offsetWidth','password','active','custom-modal-icon-box\x20warning','تم\x20فتح\x20بيانات\x20المعلم\x20للتعديل.\x20انقر\x20\x27تعديل\x27\x20للحفظ\x20بعد\x20إجراء\x20التغييرات.','unattended','kpi-paid-rate'];_0x2d10=function(){return _0x35b49a;};return _0x2d10();}window['quickMarkAttendance']=quickMarkAttendance,window[_0x564057(0x25a)]=saveSessionGrade;function setupSelectClearButtons(){const _0x1cb5db=_0x564057,_0xcd203d=document[_0x1cb5db(0x34c)](_0x1cb5db(0x164));_0xcd203d[_0x1cb5db(0x315)](_0x3f8682=>{const _0x54d298=_0x1cb5db,_0x5bc8e5=_0x3f8682[_0x54d298(0x211)]('select'),_0x14c901=_0x3f8682[_0x54d298(0x211)]('.select-icon-box');if(!_0x5bc8e5||!_0x14c901)return;_0x5bc8e5[_0x54d298(0x240)][_0x54d298(0x1a3)]===undefined&&(_0x5bc8e5['dataset'][_0x54d298(0x1a3)]=_0x5bc8e5[_0x54d298(0x246)]||'');const _0x38da9e=()=>{const _0x25bf08=_0x54d298,_0x25c13e=_0x5bc8e5[_0x25bf08(0x240)][_0x25bf08(0x1a3)]!==undefined?_0x5bc8e5[_0x25bf08(0x240)][_0x25bf08(0x1a3)]:'',_0x1a55c5=_0x5bc8e5[_0x25bf08(0x246)],_0x5c889c=_0x1a55c5!==''&&_0x1a55c5!==_0x25c13e;_0x5c889c?_0x3f8682[_0x25bf08(0x177)]['add'](_0x25bf08(0x272)):_0x3f8682[_0x25bf08(0x177)][_0x25bf08(0x15e)](_0x25bf08(0x272));};_0x5bc8e5['addEventListener']('change',_0x38da9e),_0x5bc8e5[_0x54d298(0x37b)](_0x54d298(0x3a4),_0x38da9e),_0x14c901['addEventListener'](_0x54d298(0x1a0),_0x1d9082=>{const _0x58e850=_0x54d298;_0x3f8682[_0x58e850(0x177)][_0x58e850(0x3cf)](_0x58e850(0x272))&&(_0x1d9082[_0x58e850(0x3ba)](),_0x1d9082[_0x58e850(0x18f)](),_0x5bc8e5[_0x58e850(0x246)]=_0x5bc8e5[_0x58e850(0x240)]['defaultValue']!==undefined?_0x5bc8e5[_0x58e850(0x240)]['defaultValue']:'',_0x5bc8e5[_0x58e850(0x25f)](new Event(_0x58e850(0x3a7),{'bubbles':!![]})),_0x5bc8e5[_0x58e850(0x25f)](new Event(_0x58e850(0x3a4),{'bubbles':!![]})),_0x38da9e());}),_0x38da9e();});}function updateAllSelectStates(){const _0x297dd2=_0x564057;document[_0x297dd2(0x34c)]('.custom-select-wrapper\x20select')[_0x297dd2(0x315)](_0x4eafb8=>{const _0x3c04e1=_0x297dd2,_0x52e105=_0x4eafb8[_0x3c04e1(0x3a6)]('.custom-select-wrapper');if(_0x52e105){const _0x100214=_0x4eafb8['dataset'][_0x3c04e1(0x1a3)]!==undefined?_0x4eafb8[_0x3c04e1(0x240)][_0x3c04e1(0x1a3)]:'',_0x36afb9=_0x4eafb8['value'],_0x32e569=_0x36afb9!==''&&_0x36afb9!==_0x100214;_0x32e569?_0x52e105['classList']['add'](_0x3c04e1(0x272)):_0x52e105['classList']['remove'](_0x3c04e1(0x272));}});}function updateAnalyticsDashboard(){const _0xce332b=_0x564057;if(!sectionAnalyticsDashboard||sectionAnalyticsDashboard[_0xce332b(0x177)][_0xce332b(0x3cf)](_0xce332b(0x2f4))){if(activeTab!==_0xce332b(0x3f4))return;}const _0x7c1795=dashFilterGrade?dashFilterGrade['value']:'',_0x158d76=dashFilterMonth?dashFilterMonth[_0xce332b(0x246)]:selectedMonth;let _0x4ca8f0=allStudents;_0x7c1795&&(_0x4ca8f0=allStudents['filter'](_0x1f39e3=>_0x1f39e3[_0xce332b(0x2b3)]===_0x7c1795));const _0x33f784=_0x4ca8f0[_0xce332b(0x36a)],_0x16126c=activeSessionSelect?activeSessionSelect[_0xce332b(0x246)]:'1',_0x1fc3c8=new Date()[_0xce332b(0x2ac)](_0xce332b(0x2bc));let _0x5ebdc7=0x0,_0x280393=0x0;const _0x1c9e15=[0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0],_0x299002=[0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0],_0x4dac13=[0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0];let _0x141586=0x0,_0x1fcff4=0x0,_0x4c9cde=0x0;_0x4ca8f0['forEach'](_0x4eae42=>{const _0x542b14=_0xce332b,_0x4bf320=_0x4eae42['records']&&_0x4eae42['records'][_0x158d76]||{'paid':![],'sessions':{}};_0x4bf320[_0x542b14(0x2fe)]?(_0x141586++,(_0x4bf320[_0x542b14(0x1e7)]===_0x1fc3c8||!_0x4bf320['paymentDate'])&&_0x1fcff4++):_0x4c9cde++;const _0x3d71ac=_0x4bf320['sessions']&&_0x4bf320[_0x542b14(0x2af)][_0x16126c]||{};_0x3d71ac[_0x542b14(0x20c)]===!![]?_0x5ebdc7++:_0x280393++;for(let _0x443092=0x1;_0x443092<=0x8;_0x443092++){const _0x12394a=_0x4bf320['sessions']&&_0x4bf320[_0x542b14(0x2af)][_0x443092]||{};_0x12394a[_0x542b14(0x20c)]===!![]&&_0x1c9e15[_0x443092-0x1]++,_0x12394a[_0x542b14(0x34f)]!==undefined&&_0x12394a[_0x542b14(0x34f)]!==''&&!isNaN(parseFloat(_0x12394a[_0x542b14(0x34f)]))&&(_0x299002[_0x443092-0x1]+=parseFloat(_0x12394a['examGrade']),_0x4dac13[_0x443092-0x1]++);}});const _0x19ac38=_0x33f784>0x0?Math[_0xce332b(0x3c2)](_0x5ebdc7/_0x33f784*0x64):0x0,_0x441a06=_0x33f784>0x0?Math['round'](_0x280393/_0x33f784*0x64):0x0,_0x393728=_0x33f784>0x0?Math[_0xce332b(0x3c2)](_0x141586/_0x33f784*0x64):0x0,_0x10d520=_0x33f784>0x0?Math[_0xce332b(0x3c2)](_0x1fcff4/_0x33f784*0x64):0x0;if(kpiTotalStudents)kpiTotalStudents['textContent']=_0x33f784;if(kpiGradeSubtext)kpiGradeSubtext[_0xce332b(0x2ee)]=_0x7c1795||_0xce332b(0x2f9);if(kpiAttendedToday)kpiAttendedToday[_0xce332b(0x2ee)]=_0x5ebdc7;if(kpiAttendedRate)kpiAttendedRate['textContent']=_0x19ac38+_0xce332b(0x3fd)+_0x16126c+')';if(kpiPaidStudents)kpiPaidStudents[_0xce332b(0x2ee)]=_0x1fcff4;if(kpiPaidStudentsRate)kpiPaidStudentsRate[_0xce332b(0x2ee)]=_0x10d520+_0xce332b(0x212);if(kpiPaidRate)kpiPaidRate[_0xce332b(0x2ee)]=_0x393728+'%';if(kpiPaidCountText)kpiPaidCountText[_0xce332b(0x2ee)]=_0x141586+_0xce332b(0x1b9)+_0x4c9cde+_0xce332b(0x26d);if(typeof Chart==='undefined')return;const _0x2fc869=document[_0xce332b(0x391)](_0xce332b(0x3f0));_0x2fc869&&(attendanceChartInstance&&attendanceChartInstance[_0xce332b(0x324)](),attendanceChartInstance=new Chart(_0x2fc869,{'type':_0xce332b(0x2c9),'data':{'labels':['الحصة\x201',_0xce332b(0x3d6),'الحصة\x203','الحصة\x204',_0xce332b(0x25d),_0xce332b(0x2ce),_0xce332b(0x401),_0xce332b(0x219)],'datasets':[{'label':_0xce332b(0x2e0),'data':_0x1c9e15,'backgroundColor':_0xce332b(0x2e9),'borderColor':_0xce332b(0x1cd),'borderWidth':0x2,'borderRadius':0x8,'hoverBackgroundColor':_0xce332b(0x1cd)}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'labels':{'color':_0xce332b(0x210),'font':{'family':_0xce332b(0x249),'size':0xc}}},'tooltip':{'titleFont':{'family':_0xce332b(0x249)},'bodyFont':{'family':_0xce332b(0x249)}}},'scales':{'x':{'ticks':{'color':_0xce332b(0x210),'font':{'family':'Tajawal'}},'grid':{'color':_0xce332b(0x19c)}},'y':{'beginAtZero':!![],'ticks':{'color':'#94a3b8','precision':0x0,'font':{'family':_0xce332b(0x249)}},'grid':{'color':_0xce332b(0x19c)}}}}}));const _0x4bbe43=document[_0xce332b(0x391)](_0xce332b(0x3d8));_0x4bbe43&&(feesChartInstance&&feesChartInstance[_0xce332b(0x324)](),feesChartInstance=new Chart(_0x4bbe43,{'type':_0xce332b(0x335),'data':{'labels':[_0xce332b(0x1be),'لم\x20يتم\x20الدفع'],'datasets':[{'data':[_0x141586,_0x4c9cde],'backgroundColor':['#10b981',_0xce332b(0x37d)],'borderColor':_0xce332b(0x143),'borderWidth':0x3}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0xce332b(0x2b4),'labels':{'color':_0xce332b(0x29d),'font':{'family':_0xce332b(0x249),'size':0xc}}}},'cutout':'68%'}}));const _0x1e34b1=[];_0x4ca8f0['forEach'](_0x315a2c=>{const _0x279102=_0xce332b,_0x8cc0d7=_0x315a2c['records']&&_0x315a2c[_0x279102(0x3ef)][_0x158d76]||{'sessions':{}},_0x1ec01b=_0x8cc0d7[_0x279102(0x2af)]||{};let _0x160c7a=0x0,_0x2425a3=0x0;for(let _0x3438cf=0x1;_0x3438cf<=0x8;_0x3438cf++){const _0x53e0ae=_0x1ec01b[_0x3438cf];_0x53e0ae&&_0x53e0ae[_0x279102(0x34f)]!==undefined&&_0x53e0ae[_0x279102(0x34f)]!==''&&!isNaN(parseFloat(_0x53e0ae[_0x279102(0x34f)]))&&(_0x160c7a+=parseFloat(_0x53e0ae[_0x279102(0x34f)]),_0x2425a3++);}const _0x350447=_0x2425a3>0x0?parseFloat((_0x160c7a/_0x2425a3)[_0x279102(0x16a)](0x1)):0x0;_0x1e34b1[_0x279102(0x3ac)]({'academicId':_0x315a2c['academicId'],'name':_0x315a2c[_0x279102(0x341)],'grade':_0x315a2c[_0x279102(0x2b3)]||_0x279102(0x3e7),'avgScore':_0x350447,'examCount':_0x2425a3});}),_0x1e34b1[_0xce332b(0x347)]((_0x27645b,_0x431f46)=>{const _0x39e591=_0xce332b;if(_0x431f46[_0x39e591(0x207)]!==_0x27645b[_0x39e591(0x207)])return _0x431f46[_0x39e591(0x207)]-_0x27645b[_0x39e591(0x207)];return _0x431f46[_0x39e591(0x3a5)]-_0x27645b['examCount'];});const _0x64e3dd=_0x1e34b1[_0xce332b(0x1db)](0x0,0x5);if(topStudentsListContainer){topStudentsListContainer[_0xce332b(0x2aa)]='';const _0x5ef5c6=_0x64e3dd[_0xce332b(0x168)](_0x268dc9=>_0x268dc9[_0xce332b(0x3a5)]>0x0||_0x268dc9[_0xce332b(0x207)]>0x0);_0x5ef5c6[_0xce332b(0x36a)]===0x0?topStudentsListContainer[_0xce332b(0x2aa)]=_0xce332b(0x2e7):_0x5ef5c6['forEach']((_0x44c034,_0x4d981c)=>{const _0x278c8a=_0xce332b,_0x10210b=_0x4d981c+0x1;let _0x3c9469=_0x278c8a(0x188),_0x5bd2f8=_0x10210b;if(_0x10210b===0x1)_0x3c9469='rank-1',_0x5bd2f8='<i\x20class=\x22fa-solid\x20fa-crown\x22></i>';else{if(_0x10210b===0x2)_0x3c9469=_0x278c8a(0x295),_0x5bd2f8='2';else _0x10210b===0x3&&(_0x3c9469=_0x278c8a(0x1f9),_0x5bd2f8='3');}const _0x542b08=document['createElement'](_0x278c8a(0x252));_0x542b08[_0x278c8a(0x313)]=_0x278c8a(0x160),_0x542b08[_0x278c8a(0x2aa)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22rank-badge\x20'+_0x3c9469+'\x22>'+_0x5bd2f8+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22top-student-info\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22top-student-name\x22>'+_0x44c034[_0x278c8a(0x341)]+_0x278c8a(0x405)+_0x44c034[_0x278c8a(0x320)]+_0x278c8a(0x1ae)+_0x44c034[_0x278c8a(0x2b3)]+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22top-student-score\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22score-val\x22>'+_0x44c034['avgScore']+_0x278c8a(0x280),topStudentsListContainer[_0x278c8a(0x308)](_0x542b08);});}const _0x432c0d=_0x299002[_0xce332b(0x186)]((_0x9edc80,_0x36e1bf)=>{const _0x469f75=_0x4dac13[_0x36e1bf];return _0x469f75>0x0?parseFloat((_0x9edc80/_0x469f75)['toFixed'](0x1)):0x0;}),_0x2c9633=document[_0xce332b(0x391)](_0xce332b(0x247));_0x2c9633&&(gradesChartInstance&&gradesChartInstance[_0xce332b(0x324)](),gradesChartInstance=new Chart(_0x2c9633,{'type':_0xce332b(0x2b8),'data':{'labels':[_0xce332b(0x23e),'اختبار\x202',_0xce332b(0x266),_0xce332b(0x36c),'اختبار\x205','اختبار\x206',_0xce332b(0x146),_0xce332b(0x149)],'datasets':[{'label':_0xce332b(0x35e),'data':_0x432c0d,'borderColor':_0xce332b(0x2cd),'backgroundColor':'rgba(249,\x20115,\x2022,\x200.15)','borderWidth':0x3,'fill':!![],'tension':0.35,'pointBackgroundColor':'#f97316','pointRadius':0x5}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'labels':{'color':_0xce332b(0x210),'font':{'family':_0xce332b(0x249),'size':0xc}}}},'scales':{'x':{'ticks':{'color':_0xce332b(0x210),'font':{'family':_0xce332b(0x249)}},'grid':{'color':_0xce332b(0x19c)}},'y':{'beginAtZero':!![],'max':0x64,'ticks':{'color':'#94a3b8','font':{'family':_0xce332b(0x249)}},'grid':{'color':_0xce332b(0x19c)}}}}}));}function showConfirmModal({title:_0x4afc74,message:_0x23656a,confirmText:confirmText=_0x564057(0x382),type:type=_0x564057(0x230)}){return new Promise(_0x1bf340=>{const _0x40c4a7=_0x565a,_0x36c99f=document[_0x40c4a7(0x391)](_0x40c4a7(0x2e4)),_0x3485d5=document[_0x40c4a7(0x391)]('confirm-modal-title'),_0x4ead55=document[_0x40c4a7(0x391)](_0x40c4a7(0x1c3)),_0x4d2bf2=document[_0x40c4a7(0x391)]('confirm-modal-btn-confirm'),_0x4149e1=document[_0x40c4a7(0x391)](_0x40c4a7(0x3b0)),_0x41485d=document['getElementById'](_0x40c4a7(0x1c9)),_0x48aeab=document[_0x40c4a7(0x391)]('confirm-modal-btn-confirm-text'),_0x1637a7=document[_0x40c4a7(0x391)](_0x40c4a7(0x20a)),_0x451fad=document[_0x40c4a7(0x391)](_0x40c4a7(0x2a0));if(!_0x36c99f){_0x1bf340(window[_0x40c4a7(0x39c)](_0x23656a));return;}_0x3485d5['textContent']=_0x4afc74||_0x40c4a7(0x21e),_0x4ead55[_0x40c4a7(0x2ee)]=_0x23656a||'',_0x48aeab['textContent']=confirmText;if(type===_0x40c4a7(0x230))_0x1637a7[_0x40c4a7(0x313)]=_0x40c4a7(0x1d9),_0x451fad['className']='fa-solid\x20fa-trash-can',_0x4d2bf2[_0x40c4a7(0x313)]=_0x40c4a7(0x353);else type===_0x40c4a7(0x256)?(_0x1637a7['className']=_0x40c4a7(0x2c4),_0x451fad[_0x40c4a7(0x313)]='fa-solid\x20fa-triangle-exclamation',_0x4d2bf2['className']=_0x40c4a7(0x1a4)):(_0x1637a7[_0x40c4a7(0x313)]='custom-modal-icon-box\x20primary',_0x451fad[_0x40c4a7(0x313)]=_0x40c4a7(0x2b6),_0x4d2bf2[_0x40c4a7(0x313)]=_0x40c4a7(0x183));_0x36c99f['classList'][_0x40c4a7(0x15e)](_0x40c4a7(0x2f4)),requestAnimationFrame(()=>{const _0x2a6e77=_0x40c4a7;_0x36c99f[_0x2a6e77(0x177)][_0x2a6e77(0x288)]('active');});const _0x460670=()=>{const _0x5d3443=_0x40c4a7;_0x36c99f['classList'][_0x5d3443(0x15e)](_0x5d3443(0x2c3)),setTimeout(()=>{const _0x24364f=_0x5d3443;_0x36c99f[_0x24364f(0x177)][_0x24364f(0x288)]('hidden');},0x78),_0x4d2bf2[_0x5d3443(0x1dd)]('click',_0x10a273),_0x4149e1[_0x5d3443(0x1dd)](_0x5d3443(0x1a0),_0x1e7eb3);if(_0x41485d)_0x41485d[_0x5d3443(0x1dd)](_0x5d3443(0x1a0),_0x1e7eb3);_0x36c99f[_0x5d3443(0x1dd)](_0x5d3443(0x1a0),_0x555bf9),document[_0x5d3443(0x1dd)](_0x5d3443(0x150),_0x244166);},_0x10a273=()=>{_0x460670(),_0x1bf340(!![]);},_0x1e7eb3=()=>{_0x460670(),_0x1bf340(![]);},_0x555bf9=_0x268a58=>{const _0x395208=_0x40c4a7;_0x268a58[_0x395208(0x15b)]===_0x36c99f&&_0x1e7eb3();},_0x244166=_0x333f70=>{const _0x311742=_0x40c4a7;if(_0x333f70['key']===_0x311742(0x223))_0x1e7eb3();else _0x333f70[_0x311742(0x358)]===_0x311742(0x187)&&_0x10a273();};_0x4d2bf2[_0x40c4a7(0x37b)]('click',_0x10a273),_0x4149e1['addEventListener']('click',_0x1e7eb3);if(_0x41485d)_0x41485d['addEventListener']('click',_0x1e7eb3);_0x36c99f[_0x40c4a7(0x37b)](_0x40c4a7(0x1a0),_0x555bf9),document[_0x40c4a7(0x37b)](_0x40c4a7(0x150),_0x244166);});}function exportAllDataToExcel(){const _0x41d97b=_0x564057;if(typeof XLSX===_0x41d97b(0x24e)){showToast(_0x41d97b(0x389),'مكتبة\x20تصدير\x20الإكسيل\x20جاري\x20تحميلها،\x20يرجى\x20المحاولة\x20مرة\x20أخرى...','warning');return;}const _0x4c21b0=currentFilteredStudents&&currentFilteredStudents['length']>0x0?currentFilteredStudents:studentsData||[];if(!_0x4c21b0||_0x4c21b0[_0x41d97b(0x36a)]===0x0){showToast('لا\x20توجد\x20بيانات\x20⚠️',_0x41d97b(0x28e),_0x41d97b(0x256));return;}const _0x54224e=getSelectedMonthText(),_0x434bde=[];_0x4c21b0[_0x41d97b(0x315)](_0x523dc4=>{const _0x583df1=_0x41d97b,_0x4b0576=_0x523dc4[_0x583df1(0x3ef)]&&_0x523dc4[_0x583df1(0x3ef)][selectedMonth]||{'paid':![],'paidAmount':0x0,'sessions':{}},_0x583709=_0x4b0576[_0x583df1(0x2af)]||{};let _0x526cd8=0x0;const _0x1e1973=[];for(let _0x3a1331=0x1;_0x3a1331<=0x8;_0x3a1331++){const _0x34c7ad=_0x583709[_0x3a1331]||{};if(_0x34c7ad[_0x583df1(0x20c)])_0x526cd8++;let _0x1834a8=_0x34c7ad[_0x583df1(0x20c)]?_0x583df1(0x195):_0x583df1(0x35f);_0x34c7ad[_0x583df1(0x34f)]&&(_0x1834a8+='\x20(امتحان:\x20'+toEnglishDigits(_0x34c7ad[_0x583df1(0x34f)])+')'),_0x1e1973[_0x583df1(0x3ac)]('ح'+_0x3a1331+':\x20'+_0x1834a8);}const _0x1423b9=_0x4b0576[_0x583df1(0x2fe)]?_0x583df1(0x1f5)+toEnglishDigits(_0x4b0576['paidAmount']||0x64)+_0x583df1(0x3c7):_0x583df1(0x14f);_0x434bde['push']({'الرقم\x20الأكاديمي':toEnglishDigits(_0x523dc4[_0x583df1(0x320)]||''),'اسم\x20الطالب':_0x523dc4[_0x583df1(0x341)]||'','الصف\x20الدراسي':_0x523dc4[_0x583df1(0x2b3)]||'','رقم\x20هاتف\x20الطالب':toEnglishDigits(_0x523dc4['phone']||''),'رقم\x20هاتف\x20ولي\x20الأمر':toEnglishDigits(_0x523dc4[_0x583df1(0x2d5)]||''),'الشهر\x20المالي':_0x54224e,'حالة\x20المصروفات':_0x1423b9,'عدد\x20أيام\x20الحضور':toEnglishDigits(_0x526cd8),'تفاصيل\x20الحصص\x20والاختبارات':_0x1e1973[_0x583df1(0x398)]('\x20|\x20'),'ملاحظات':_0x523dc4[_0x583df1(0x27e)]||''});});try{const _0x33824b=XLSX['utils'][_0x41d97b(0x291)](_0x434bde),_0x175bda=[{'wch':0x10},{'wch':0x1a},{'wch':0x16},{'wch':0x10},{'wch':0x12},{'wch':0xe},{'wch':0x16},{'wch':0x10},{'wch':0x32},{'wch':0x1e}];_0x33824b[_0x41d97b(0x227)]=_0x175bda;const _0x41a9a9=XLSX[_0x41d97b(0x33c)][_0x41d97b(0x215)]();XLSX[_0x41d97b(0x33c)][_0x41d97b(0x352)](_0x41a9a9,_0x33824b,_0x41d97b(0x2d2));const _0x12cf91=_0x41d97b(0x1c5)+_0x54224e[_0x41d97b(0x21c)](/\s+/g,'_')+_0x41d97b(0x2df);XLSX[_0x41d97b(0x14b)](_0x41a9a9,_0x12cf91),showToast(_0x41d97b(0x165),_0x41d97b(0x406)+_0x434bde['length']+_0x41d97b(0x38f),_0x41d97b(0x255));}catch(_0x42a0b5){console['error'](_0x41d97b(0x3cb),_0x42a0b5),showToast(_0x41d97b(0x23d),_0x41d97b(0x3f5),_0x41d97b(0x375));}}function initExportExcelButton(){const _0x207efd=_0x564057,_0xb4328f=document[_0x207efd(0x391)](_0x207efd(0x3e5));_0xb4328f&&_0xb4328f[_0x207efd(0x37b)](_0x207efd(0x1a0),exportAllDataToExcel);}let firebaseAuthCredentials={'username':_0x564057(0x28d),'passwordHash':_0x564057(0x3a2)};function initLoginSystem(){const _0x4c3f08=_0x564057,_0x539532=document['getElementById'](_0x4c3f08(0x396)),_0x3aba02=document[_0x4c3f08(0x391)](_0x4c3f08(0x1af)),_0xde9509=document[_0x4c3f08(0x391)](_0x4c3f08(0x204)),_0x341d44=document[_0x4c3f08(0x391)]('login-password'),_0x18774a=document[_0x4c3f08(0x391)](_0x4c3f08(0x278)),_0x2612e1=document['getElementById'](_0x4c3f08(0x365));if(!_0x539532||!_0x3aba02)return;typeof db!==_0x4c3f08(0x24e)&&db&&db['ref']('adminAuth')['on'](_0x4c3f08(0x246),async _0x328398=>{const _0x337d30=_0x4c3f08;if(_0x328398[_0x337d30(0x21b)]()){const _0x412bd5=_0x328398[_0x337d30(0x22c)]();if(_0x412bd5&&_0x412bd5[_0x337d30(0x3be)]!==undefined&&_0x412bd5[_0x337d30(0x2c2)]!==undefined){const _0x96f365=String(_0x412bd5[_0x337d30(0x3be)])[_0x337d30(0x31e)]();let _0x3e28b3=String(_0x412bd5['password'])['trim'](),_0x4418ec=_0x3e28b3;(_0x3e28b3[_0x337d30(0x36a)]!==0x40||!/^[0-9a-f]+$/i[_0x337d30(0x25c)](_0x3e28b3))&&(_0x4418ec=await hashPassword(_0x3e28b3),db[_0x337d30(0x349)](_0x337d30(0x2ad))[_0x337d30(0x3bf)](_0x4418ec)['catch'](()=>{}));firebaseAuthCredentials={'username':_0x96f365,'passwordHash':_0x4418ec};const _0x5ce548=sessionStorage['getItem'](_0x337d30(0x235))===_0x337d30(0x3c4),_0x18e1f9=sessionStorage[_0x337d30(0x24d)](_0x337d30(0x275)),_0x119f92=sessionStorage[_0x337d30(0x24d)]('sessionUsername');if(_0x5ce548&&(_0x18e1f9!==_0x4418ec||_0x119f92!==_0x96f365)){sessionStorage[_0x337d30(0x323)]('isLoggedIn'),sessionStorage[_0x337d30(0x323)](_0x337d30(0x275)),sessionStorage[_0x337d30(0x323)]('sessionUsername'),sessionStorage[_0x337d30(0x323)](_0x337d30(0x202));if(_0x341d44)_0x341d44[_0x337d30(0x246)]='';_0x539532[_0x337d30(0x3ea)]['display']='flex',_0x539532[_0x337d30(0x3ea)][_0x337d30(0x35c)]='1',_0x18774a&&(_0x18774a[_0x337d30(0x2ee)]='تم\x20تغيير\x20كلمة\x20المرور!\x20يرجى\x20تسجيل\x20الدخول\x20بالبيانات\x20الجديدة\x20🔒',_0x18774a[_0x337d30(0x3ea)][_0x337d30(0x303)]=_0x337d30(0x18d)),showToast(_0x337d30(0x304),_0x337d30(0x31b),_0x337d30(0x256));}}}else{const _0x3319a6=await hashPassword(_0x337d30(0x200));db[_0x337d30(0x349)](_0x337d30(0x334))[_0x337d30(0x3bf)]({'username':_0x337d30(0x28d),'password':_0x3319a6})[_0x337d30(0x3bc)](()=>{});}});const _0x136836=sessionStorage[_0x4c3f08(0x24d)]('isLoggedIn')===_0x4c3f08(0x3c4);_0x136836?_0x539532[_0x4c3f08(0x3ea)][_0x4c3f08(0x303)]='none':_0x539532[_0x4c3f08(0x3ea)]['display']=_0x4c3f08(0x2b9),_0x3aba02[_0x4c3f08(0x37b)](_0x4c3f08(0x156),async _0x5ae5a5=>{const _0x502df9=_0x4c3f08;_0x5ae5a5[_0x502df9(0x3ba)]();const _0x92158e=_0xde9509?_0xde9509[_0x502df9(0x246)]['trim']():'',_0x5d07ea=_0x341d44?_0x341d44[_0x502df9(0x246)][_0x502df9(0x31e)]():'',_0x57502a=String(firebaseAuthCredentials['username']||_0x502df9(0x28d))[_0x502df9(0x31e)](),_0x51bd3a=firebaseAuthCredentials[_0x502df9(0x29a)]||await hashPassword(_0x502df9(0x200)),_0x1d46f2=await hashPassword(_0x5d07ea);if(_0x92158e===_0x57502a&&_0x1d46f2===_0x51bd3a){sessionStorage[_0x502df9(0x1fd)](_0x502df9(0x235),'true'),sessionStorage[_0x502df9(0x1fd)](_0x502df9(0x265),_0x57502a),sessionStorage['setItem']('sessionPassHash',_0x51bd3a),sessionStorage[_0x502df9(0x323)](_0x502df9(0x202));if(_0x18774a)_0x18774a['style']['display']=_0x502df9(0x2db);_0x539532[_0x502df9(0x3ea)][_0x502df9(0x35c)]='0',setTimeout(()=>{const _0x2e8ab6=_0x502df9;_0x539532['style'][_0x2e8ab6(0x303)]=_0x2e8ab6(0x2db),_0x539532[_0x2e8ab6(0x3ea)]['opacity']='1';},0x15e),showToast(_0x502df9(0x35d),_0x502df9(0x25b)+escapeHTML(_0x57502a)+'!',_0x502df9(0x255));}else _0x18774a&&(_0x18774a[_0x502df9(0x2ee)]=_0x502df9(0x178),_0x18774a[_0x502df9(0x3ea)]['display']='block'),showToast('فشل\x20تسجيل\x20الدخول\x20🔴',_0x502df9(0x285),_0x502df9(0x375));}),_0x2612e1&&_0x2612e1[_0x4c3f08(0x37b)](_0x4c3f08(0x1a0),async()=>{const _0x1f271a=_0x4c3f08,_0x39ee2d=await showConfirmModal(_0x1f271a(0x243),_0x1f271a(0x3d1),_0x1f271a(0x3e9),'danger');if(_0x39ee2d){sessionStorage[_0x1f271a(0x323)]('isLoggedIn'),sessionStorage['removeItem'](_0x1f271a(0x275)),sessionStorage[_0x1f271a(0x323)](_0x1f271a(0x265)),sessionStorage[_0x1f271a(0x323)](_0x1f271a(0x202));if(_0x341d44)_0x341d44[_0x1f271a(0x246)]='';_0x539532[_0x1f271a(0x3ea)][_0x1f271a(0x303)]=_0x1f271a(0x2b9),showToast(_0x1f271a(0x1ed),_0x1f271a(0x1e8),_0x1f271a(0x2a5));}});}document['readyState']==='loading'?document[_0x564057(0x37b)](_0x564057(0x3ee),()=>{initExportExcelButton(),initLoginSystem();}):(initExportExcelButton(),initLoginSystem());
+// Web Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDmMZPPD16KgYD2JlgLfB3u1-hplVLcScg",
+    authDomain: "realsystem-12c37.firebaseapp.com",
+    databaseURL: "https://realsystem-12c37-default-rtdb.firebaseio.com",
+    projectId: "realsystem-12c37",
+    storageBucket: "realsystem-12c37.firebasestorage.app",
+    messagingSenderId: "785083627306",
+    appId: "1:785083627306:web:0466af9f6a83f82cff5053",
+    measurementId: "G-3DEK0Y1KPY"
+};
+
+// Initialize Firebase (Compat SDK)
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// State Variables
+let activeTab = "students";
+let allStudents = [];
+let allTeachers = [];
+function getTodayMonthString() {
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, '0');
+    return `${y}-${m}`;
+}
+
+let selectedMonth = getTodayMonthString(); // Default selected month (Current YYYY-MM)
+let selectedStudent = null; // Currently selected student profile
+let activeAttendanceStudentId = null; // Currently searched/selected student for showing attendance subrow
+let lastProcessedScanTime = 0; // Avoid processing old scans on page load
+let currentFilteredStudents = []; // Stores currently filtered table students list
+let currentBulkTargetStudents = []; // Stores current target students for WhatsApp modal
+let selectedWaBulkTemplateKey = null; // Stores selected template key for WhatsApp modal
+
+// Convert any Eastern Arabic digits (٠-٩) to English digits (0-9)
+function toEnglishDigits(str) {
+    if (str === null || str === undefined) return "0";
+    return String(str).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+}
+
+// XSS Sanitization / HTML Escaping Helper
+function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// SHA-256 Password Hashing Helper
+async function hashPassword(password) {
+    if (!password) return '';
+    const msgUint8 = new TextEncoder().encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function getSelectedMonthText() {
+    const el = document.getElementById("filter-month-select");
+    if (el && el.options && el.selectedIndex >= 0) {
+        return el.options[el.selectedIndex].text;
+    }
+    return `شهر ${new Date().getMonth() + 1}`;
+}
+
+function getSelectedSessionText() {
+    const el = document.getElementById("active-session-select");
+    if (el && el.options && el.selectedIndex >= 0) {
+        return el.options[el.selectedIndex].text;
+    }
+    return "الحصة 1";
+}
+
+// Predefined WhatsApp Message Templates Generator
+function getWaBulkTemplates() {
+    const monthText = getSelectedMonthText();     // e.g., "شهر 8"
+    const sessionText = getSelectedSessionText(); // e.g., "الحصة 1"
+
+    return {
+        attendance: `السلام عليكم ورحمة الله وبركاته،\n\nنحيطكم علماً بأنه قد تم بحمد الله حضور الطالب/ـة: {student_name} درس اللغة العربية اليوم (${sessionText}).\n\nتحت إشراف مستر هيثم فؤاد`,
+        absent: `السلام عليكم ورحمة الله وبركاته،\n\nنحيطكم علماً لم يتم حضور الطالب/ـة: {student_name} درس اللغة العربية اليوم (${sessionText}).\n\nتحت إشراف مستر هيثم فؤاد`,
+        paid: `السلام عليكم ورحمة الله وبركاته،\n\nتم بحمد الله سداد مصروفات درس اللغة العربية (${monthText}) للطالب/ـة: {student_name} بنجاح.\n\nتحت إشراف مستر هيثم فؤاد`,
+        unpaid: `السلام عليكم ورحمة الله وبركاته،\n\nتنبيه: يرجى العلم أنه لم يتم سداد مصروفات درس اللغة العربية (${monthText}) حتى الآن للطالب/ـة: {student_name}.\n\nتحت إشراف مستر هيثم فؤاد`,
+        report: `السلام عليكم ورحمة الله وبركاته،\n\n📊 تقرير أداء الطالب/ـة: {student_name}\nدرس اللغة العربية (${monthText})\n\nتحت إشراف مستر هيثم فؤاد`
+    };
+}
+
+// DOM Elements - General
+const tabStudents = document.getElementById("tab-students");
+const tabTeachers = document.getElementById("tab-teachers"); // Acts as Dashboard tab
+
+const sectionStudentForm = document.getElementById("student-form-section");
+const sectionStudentList = document.getElementById("student-list-section");
+const sectionStudentProfile = document.getElementById("student-profile-section");
+
+// DOM Elements - Analytics Dashboard Section
+const sectionAnalyticsDashboard = document.getElementById("dashboard-analytics-section");
+const dashFilterGrade = document.getElementById("dash-filter-grade");
+const dashFilterMonth = document.getElementById("dash-filter-month");
+
+const kpiTotalStudents = document.getElementById("kpi-total-students");
+const kpiGradeSubtext = document.getElementById("kpi-grade-subtext");
+const kpiAttendedToday = document.getElementById("kpi-attended-today");
+const kpiAttendedRate = document.getElementById("kpi-attended-rate");
+const kpiPaidStudents = document.getElementById("kpi-paid-students");
+const kpiPaidStudentsRate = document.getElementById("kpi-paid-students-rate");
+const kpiPaidRate = document.getElementById("kpi-paid-rate");
+const kpiPaidCountText = document.getElementById("kpi-paid-count-text");
+const topStudentsListContainer = document.getElementById("top-students-list");
+
+let attendanceChartInstance = null;
+let feesChartInstance = null;
+let gradesChartInstance = null;
+
+// DOM Elements - Students Tab
+const inputAcademicId = document.getElementById("academic-id");
+const inputName = document.getElementById("student-name");
+const inputGrade = document.getElementById("student-grade");
+const inputPhone = document.getElementById("student-phone");
+const guardianPhone = document.getElementById("guardian-phone");
+const studentNotes = document.getElementById("student-notes");
+const inputSearch = document.getElementById("search-input");
+const filterGradeSelect = document.getElementById("filter-grade-select");
+const filterFeeSelect = document.getElementById("filter-fee-select");
+const filterAttendanceSelect = document.getElementById("filter-attendance-select");
+const btnWhatsAppUnattendedBulk = document.getElementById("btn-whatsapp-unattended-bulk");
+const unattendedCountBadge = document.getElementById("unattended-count-badge");
+const btnOpenWaSettings = document.getElementById("btn-open-wa-settings");
+const waModalOverlay = document.getElementById("wa-modal-overlay");
+const btnCloseWaModal = document.getElementById("btn-close-wa-modal");
+const btnSaveWaConfig = document.getElementById("btn-save-wa-config");
+const btnTestWaConfig = document.getElementById("btn-test-wa-config");
+const inputWaApiUrl = document.getElementById("wa-api-url");
+const inputWaInstanceId = document.getElementById("wa-instance-id");
+const inputWaToken = document.getElementById("wa-token");
+const filterMonthSelect = document.getElementById("filter-month-select");
+const activeSessionSelect = document.getElementById("active-session-select");
+
+const btnSave = document.getElementById("btn-save");
+const btnEdit = document.getElementById("btn-edit");
+const btnDelete = document.getElementById("btn-delete");
+const btnClear = document.getElementById("btn-clear");
+const btnManualSearch = document.getElementById("btn-manual-search");
+
+const studentsListBody = document.getElementById("students-list-body");
+const studentCountText = document.getElementById("student-count");
+
+// DOM Elements - Teachers Tab
+const inputTeacherAcademicId = document.getElementById("teacher-academic-id");
+const inputTeacherName = document.getElementById("teacher-name");
+const inputTeacherSubject = document.getElementById("teacher-subject");
+const inputTeacherPhone = document.getElementById("teacher-phone");
+const inputTeacherNotes = document.getElementById("teacher-notes");
+const inputTeacherSearch = document.getElementById("teacher-search-input");
+
+const btnTeacherSave = document.getElementById("btn-teacher-save");
+const btnTeacherEdit = document.getElementById("btn-teacher-edit");
+const btnTeacherDelete = document.getElementById("btn-teacher-delete");
+const btnTeacherClear = document.getElementById("btn-teacher-clear");
+const btnTeacherManualSearch = document.getElementById("btn-teacher-manual-search");
+
+const teachersListBody = document.getElementById("teachers-list-body");
+const teacherCountText = document.getElementById("teacher-count");
+
+// DOM Elements - Dashboard Stats
+const statTotalStudents = document.getElementById("stat-total-students");
+const statTodayAttendance = document.getElementById("stat-today-attendance");
+const statTotalTeachers = document.getElementById("stat-total-teachers");
+
+// DOM Elements - Student Profile Section
+const profileStudentName = document.getElementById("profile-student-name");
+const profileStudentId = document.getElementById("profile-student-id");
+const profileStudentGrade = document.getElementById("profile-student-grade");
+const profileStudentPhone = document.getElementById("profile-student-phone");
+const profileMonthSelect = document.getElementById("profile-month-select");
+const paymentPaidCheckbox = document.getElementById("payment-paid-checkbox");
+const paymentStatusLabel = document.getElementById("payment-status-label");
+const paymentAmountInput = document.getElementById("payment-amount");
+const btnSavePayment = document.getElementById("btn-save-payment");
+const btnQuickAttend = document.getElementById("btn-quick-attend");
+const sessionsGridContainer = document.getElementById("sessions-grid-container");
+
+// Initialize Setup
+document.addEventListener("DOMContentLoaded", () => {
+    // Set scanner listening baseline timestamp to prevent loading old values
+    lastProcessedScanTime = Date.now();
+    
+    // Set Month Selector default to Current Month if option exists
+    if (filterMonthSelect) {
+        let found = false;
+        for (let i = 0; i < filterMonthSelect.options.length; i++) {
+            if (filterMonthSelect.options[i].value === selectedMonth) {
+                filterMonthSelect.selectedIndex = i;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            const opt = document.createElement('option');
+            opt.value = selectedMonth;
+            opt.textContent = `شهر ${new Date().getMonth() + 1}`;
+            filterMonthSelect.appendChild(opt);
+            filterMonthSelect.value = selectedMonth;
+        }
+    }
+
+    if (dashFilterMonth) {
+        dashFilterMonth.value = selectedMonth;
+        dashFilterMonth.addEventListener("change", updateAnalyticsDashboard);
+    }
+    if (dashFilterGrade) {
+        dashFilterGrade.addEventListener("change", updateAnalyticsDashboard);
+    }
+
+    setupFirebaseListeners();
+    setupEventHandlers();
+    setupTabs();
+    setupProfileEvents();
+    setupSelectClearButtons();
+    setupWhatsAppBulkModal();
+    updateWaBulkButtonVisibility();
+});
+
+// Setup Real-time Listeners
+function setupFirebaseListeners() {
+    // 1. Connection Status Monitor
+    const connectedRef = db.ref(".info/connected");
+    connectedRef.on("value", (snapshot) => {
+        const dot = document.getElementById("status-dot");
+        const text = document.getElementById("status-text");
+        if (snapshot.val() === true) {
+            dot.className = "status-dot online";
+            text.textContent = "متصل بقاعدة البيانات";
+        } else {
+            dot.className = "status-dot offline";
+            text.textContent = "غير متصل بقاعدة البيانات";
+        }
+    });
+
+// Web Audio Beep Feedback Helper
+function playWebScanBeep() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const audioCtx = new AudioCtx();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(2000, audioCtx.currentTime); // High pitch barcode scanner tone
+        gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+    } catch (e) {
+        console.warn("Audio beep error:", e);
+    }
+}
+
+    // 2. Listen to Scanned Code updates from Android App
+    const scannedCodeRef = db.ref("scanned_code");
+    scannedCodeRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.academicId && data.timestamp) {
+            // Check if this scan is new (scanned after page loaded/last processed)
+            if (data.timestamp > lastProcessedScanTime) {
+                lastProcessedScanTime = data.timestamp;
+                playWebScanBeep();
+                
+                if (activeTab === "students") {
+                    inputAcademicId.value = data.academicId;
+                    
+                    // Visual Pulse animation
+                    inputAcademicId.classList.remove("pulse-highlight");
+                    void inputAcademicId.offsetWidth; // Trigger reflow to restart animation
+                    inputAcademicId.classList.add("pulse-highlight");
+                    
+                    const currentSess = activeSessionSelect ? activeSessionSelect.value : "1";
+                    checkAndLoadStudent(data.academicId);
+                    quickAttendStudentSession(data.academicId, currentSess);
+                } else {
+                    inputTeacherAcademicId.value = data.academicId;
+                    
+                    // Visual Pulse animation
+                    inputTeacherAcademicId.classList.remove("pulse-highlight");
+                    void inputTeacherAcademicId.offsetWidth; // Trigger reflow to restart animation
+                    inputTeacherAcademicId.classList.add("pulse-highlight");
+                    
+                    showToast("رمز QR جديد ممسوح", `الرقم الأكاديمي للمعلم: ${data.academicId}`, "info");
+                    checkAndLoadTeacher(data.academicId);
+                }
+            }
+        }
+    });
+
+    // 3. Listen to student directory records (Real-time List)
+    const studentsRef = db.ref("students");
+    studentsRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+        allStudents = [];
+        
+        if (data) {
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    allStudents.push({
+                        academicId: key,
+                        name: data[key].name,
+                        grade: data[key].grade || "",
+                        phone: data[key].phone || "",
+                        guardianPhone: data[key].guardianPhone || "",
+                        notes: data[key].notes || "",
+                        records: data[key].records || {}
+                    });
+                }
+            }
+        }
+        
+        filterStudentsList();
+        updateDashboardStats();
+        updateAnalyticsDashboard();
+        
+        // Update currently selected student profile details if updated in Firebase
+        if (selectedStudent) {
+            const updated = allStudents.find(s => s.academicId === selectedStudent.academicId);
+            if (updated) {
+                selectedStudent = updated;
+                renderMonthlyRecords();
+            } else {
+                selectedStudent = null;
+                if (sectionStudentProfile) sectionStudentProfile.classList.add("hidden");
+            }
+        }
+    });
+
+    // 4. Listen to teacher directory records
+    const teachersRef = db.ref("teachers");
+    teachersRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+        allTeachers = [];
+        
+        if (data) {
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    allTeachers.push({
+                        academicId: key,
+                        name: data[key].name,
+                        subject: data[key].subject || "",
+                        phone: data[key].phone || "",
+                        notes: data[key].notes || ""
+                    });
+                }
+            }
+        }
+        
+        if (teachersListBody) renderTeachersList(allTeachers);
+        updateDashboardStats();
+    });
+}
+
+// Setup Form Elements Action Events
+function setupEventHandlers() {
+    // Students Events
+    btnSave.addEventListener("click", saveStudent);
+    btnEdit.addEventListener("click", editStudent);
+    btnDelete.addEventListener("click", deleteStudent);
+    btnClear.addEventListener("click", clearForm);
+    btnManualSearch.addEventListener("click", () => checkAndLoadStudent(inputAcademicId.value.trim()));
+
+    // Live input sanitization for phone numbers (only numbers 0-9, max 11 digits)
+    [inputPhone, guardianPhone, inputTeacherPhone].forEach(inputEl => {
+        if (inputEl) {
+            inputEl.addEventListener("input", (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 11);
+            });
+        }
+    });
+
+    inputAcademicId.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            checkAndLoadStudent(inputAcademicId.value.trim());
+        }
+    });
+    inputSearch.addEventListener("input", () => {
+        activeAttendanceStudentId = null;
+        filterStudentsList();
+    });
+    if (filterGradeSelect) {
+        filterGradeSelect.addEventListener("change", () => {
+            activeAttendanceStudentId = null;
+            filterStudentsList();
+        });
+    }
+    if (filterFeeSelect) {
+        filterFeeSelect.addEventListener("change", () => {
+            activeAttendanceStudentId = null;
+            filterStudentsList();
+        });
+    }
+    if (filterAttendanceSelect) {
+        filterAttendanceSelect.addEventListener("change", () => {
+            activeAttendanceStudentId = null;
+            filterStudentsList();
+        });
+    }
+    if (btnWhatsAppUnattendedBulk) {
+        btnWhatsAppUnattendedBulk.addEventListener("click", () => {
+            if (!currentFilteredStudents || currentFilteredStudents.length === 0) {
+                showToast("الكشف فارغ ⚠️", "لا يوجد طلاب ظاهرين في الجدول حالياً لإرسال الرسائل لهم.", "info");
+                return;
+            }
+            openWhatsAppBulkModal();
+        });
+    }
+
+    const waAuthModalOverlay = document.getElementById("wa-auth-modal-overlay");
+    const waAuthModalClose = document.getElementById("wa-auth-modal-close");
+    const waAuthBtnCancel = document.getElementById("wa-auth-btn-cancel");
+    const waAuthBtnConfirm = document.getElementById("wa-auth-btn-confirm");
+    const waAuthPasswordInput = document.getElementById("wa-auth-password");
+    const waAuthErrorMsg = document.getElementById("wa-auth-error-msg");
+
+    function openWhatsAppSettingsModal() {
+        const config = getWhatsAppConfig();
+        if (inputWaApiUrl) inputWaApiUrl.value = config.apiUrl;
+        if (inputWaInstanceId) inputWaInstanceId.value = config.instanceId;
+        if (inputWaToken) inputWaToken.value = config.token;
+
+        const currentProv = config.provider || "direct";
+        const radioLoc = document.getElementById("radio-provider-local");
+        const radioUlt = document.getElementById("radio-provider-ultramsg");
+        const radioCall = document.getElementById("radio-provider-callmebot");
+        const radioWhats = document.getElementById("radio-provider-whatsauto");
+        const radioDirect = document.getElementById("radio-provider-direct");
+        const cardLoc = document.getElementById("card-provider-local");
+        const cardUlt = document.getElementById("card-provider-ultramsg");
+        const cardCall = document.getElementById("card-provider-callmebot");
+        const cardWhats = document.getElementById("card-provider-whatsauto");
+        const cardDirect = document.getElementById("card-provider-direct");
+
+        [cardLoc, cardUlt, cardCall, cardWhats, cardDirect].forEach(c => c && c.classList.remove("active"));
+
+        if (currentProv === "ultramsg") {
+            if (radioUlt) radioUlt.checked = true;
+            if (cardUlt) cardUlt.classList.add("active");
+        } else if (currentProv === "whatsauto") {
+            if (radioWhats) radioWhats.checked = true;
+            if (cardWhats) cardWhats.classList.add("active");
+        } else if (currentProv === "callmebot") {
+            if (radioCall) radioCall.checked = true;
+            if (cardCall) cardCall.classList.add("active");
+        } else if (currentProv === "local") {
+            if (radioLoc) radioLoc.checked = true;
+            if (cardLoc) cardLoc.classList.add("active");
+        } else {
+            if (radioDirect) radioDirect.checked = true;
+            if (cardDirect) cardDirect.classList.add("active");
+        }
+
+        if (waModalOverlay) waModalOverlay.classList.remove("hidden");
+    }
+
+    function closeWaAuthModal() {
+        if (waAuthModalOverlay) {
+            waAuthModalOverlay.classList.remove("active");
+            setTimeout(() => waAuthModalOverlay.classList.add("hidden"), 120);
+        }
+        if (waAuthPasswordInput) waAuthPasswordInput.value = "";
+        if (waAuthErrorMsg) waAuthErrorMsg.style.display = "none";
+    }
+
+    async function verifyWaAuthPassword() {
+        const enteredPass = waAuthPasswordInput ? waAuthPasswordInput.value.trim() : "";
+        const validPassHash = firebaseAuthCredentials.passwordHash || await hashPassword("0000");
+        const enteredHash = await hashPassword(enteredPass);
+
+        if (enteredPass === "0000" || enteredHash === validPassHash) {
+            closeWaAuthModal();
+            openWhatsAppSettingsModal();
+            showToast("تم التحقق بنجاح 🔓", "تم فتح إعدادات ربط الواتساب.", "success");
+        } else {
+            if (waAuthErrorMsg) waAuthErrorMsg.style.display = "block";
+            if (waAuthPasswordInput) {
+                waAuthPasswordInput.classList.add("pulse-highlight");
+                setTimeout(() => waAuthPasswordInput.classList.remove("pulse-highlight"), 1000);
+                waAuthPasswordInput.focus();
+                waAuthPasswordInput.select();
+            }
+            showToast("كلمة المرور غير صحيحة 🔴", "يرجى إدخال كلمة المرور الصحيحة لفتح الإعدادات.", "error");
+        }
+    }
+
+    if (btnOpenWaSettings) {
+        btnOpenWaSettings.addEventListener("click", () => {
+            if (waAuthModalOverlay) {
+                if (waAuthPasswordInput) waAuthPasswordInput.value = "";
+                if (waAuthErrorMsg) waAuthErrorMsg.style.display = "none";
+                waAuthModalOverlay.classList.remove("hidden");
+                requestAnimationFrame(() => {
+                    waAuthModalOverlay.classList.add("active");
+                    if (waAuthPasswordInput) waAuthPasswordInput.focus();
+                });
+            } else {
+                openWhatsAppSettingsModal();
+            }
+        });
+    }
+
+    if (waAuthModalClose) waAuthModalClose.addEventListener("click", closeWaAuthModal);
+    if (waAuthBtnCancel) waAuthBtnCancel.addEventListener("click", closeWaAuthModal);
+    if (waAuthBtnConfirm) waAuthBtnConfirm.addEventListener("click", verifyWaAuthPassword);
+    if (waAuthPasswordInput) {
+        waAuthPasswordInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                verifyWaAuthPassword();
+            } else if (e.key === "Escape") {
+                closeWaAuthModal();
+            }
+        });
+    }
+    if (waAuthModalOverlay) {
+        waAuthModalOverlay.addEventListener("click", (e) => {
+            if (e.target === waAuthModalOverlay) closeWaAuthModal();
+        });
+    }
+
+    const cardLoc = document.getElementById("card-provider-local");
+    const cardUlt = document.getElementById("card-provider-ultramsg");
+    const cardCall = document.getElementById("card-provider-callmebot");
+    const cardWhats = document.getElementById("card-provider-whatsauto");
+    const cardDirect = document.getElementById("card-provider-direct");
+    const radioLoc = document.getElementById("radio-provider-local");
+    const radioUlt = document.getElementById("radio-provider-ultramsg");
+    const radioCall = document.getElementById("radio-provider-callmebot");
+    const radioWhats = document.getElementById("radio-provider-whatsauto");
+    const radioDirect = document.getElementById("radio-provider-direct");
+
+    if (cardLoc) {
+        cardLoc.addEventListener("click", () => {
+            if (radioLoc) radioLoc.checked = true;
+            [cardLoc, cardUlt, cardCall, cardWhats, cardDirect].forEach(c => c && c.classList.remove("active"));
+            cardLoc.classList.add("active");
+            if (inputWaApiUrl) inputWaApiUrl.value = "http://localhost:3000/send";
+            if (inputWaInstanceId) inputWaInstanceId.value = "";
+            if (inputWaToken) inputWaToken.value = "";
+        });
+    }
+
+    if (cardUlt) {
+        cardUlt.addEventListener("click", () => {
+            if (radioUlt) radioUlt.checked = true;
+            [cardLoc, cardUlt, cardCall, cardWhats, cardDirect].forEach(c => c && c.classList.remove("active"));
+            cardUlt.classList.add("active");
+            if (inputWaApiUrl) inputWaApiUrl.value = "https://api.ultramsg.com/instance188259/messages/chat";
+            if (inputWaInstanceId) inputWaInstanceId.value = "instance188259";
+            if (inputWaToken) inputWaToken.value = "0o0d69ndrg6kjver";
+        });
+    }
+
+    if (cardWhats) {
+        cardWhats.addEventListener("click", () => {
+            if (radioWhats) radioWhats.checked = true;
+            [cardLoc, cardUlt, cardCall, cardWhats, cardDirect].forEach(c => c && c.classList.remove("active"));
+            cardWhats.classList.add("active");
+            if (inputWaApiUrl) inputWaApiUrl.value = "http://192.168.1.100:8080/send";
+            if (inputWaInstanceId) inputWaInstanceId.value = "";
+            if (inputWaToken) inputWaToken.value = "";
+        });
+    }
+
+    if (cardCall) {
+        cardCall.addEventListener("click", () => {
+            if (radioCall) radioCall.checked = true;
+            [cardLoc, cardUlt, cardCall, cardWhats, cardDirect].forEach(c => c && c.classList.remove("active"));
+            cardCall.classList.add("active");
+            if (inputWaApiUrl) inputWaApiUrl.value = "https://api.callmebot.com/whatsapp.php";
+            if (inputWaInstanceId) inputWaInstanceId.value = "";
+            if (inputWaToken) inputWaToken.value = "";
+        });
+    }
+
+    if (cardDirect) {
+        cardDirect.addEventListener("click", () => {
+            if (radioDirect) radioDirect.checked = true;
+            [cardLoc, cardUlt, cardCall, cardWhats, cardDirect].forEach(c => c && c.classList.remove("active"));
+            cardDirect.classList.add("active");
+            if (inputWaApiUrl) inputWaApiUrl.value = "";
+            if (inputWaInstanceId) inputWaInstanceId.value = "";
+            if (inputWaToken) inputWaToken.value = "";
+            showToast("المتصفح المباشر 🌐", "تم اختيار الإرسال عبر المتصفح العادي (WhatsApp Web المباشر) بدون الحاجة لأي سيرفر.", "info");
+        });
+    }
+
+    if (btnCloseWaModal) {
+        btnCloseWaModal.addEventListener("click", () => {
+            if (waModalOverlay) waModalOverlay.classList.add("hidden");
+        });
+    }
+
+    if (btnSaveWaConfig) {
+        btnSaveWaConfig.addEventListener("click", () => {
+            let selectedProv = "direct";
+            if (radioLoc && radioLoc.checked) selectedProv = "local";
+            else if (radioUlt && radioUlt.checked) selectedProv = "ultramsg";
+            else if (radioWhats && radioWhats.checked) selectedProv = "whatsauto";
+            else if (radioCall && radioCall.checked) selectedProv = "callmebot";
+            else if (radioDirect && radioDirect.checked) selectedProv = "direct";
+
+            const url = inputWaApiUrl ? inputWaApiUrl.value : "";
+            const inst = inputWaInstanceId ? inputWaInstanceId.value : "";
+            const tok = inputWaToken ? inputWaToken.value : "";
+            saveWhatsAppConfig(selectedProv, url, inst, tok);
+            showToast("تم الحفظ بنجاح 🟢", `تم تفعيل خدمة ${selectedProv.toUpperCase()} بنجاح.`, "success");
+            if (waModalOverlay) waModalOverlay.classList.add("hidden");
+        });
+    }
+
+    if (btnTestWaConfig) {
+        btnTestWaConfig.addEventListener("click", () => {
+            const testStudent = { name: "طالب تجريبي", guardianPhone: "01000000000" };
+            sendWhatsAppAbsentNotice(testStudent, "1");
+        });
+    }
+
+    const btnPresetCallmebot = document.getElementById("btn-preset-callmebot");
+    if (btnPresetCallmebot) {
+        btnPresetCallmebot.addEventListener("click", () => {
+            if (cardCall) cardCall.click();
+            showToast("تعبئة CallMeBot ⚡", "تم اختيار CallMeBot. قم بكتابة الـ API Key الخاص بك في خانة (كود الأمان) واضغط حفظ.", "info");
+        });
+    }
+    if (filterMonthSelect) {
+        filterMonthSelect.addEventListener("change", (e) => {
+            selectedMonth = e.target.value;
+            filterStudentsList();
+        });
+    }
+    if (activeSessionSelect) {
+        activeSessionSelect.addEventListener("change", () => {
+            filterStudentsList();
+        });
+    }
+
+    // Teachers Events
+    if (btnTeacherSave) btnTeacherSave.addEventListener("click", saveTeacher);
+    if (btnTeacherEdit) btnTeacherEdit.addEventListener("click", editTeacher);
+    if (btnTeacherDelete) btnTeacherDelete.addEventListener("click", deleteTeacher);
+    if (btnTeacherClear) btnTeacherClear.addEventListener("click", clearTeacherForm);
+    if (btnTeacherManualSearch) btnTeacherManualSearch.addEventListener("click", () => {
+        if (inputTeacherAcademicId) checkAndLoadTeacher(inputTeacherAcademicId.value.trim());
+    });
+    if (inputTeacherAcademicId) {
+        inputTeacherAcademicId.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                checkAndLoadTeacher(inputTeacherAcademicId.value.trim());
+            }
+        });
+    }
+    if (inputTeacherSearch) inputTeacherSearch.addEventListener("input", filterTeachersList);
+}
+
+// Setup Navigation Tabs
+function setupTabs() {
+    if (tabStudents) {
+        tabStudents.addEventListener("click", () => {
+            activeTab = "students";
+            tabStudents.classList.add("active");
+            if (tabTeachers) tabTeachers.classList.remove("active");
+            
+            if (sectionStudentForm) sectionStudentForm.classList.remove("hidden");
+            if (sectionStudentList) sectionStudentList.classList.remove("hidden");
+            if (sectionAnalyticsDashboard) sectionAnalyticsDashboard.classList.add("hidden");
+            
+            // Show student profile if one was loaded
+            if (selectedStudent) {
+                if (sectionStudentProfile) sectionStudentProfile.classList.remove("hidden");
+            } else {
+                if (sectionStudentProfile) sectionStudentProfile.classList.add("hidden");
+            }
+        });
+    }
+
+    if (tabTeachers) {
+        tabTeachers.addEventListener("click", () => {
+            activeTab = "dashboard";
+            tabTeachers.classList.add("active");
+            if (tabStudents) tabStudents.classList.remove("active");
+            
+            if (sectionStudentForm) sectionStudentForm.classList.add("hidden");
+            if (sectionStudentList) sectionStudentList.classList.add("hidden");
+            if (sectionStudentProfile) sectionStudentProfile.classList.add("hidden");
+            if (sectionAnalyticsDashboard) sectionAnalyticsDashboard.classList.remove("hidden");
+
+            updateAnalyticsDashboard();
+        });
+    }
+}
+
+// Setup Student Profile Events
+function setupProfileEvents() {
+    if (profileMonthSelect) {
+        profileMonthSelect.addEventListener("change", (e) => {
+            selectedMonth = e.target.value;
+            renderMonthlyRecords();
+        });
+    }
+    
+    if (paymentPaidCheckbox) {
+        paymentPaidCheckbox.addEventListener("change", (e) => {
+            updatePaymentLabel(e.target.checked);
+        });
+    }
+
+    if (btnSavePayment) btnSavePayment.addEventListener("click", saveMonthlyPayment);
+    if (btnQuickAttend) btnQuickAttend.addEventListener("click", quickAttendToday);
+}
+
+// Database Action: Check if Student Exists and Load Details
+// Form ReadOnly Helpers
+function setStudentFormReadOnly(isReadOnly) {
+    inputName.disabled = isReadOnly;
+    inputGrade.disabled = isReadOnly;
+    inputPhone.disabled = isReadOnly;
+    guardianPhone.disabled = isReadOnly;
+    studentNotes.disabled = isReadOnly;
+}
+
+function setTeacherFormReadOnly(isReadOnly) {
+    if (inputTeacherName) inputTeacherName.disabled = isReadOnly;
+    if (inputTeacherSubject) inputTeacherSubject.disabled = isReadOnly;
+    if (inputTeacherPhone) inputTeacherPhone.disabled = isReadOnly;
+    if (inputTeacherNotes) inputTeacherNotes.disabled = isReadOnly;
+}
+
+// Button Helpers
+function triggerSaveButtonGlow() {
+    if (btnSave) {
+        btnSave.disabled = false;
+    }
+}
+
+function removeSaveButtonGlow() {
+    // Glow disabled per user request
+}
+
+// Edit Button Toggle State Helper (Swaps Edit -> Save Modification)
+function setEditButtonState(isEditing) {
+    if (!btnEdit) return;
+    if (isEditing) {
+        btnEdit.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> حفظ التعديل`;
+        btnEdit.classList.remove("btn-warning");
+        btnEdit.classList.add("btn-success");
+    } else {
+        btnEdit.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> تعديل`;
+        btnEdit.classList.remove("btn-success");
+        btnEdit.classList.add("btn-warning");
+    }
+}
+
+// Database Action: Check if Student Exists and Load Details
+async function checkAndLoadStudent(academicId) {
+    if (!academicId) {
+        showToast("تنبيه", "يرجى إدخال الرقم الأكاديمي للبحث عنه", "error");
+        return;
+    }
+    
+    const studentRef = db.ref(`students/${academicId}`);
+    try {
+        const snapshot = await studentRef.get();
+        if (snapshot.exists()) {
+            const student = snapshot.val();
+            student.academicId = academicId;
+            selectedStudent = student;
+            
+            inputAcademicId.value = academicId;
+            inputName.value = student.name || "";
+            inputGrade.value = student.grade || "";
+            inputPhone.value = student.phone || "";
+            guardianPhone.value = student.guardianPhone || "";
+            studentNotes.value = student.notes || "";
+            updateAllSelectStates();
+            
+            // Lock fields until "تعديل" button is explicitly clicked
+            setStudentFormReadOnly(true);
+            setEditButtonState(false);
+            removeSaveButtonGlow();
+
+            // Set buttons state for editing/deleting
+            btnSave.disabled = true;
+            btnEdit.disabled = false;
+            btnDelete.disabled = false;
+            
+            // Set active attendance student ID to move searched student to the top of the table
+            activeAttendanceStudentId = academicId;
+            filterStudentsList();
+
+            // Scroll smoothly to student basic form section
+            if (sectionStudentForm) {
+                sectionStudentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            showToast("تم جلب البيانات 🟢", `تم عرض البيانات الأساسية للطالب: ${student.name}`, "success");
+        } else {
+            // Prepare for new addition - unlock fields
+            inputName.value = "";
+            inputGrade.value = "";
+            inputPhone.value = "";
+            guardianPhone.value = "";
+            studentNotes.value = "";
+            updateAllSelectStates();
+            
+            setStudentFormReadOnly(false);
+
+            btnSave.disabled = false;
+            btnEdit.disabled = true;
+            btnDelete.disabled = true;
+            
+            selectedStudent = null;
+            if (sectionStudentProfile) sectionStudentProfile.classList.add("hidden");
+            
+            showToast("طالب جديد", "الرقم الأكاديمي غير مسجل، يمكنك كتابة بيانات الطالب وإضافته.", "info");
+        }
+    } catch (error) {
+        console.error("Firebase read error: ", error);
+        showToast("خطأ في الاتصال", "حدث فشل أثناء التحقق من الطالب في قاعدة البيانات", "error");
+    }
+}
+
+// Database Action: Save / Create Student
+async function saveStudent() {
+    const id = inputAcademicId.value.trim();
+    const name = inputName.value.trim();
+    const grade = inputGrade.value;
+    const phone = inputPhone.value.trim();
+    const gPhone = guardianPhone.value.trim();
+    const notes = studentNotes.value.trim();
+
+    if (!id || !name || !grade || !phone || !gPhone) {
+        showToast("حقول ناقصة", "يرجى ملء جميع الحقول المطلوبة لحفظ الطالب", "error");
+        return;
+    }
+
+    // If editing existing selected student, save updates directly via editStudent()
+    if (selectedStudent && String(selectedStudent.academicId).trim() === String(id).trim()) {
+        editStudent();
+        return;
+    }
+
+    // Phone Validation: Must be exactly 11 digits
+    const phoneRegex = /^\d{11}$/;
+    if (!phoneRegex.test(phone)) {
+        showToast("رقم هاتف الطالب غير صالح ⚠️", "يجب أن يتكون رقم هاتف الطالب من 11 رقماً بالضبط (مثال: 01012345678)", "error");
+        inputPhone.focus();
+        return;
+    }
+
+    if (!phoneRegex.test(gPhone)) {
+        showToast("رقم هاتف ولي الأمر غير صالح ⚠️", "يجب أن يتكون رقم هاتف ولي الأمر من 11 رقماً بالضبط (مثال: 01012345678)", "error");
+        guardianPhone.focus();
+        return;
+    }
+
+    // Duplicate Academic ID Check 1: Check local array
+    const existingLocal = allStudents.find(s => String(s.academicId).trim() === String(id).trim());
+    if (existingLocal) {
+        showToast("الرقم الأكاديمي مكرر ⚠️", `الرقم الأكاديمي (${id}) مسجل بالفعل للطالب: (${existingLocal.name}). لا يمكن التكرار نهائياً!`, "error");
+        inputAcademicId.focus();
+        return;
+    }
+
+    // Duplicate Academic ID Check 2: Check Firebase DB directly
+    try {
+        const snapshot = await db.ref(`students/${id}`).get();
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            showToast("الرقم الأكاديمي مكرر ⚠️", `الرقم الأكاديمي (${id}) مسجل بالفعل للطالب: (${data.name || id}). لا يمكن التكرار نهائياً!`, "error");
+            inputAcademicId.focus();
+            return;
+        }
+    } catch (error) {
+        console.error("Firebase read error during save: ", error);
+    }
+
+    const studentRef = db.ref(`students/${id}`);
+    studentRef.set({
+        name: name,
+        grade: grade,
+        phone: phone,
+        guardianPhone: gPhone,
+        notes: notes
+    })
+    .then(() => {
+        showToast("تم الحفظ بنجاح 🟢", `تم إضافة الطالب ${name} بنجاح برقم أكاديمي: ${id}`, "success");
+        removeSaveButtonGlow();
+        clearForm();
+    })
+    .catch((error) => {
+        console.error(error);
+        showToast("فشل الحفظ", `خطأ: ${error.message}`, "error");
+    });
+}
+
+// Database Action: Edit / Update Student
+function editStudent() {
+    // If student form is locked, clicking edit unlocks the fields for editing and changes button to "حفظ التعديل"
+    if (inputName.disabled) {
+        setStudentFormReadOnly(false);
+        inputName.focus();
+        setEditButtonState(true);
+        triggerSaveButtonGlow();
+        showToast("وضع التعديل مفعل ✏️", "تم فتح بيانات الطالب للتعديل. قم بإجراء التغييرات ثم اضغط زر 'حفظ التعديل' للحفظ.", "info");
+        return;
+    }
+
+    const id = inputAcademicId.value.trim();
+    const name = inputName.value.trim();
+    const grade = inputGrade.value;
+    const phone = inputPhone.value.trim();
+    const gPhone = guardianPhone.value.trim();
+    const notes = studentNotes.value.trim();
+
+    if (!id || !name || !grade || !phone || !gPhone) {
+        showToast("حقول ناقصة", "يرجى التأكد من ملء جميع الحقول المطلوبة", "error");
+        return;
+    }
+
+    // Phone Validation: Must be exactly 11 digits
+    const phoneRegex = /^\d{11}$/;
+    if (!phoneRegex.test(phone)) {
+        showToast("رقم هاتف الطالب غير صالح ⚠️", "يجب أن يتكون رقم هاتف الطالب من 11 رقماً بالضبط (مثال: 01012345678)", "error");
+        inputPhone.focus();
+        return;
+    }
+
+    if (!phoneRegex.test(gPhone)) {
+        showToast("رقم هاتف ولي الأمر غير صالح ⚠️", "يجب أن يتكون رقم هاتف ولي الأمر من 11 رقماً بالضبط (مثال: 01012345678)", "error");
+        guardianPhone.focus();
+        return;
+    }
+
+    const studentRef = db.ref(`students/${id}`);
+    studentRef.update({
+        name: name,
+        grade: grade,
+        phone: phone,
+        guardianPhone: gPhone,
+        notes: notes
+    })
+    .then(() => {
+        showToast("تم التعديل بنجاح 🟢", `تم تعديل بيانات الطالب ${name} بنجاح.`, "success");
+        setStudentFormReadOnly(true);
+        setEditButtonState(false);
+        removeSaveButtonGlow();
+    })
+    .catch((error) => {
+        console.error(error);
+        showToast("فشل التعديل", `خطأ: ${error.message}`, "error");
+    });
+}
+
+// Database Action: Delete Student
+async function deleteStudent() {
+    const id = inputAcademicId.value.trim();
+    const name = inputName.value.trim();
+
+    if (!id) return;
+
+    const confirmed = await showConfirmModal({
+        title: "حذف طالب نهائياً",
+        message: `هل أنت متأكد من رغبتك في حذف الطالب ${name || id} نهائياً؟`,
+        confirmText: "حذف نهائياً",
+        type: "danger"
+    });
+
+    if (confirmed) {
+        const studentRef = db.ref(`students/${id}`);
+        studentRef.remove()
+        .then(() => {
+            showToast("تم الحذف", `تمت إزالة الطالب ${name || id} من قاعدة البيانات.`, "success");
+            clearForm();
+        })
+        .catch((error) => {
+            console.error(error);
+            showToast("فشل الحذف", `خطأ: ${error.message}`, "error");
+        });
+    }
+}
+
+// Clear Form Input Fields
+function clearForm() {
+    inputAcademicId.value = "";
+    inputName.value = "";
+    inputGrade.value = "";
+    inputPhone.value = "";
+    guardianPhone.value = "";
+    studentNotes.value = "";
+    
+    // Unlock fields for fresh addition
+    setStudentFormReadOnly(false);
+
+    // Reset buttons
+    btnSave.disabled = false;
+    btnEdit.disabled = true;
+    btnDelete.disabled = true;
+    
+    inputAcademicId.classList.remove("pulse-highlight");
+    
+    selectedStudent = null;
+    activeAttendanceStudentId = null;
+    updateAllSelectStates();
+    setEditButtonState(false);
+    removeSaveButtonGlow();
+    filterStudentsList();
+    if (sectionStudentProfile) sectionStudentProfile.classList.add("hidden");
+}
+
+// Database Action: Quick Attend Student Session
+function quickAttendStudentSession(studentId, sessionNum) {
+    if (!studentId) return;
+
+    const sNum = sessionNum || (activeSessionSelect ? activeSessionSelect.value : "1");
+    const todayDate = new Date().toLocaleDateString('ar-EG');
+    const sessionPath = `students/${studentId}/records/${selectedMonth}/sessions/${sNum}`;
+    
+    db.ref(sessionPath).update({
+        attended: true,
+        attendanceDate: todayDate
+    }).then(() => {
+        const student = allStudents.find(s => s.academicId === studentId);
+        if (student) {
+            if (!student.records) student.records = {};
+            if (!student.records[selectedMonth]) student.records[selectedMonth] = { paid: false, sessions: {} };
+            if (!student.records[selectedMonth].sessions) student.records[selectedMonth].sessions = {};
+            if (!student.records[selectedMonth].sessions[sNum]) student.records[selectedMonth].sessions[sNum] = {};
+            
+            student.records[selectedMonth].sessions[sNum].attended = true;
+            student.records[selectedMonth].sessions[sNum].attendanceDate = todayDate;
+        }
+
+        const studentName = student ? student.name : studentId;
+        showToast("تم تسجيل الحضور 🟢", `تم تسجيل حضور الطالب: ${studentName}`, "success");
+        
+        activeAttendanceStudentId = studentId;
+        filterStudentsList();
+
+        setTimeout(() => {
+            const mainRow = document.querySelector(`.student-main-row[data-id="${studentId}"]`);
+            if (mainRow) {
+                mainRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                mainRow.classList.add("pulse-highlight-row");
+                setTimeout(() => mainRow.classList.remove("pulse-highlight-row"), 3000);
+            }
+        }, 100);
+    }).catch(error => {
+        console.error(error);
+        showToast("خطأ", "فشل تسجيل الحضور في قاعدة البيانات", "error");
+    });
+}
+
+function toggleSessionAttendance(studentId, sessionNum, isAttended) {
+    const todayDate = isAttended ? new Date().toLocaleDateString('ar-EG') : "";
+    const sessionRef = db.ref(`students/${studentId}/records/${selectedMonth}/sessions/${sessionNum}`);
+    
+    sessionRef.update({
+        attended: isAttended,
+        attendanceDate: todayDate
+    }).then(() => {
+        updateLocalStudentSession(studentId, sessionNum, { attended: isAttended, attendanceDate: todayDate });
+        filterStudentsList();
+    });
+}
+
+function updateSessionExamGrade(studentId, sessionNum, gradeVal) {
+    const sessionRef = db.ref(`students/${studentId}/records/${selectedMonth}/sessions/${sessionNum}`);
+    const updates = { examGrade: gradeVal };
+    let autoAttended = false;
+
+    if (gradeVal.trim() !== "") {
+        updates.attended = true;
+        updates.attendanceDate = new Date().toLocaleDateString('ar-EG');
+        autoAttended = true;
+    }
+
+    sessionRef.update(updates).then(() => {
+        updateLocalStudentSession(studentId, sessionNum, updates);
+        if (autoAttended) {
+            showToast("تم تسجيل الدرجة والحضور", `تم إدخال الدرجة وتحضير الطالب تلقائياً (الحصة ${sessionNum})`, "success");
+        }
+        filterStudentsList();
+    });
+}
+
+function getArabicMonthName(monthStr) {
+    const monthMap = {
+        "01": "شهر 1",
+        "02": "شهر 2",
+        "03": "شهر 3",
+        "04": "شهر 4",
+        "05": "شهر 5",
+        "06": "شهر 6",
+        "07": "شهر 7",
+        "08": "شهر 8",
+        "09": "شهر 9",
+        "10": "شهر 10",
+        "11": "شهر 11",
+        "12": "شهر 12"
+    };
+
+    if (filterMonthSelect && filterMonthSelect.selectedIndex >= 0) {
+        const optText = filterMonthSelect.options[filterMonthSelect.selectedIndex].textContent.trim();
+        if (optText) return optText;
+    }
+
+    if (monthStr && monthStr.includes('-')) {
+        const m = monthStr.split('-')[1];
+        if (monthMap[m]) return monthMap[m];
+    }
+
+    return "هذا الشهر";
+}
+
+function toggleMonthlyPayment(studentId, isPaid) {
+    const todayDate = isPaid ? new Date().toLocaleDateString('ar-EG') : "";
+    const payRef = db.ref(`students/${studentId}/records/${selectedMonth}`);
+    payRef.update({
+        paid: isPaid,
+        paymentDate: todayDate
+    }).then(() => {
+        const student = allStudents.find(s => s.academicId === studentId);
+        if (student) {
+            if (!student.records) student.records = {};
+            if (!student.records[selectedMonth]) student.records[selectedMonth] = { sessions: {} };
+            student.records[selectedMonth].paid = isPaid;
+            student.records[selectedMonth].paymentDate = todayDate;
+        }
+        const mName = getArabicMonthName(selectedMonth);
+        const dateSuffix = (isPaid && todayDate) ? ` <span class="fee-date-tag">(بتاريخ ${todayDate})</span>` : "";
+        const statusText = isPaid ? `تم دفع مصروفات شهر ${mName}${dateSuffix}` : `لم يتم دفع مصروفات شهر ${mName}`;
+        showToast("تحديث المصروفات", statusText, isPaid ? "success" : "info");
+        
+        // Update Main Row DOM elements in-place
+        const mainTr = document.querySelector(`.student-main-row[data-id="${studentId}"]`);
+        if (mainTr) {
+            const mainChk = mainTr.querySelector(".chk-fee-main");
+            const mainToggle = mainTr.querySelector(".fee-main-toggle");
+            const mainLabel = mainTr.querySelector(".fee-main-label");
+            const mainIcon = mainTr.querySelector(".fee-main-icon");
+
+            if (mainChk) mainChk.checked = isPaid;
+            if (mainToggle) {
+                mainToggle.className = `fee-main-toggle ${isPaid ? 'paid' : 'unpaid'}`;
+                mainToggle.title = isPaid ? `تم دفع المصروفات لشهر ${mName}` : `لم يتم دفع المصروفات لشهر ${mName}`;
+            }
+            if (mainIcon) {
+                mainIcon.className = `fa-solid ${isPaid ? 'fa-circle-check' : 'fa-circle-xmark'} fee-main-icon`;
+            }
+            if (mainLabel) {
+                mainLabel.textContent = isPaid ? 'تم الدفع' : 'لم يدفع';
+            }
+        }
+
+        // Update Subrow DOM elements in-place
+        const subTr = document.querySelector(`.student-attendance-subrow[data-id="${studentId}"]`);
+        if (subTr) {
+            const subChk = subTr.querySelector(".chk-fee-status");
+            if (subChk) subChk.checked = isPaid;
+            const badge = subTr.querySelector(".fee-status-badge");
+            if (badge) {
+                badge.className = `fee-status-badge ${isPaid ? 'paid' : 'unpaid'}`;
+                badge.innerHTML = `<i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-circle-xmark'}"></i> ${statusText}`;
+            }
+        }
+    });
+}
+
+function updateLocalStudentSession(studentId, sessionNum, updates) {
+    const student = allStudents.find(s => s.academicId === studentId);
+    if (!student) return;
+    if (!student.records) student.records = {};
+    if (!student.records[selectedMonth]) student.records[selectedMonth] = { paid: false, sessions: {} };
+    if (!student.records[selectedMonth].sessions) student.records[selectedMonth].sessions = {};
+    if (!student.records[selectedMonth].sessions[sessionNum]) student.records[selectedMonth].sessions[sessionNum] = {};
+    
+    Object.assign(student.records[selectedMonth].sessions[sessionNum], updates);
+}
+
+// Render Table Data for Students
+function renderStudentsList(list) {
+    studentsListBody.innerHTML = "";
+    studentCountText.textContent = list.length;
+
+    if (list.length === 0) {
+        studentsListBody.innerHTML = `
+            <tr class="table-empty-row">
+                <td colspan="4">
+                    <div class="empty-state-container">
+                        <i class="fa-solid fa-users-slash"></i>
+                        <span>لا يوجد طلاب مسجلين حالياً</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    const currentActiveSess = activeSessionSelect ? activeSessionSelect.value : "1";
+
+    list.forEach(student => {
+        const monthRec = (student.records && student.records[selectedMonth]) || { paid: false, sessions: {} };
+        const isPaid = monthRec.paid || false;
+
+        // Check if student is present for the active session
+        const activeSessData = (monthRec.sessions && monthRec.sessions[currentActiveSess]) || {};
+        const isPresentForActiveSess = activeSessData.attended || false;
+
+        const attendBtnIcon = isPresentForActiveSess ? 'fa-circle-check' : 'fa-user-check';
+        const attendBtnText = isPresentForActiveSess ? `تم حضور (حصة ${currentActiveSess})` : `حضور (حصة ${currentActiveSess})`;
+        const attendBtnClass = `btn-table-action btn-quick-attend-action ${isPresentForActiveSess ? 'attended' : ''}`;
+
+        // Main Student Row
+        const mainTr = document.createElement("tr");
+        mainTr.className = "student-main-row";
+        mainTr.setAttribute("data-id", student.academicId);
+        
+        // Attendance Sub Row (Only visible if this student is selected/searched!)
+        const isSelectedForAttendance = (activeAttendanceStudentId === student.academicId);
+
+        mainTr.innerHTML = `
+            <td><strong>${escapeHTML(student.academicId)}</strong></td>
+            <td><span class="student-name-title">${escapeHTML(student.name)}</span></td>
+            <td>${escapeHTML(student.grade || "غير محدد")}</td>
+            <td class="actions-col">
+                <div class="actions-col-cell">
+                    <label class="fee-main-toggle ${isPaid ? 'paid' : 'unpaid'}" title="تغيير حالة المصروفات لشهر ${getArabicMonthName(selectedMonth)}">
+                        <input type="checkbox" class="chk-fee-main" data-id="${student.academicId}" ${isPaid ? 'checked' : ''}>
+                        <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-circle-xmark'} fee-main-icon"></i>
+                        <span class="fee-main-label">${isPaid ? 'تم الدفع' : 'لم يدفع'}</span>
+                    </label>
+                    <button class="${attendBtnClass}" title="حضور الحصة ${currentActiveSess}">
+                        <i class="fa-solid ${attendBtnIcon}"></i> ${attendBtnText}
+                    </button>
+                    <button class="btn-table-action btn-whatsapp-action" title="إرسال إشعار غياب عبر الواتساب لولي الأمر">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </button>
+                    <button class="btn-toggle-subrow ${isSelectedForAttendance ? 'is-open' : ''}" title="عرض/إخفاء الحضور والمصروفات" data-id="${student.academicId}">
+                        <i class="fa-solid ${isSelectedForAttendance ? 'fa-chevron-up' : 'fa-chevron-down'}"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+
+        const subTr = document.createElement("tr");
+        subTr.className = `student-attendance-subrow ${isSelectedForAttendance ? '' : 'hidden'}`;
+        subTr.setAttribute("data-id", student.academicId);
+
+        let sessionsHtml = "";
+        for (let i = 1; i <= 8; i++) {
+            const sData = (monthRec.sessions && monthRec.sessions[i]) || {};
+            const isAttended = sData.attended || false;
+            const gradeVal = sData.examGrade !== undefined ? sData.examGrade : "";
+            const isActiveTarget = String(i) === String(currentActiveSess);
+
+            sessionsHtml += `
+                <div class="session-box-compact ${isAttended ? 'is-attended' : ''} ${isActiveTarget ? 'is-active-target' : ''}">
+                    <label class="chk-session-label">
+                        <input type="checkbox" class="chk-session-input" data-id="${student.academicId}" data-session="${i}" ${isAttended ? 'checked' : ''}>
+                        <span class="session-num-lbl">حصة ${i}</span>
+                    </label>
+                    <div class="grade-input-box">
+                        <input type="number" class="exam-grade-input-mini" data-id="${student.academicId}" data-session="${i}" placeholder="الدرجة" value="${gradeVal}">
+                    </div>
+                </div>
+            `;
+        }
+
+        const mName = getArabicMonthName(selectedMonth);
+        const pDate = monthRec.paymentDate || "";
+        const dateSuffix = (isPaid && pDate) ? ` <span class="fee-date-tag">(بتاريخ ${pDate})</span>` : "";
+        const feeStatusText = isPaid ? `تم دفع مصروفات شهر ${mName}${dateSuffix}` : `لم يتم دفع مصروفات شهر ${mName}`;
+
+        subTr.innerHTML = `
+            <td colspan="4" class="attendance-subrow-cell">
+                <div class="attendance-card-inline">
+                    <div class="sessions-8-grid">
+                        ${sessionsHtml}
+                    </div>
+                    <div class="attendance-card-footer">
+                        <div class="fee-toggle-box">
+                            <label class="switch-sm">
+                                <input type="checkbox" class="chk-fee-status" data-id="${student.academicId}" ${isPaid ? 'checked' : ''}>
+                                <span class="slider-sm"></span>
+                            </label>
+                            <span class="fee-status-badge ${isPaid ? 'paid' : 'unpaid'}">
+                                <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+                                ${feeStatusText}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        `;
+
+        // Action Events for Main Row Buttons
+        const feeMainChk = mainTr.querySelector(".chk-fee-main");
+        if (feeMainChk) {
+            feeMainChk.addEventListener("change", async (e) => {
+                e.stopPropagation();
+                const sId = e.target.getAttribute("data-id");
+                const isChecking = e.target.checked;
+                const mName = getArabicMonthName(selectedMonth);
+                const actionMsg = isChecking ? `تأكيد دفع مصروفات شهر ${mName}` : `إلغاء دفع مصروفات شهر ${mName}`;
+                
+                const confirmed = await showConfirmModal({
+                    title: isChecking ? "تأكيد دفع المصروفات" : "إلغاء دفع المصروفات",
+                    message: `هل أنت متأكد من ${actionMsg} للطالب: (${student.name})؟`,
+                    confirmText: isChecking ? "تأكيد الدفع" : "تأكيد الإلغاء",
+                    type: isChecking ? "primary" : "warning"
+                });
+
+                if (!confirmed) {
+                    e.target.checked = !isChecking;
+                    return;
+                }
+
+                toggleMonthlyPayment(sId, isChecking);
+            });
+        }
+
+        mainTr.querySelector(".btn-quick-attend-action").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (isPresentForActiveSess) {
+                toggleSessionAttendance(student.academicId, currentActiveSess, false);
+            } else {
+                quickAttendStudentSession(student.academicId, currentActiveSess);
+            }
+        });
+
+        const waBtn = mainTr.querySelector(".btn-whatsapp-action");
+        if (waBtn) {
+            waBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                openWhatsAppBulkModal([student]);
+            });
+        }
+
+        // Event listener for Subrow Toggle Button (Down/Up Chevron Arrow)
+        const toggleBtn = mainTr.querySelector(".btn-toggle-subrow");
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const icon = toggleBtn.querySelector("i");
+                const isHidden = subTr.classList.contains("hidden");
+                
+                if (isHidden) {
+                    subTr.classList.remove("hidden");
+                    toggleBtn.classList.add("is-open");
+                    if (icon) icon.className = "fa-solid fa-chevron-up";
+                    activeAttendanceStudentId = student.academicId;
+                } else {
+                    subTr.classList.add("hidden");
+                    toggleBtn.classList.remove("is-open");
+                    if (icon) icon.className = "fa-solid fa-chevron-down";
+                    if (activeAttendanceStudentId === student.academicId) {
+                        activeAttendanceStudentId = null;
+                    }
+                }
+            });
+        }
+
+        // Double-click listener on student row / name to load data into main basic form
+        mainTr.addEventListener("dblclick", (e) => {
+            if (e.target.closest("button") || e.target.closest("input") || e.target.closest(".fee-main-toggle") || e.target.closest("label")) return;
+            inputAcademicId.value = student.academicId;
+            checkAndLoadStudent(student.academicId);
+        });
+
+        // Event listeners for session checkboxes
+        subTr.querySelectorAll(".chk-session-input").forEach(chk => {
+            chk.addEventListener("change", (e) => {
+                const sId = e.target.getAttribute("data-id");
+                const sNum = e.target.getAttribute("data-session");
+                toggleSessionAttendance(sId, sNum, e.target.checked);
+            });
+        });
+
+        // Event listeners for exam grade inputs (change)
+        subTr.querySelectorAll(".exam-grade-input-mini").forEach(input => {
+            input.addEventListener("change", (e) => {
+                const sId = e.target.getAttribute("data-id");
+                const sNum = e.target.getAttribute("data-session");
+                updateSessionExamGrade(sId, sNum, e.target.value);
+            });
+        });
+
+        // Event listener for monthly fee toggle
+        const feeChk = subTr.querySelector(".chk-fee-status");
+        if (feeChk) {
+            feeChk.addEventListener("change", async (e) => {
+                const sId = e.target.getAttribute("data-id");
+                const isChecking = e.target.checked;
+                const actionMsg = isChecking ? `تأكيد دفع مصروفات شهر ${mName}` : `إلغاء دفع مصروفات شهر ${mName}`;
+                
+                const confirmed = await showConfirmModal({
+                    title: isChecking ? "تأكيد دفع المصروفات" : "إلغاء دفع المصروفات",
+                    message: `هل أنت متأكد من ${actionMsg} للطالب: (${student.name})؟`,
+                    confirmText: isChecking ? "تأكيد الدفع" : "تأكيد الإلغاء",
+                    type: isChecking ? "primary" : "warning"
+                });
+
+                if (!confirmed) {
+                    e.target.checked = !isChecking;
+                    return;
+                }
+
+                toggleMonthlyPayment(sId, isChecking);
+            });
+        }
+
+        studentsListBody.appendChild(mainTr);
+        studentsListBody.appendChild(subTr);
+    });
+}
+
+// Client-side Search and Filter logic for Students
+function filterStudentsList() {
+    const query = inputSearch.value.trim().toLowerCase();
+    const selectedGrade = filterGradeSelect ? filterGradeSelect.value : "";
+    const selectedFeeStatus = filterFeeSelect ? filterFeeSelect.value : "";
+    
+    let filtered = allStudents;
+
+    if (selectedGrade) {
+        filtered = filtered.filter(student => student.grade === selectedGrade);
+    }
+
+    if (selectedFeeStatus) {
+        filtered = filtered.filter(student => {
+            const monthRec = (student.records && student.records[selectedMonth]) || {};
+            const isPaid = monthRec.paid || false;
+            if (selectedFeeStatus === "paid") return isPaid === true;
+            if (selectedFeeStatus === "unpaid") return isPaid === false;
+            return true;
+        });
+    }
+
+    const selectedAttendanceStatus = filterAttendanceSelect ? filterAttendanceSelect.value : "";
+    const currentActiveSess = activeSessionSelect ? activeSessionSelect.value : "1";
+
+    if (selectedAttendanceStatus) {
+        filtered = filtered.filter(student => {
+            const monthRec = (student.records && student.records[selectedMonth]) || {};
+            const activeSessData = (monthRec.sessions && monthRec.sessions[currentActiveSess]) || {};
+            const isPresent = activeSessData.attended === true;
+            if (selectedAttendanceStatus === "attended") return isPresent === true;
+            if (selectedAttendanceStatus === "unattended") return isPresent === false;
+            return true;
+        });
+    }
+
+    if (query) {
+        filtered = filtered.filter(student => {
+            return student.name.toLowerCase().includes(query) ||
+                student.academicId.toLowerCase().includes(query) ||
+                (student.grade && student.grade.toLowerCase().includes(query));
+        });
+    }
+
+    // If a specific student was searched by Academic ID or scanned, bring them to the VERY TOP of the table!
+    if (activeAttendanceStudentId) {
+        const searchedIndex = filtered.findIndex(student => student.academicId === activeAttendanceStudentId);
+        if (searchedIndex > -1) {
+            const [searchedStudent] = filtered.splice(searchedIndex, 1);
+            filtered.unshift(searchedStudent); // Prepend searched student to position #1 (Index 0)
+        } else {
+            const targetStudent = allStudents.find(student => student.academicId === activeAttendanceStudentId);
+            if (targetStudent) {
+                filtered.unshift(targetStudent);
+            }
+        }
+    }
+
+    currentFilteredStudents = filtered;
+
+    if (btnWhatsAppUnattendedBulk && unattendedCountBadge) {
+        unattendedCountBadge.textContent = toEnglishDigits(filtered.length);
+    }
+
+    renderStudentsList(filtered);
+}
+
+// --- TEACHERS CODE ACTIONS ---
+
+// Database Action: Check if Teacher Exists and Load Details
+async function checkAndLoadTeacher(academicId) {
+    if (!academicId || !inputTeacherName) {
+        if (!academicId) showToast("تنبيه", "يرجى إدخال الرقم الأكاديمي للمعلم للبحث عنه", "error");
+        return;
+    }
+    
+    showToast("جاري الاستعلام...", `البحث عن الرقم: ${academicId}`, "info");
+    
+    const teacherRef = db.ref(`teachers/${academicId}`);
+    try {
+        const snapshot = await teacherRef.get();
+        if (snapshot.exists()) {
+            const teacher = snapshot.val();
+            
+            if (inputTeacherName) inputTeacherName.value = teacher.name || "";
+            if (inputTeacherSubject) inputTeacherSubject.value = teacher.subject || "";
+            if (inputTeacherPhone) inputTeacherPhone.value = teacher.phone || "";
+            if (inputTeacherNotes) inputTeacherNotes.value = teacher.notes || "";
+            
+            setTeacherFormReadOnly(true);
+
+            // Set buttons state for editing/deleting
+            if (btnTeacherSave) btnTeacherSave.disabled = true;
+            if (btnTeacherEdit) btnTeacherEdit.disabled = false;
+            if (btnTeacherDelete) btnTeacherDelete.disabled = false;
+            
+            showToast("معلم مسجل", `تم العثور على المعلم: ${teacher.name} (انقر 'تعديل' لفتح البيانات للتعديل)`, "success");
+        } else {
+            // Prepare for new addition
+            if (inputTeacherName) inputTeacherName.value = "";
+            if (inputTeacherSubject) inputTeacherSubject.value = "";
+            if (inputTeacherPhone) inputTeacherPhone.value = "";
+            if (inputTeacherNotes) inputTeacherNotes.value = "";
+            
+            setTeacherFormReadOnly(false);
+
+            if (btnTeacherSave) btnTeacherSave.disabled = false;
+            if (btnTeacherEdit) btnTeacherEdit.disabled = true;
+            if (btnTeacherDelete) btnTeacherDelete.disabled = true;
+            
+            showToast("معلم جديد", "الرقم الأكاديمي غير مسجل، يمكنك كتابة بيانات المعلم وإضافته.", "info");
+        }
+    } catch (error) {
+        console.error("Firebase read error: ", error);
+        showToast("خطأ في الاتصال", "حدث فشل أثناء التحقق من المعلم في قاعدة البيانات", "error");
+    }
+}
+
+// Database Action: Save / Create Teacher
+function saveTeacher() {
+    if (!inputTeacherAcademicId || !inputTeacherName) return;
+    const id = inputTeacherAcademicId.value.trim();
+    const name = inputTeacherName.value.trim();
+    const subject = inputTeacherSubject ? inputTeacherSubject.value.trim() : "";
+    const phone = inputTeacherPhone ? inputTeacherPhone.value.trim() : "";
+    const notes = inputTeacherNotes ? inputTeacherNotes.value.trim() : "";
+
+    if (!id || !name || !subject || !phone) {
+        showToast("حقول ناقصة", "يرجى ملء جميع الحقول الأساسية لحفظ المعلم", "error");
+        return;
+    }
+
+    const teacherRef = db.ref(`teachers/${id}`);
+    teacherRef.set({
+        name: name,
+        subject: subject,
+        phone: phone,
+        notes: notes
+    })
+    .then(() => {
+        showToast("تم الحفظ بنجاح", `تم إضافة المعلم ${name} بنجاح إلى قاعدة البيانات.`, "success");
+        clearTeacherForm();
+    })
+    .catch((error) => {
+        console.error(error);
+        showToast("فشل الحفظ", `خطأ: ${error.message}`, "error");
+    });
+}
+
+// Database Action: Edit / Update Teacher
+function editTeacher() {
+    if (!inputTeacherAcademicId || !inputTeacherName) return;
+    if (inputTeacherName.disabled) {
+        setTeacherFormReadOnly(false);
+        inputTeacherName.focus();
+        showToast("وضع التعديل مفعل", "تم فتح بيانات المعلم للتعديل. انقر 'تعديل' للحفظ بعد إجراء التغييرات.", "info");
+        return;
+    }
+
+    const id = inputTeacherAcademicId.value.trim();
+    const name = inputTeacherName.value.trim();
+    const subject = inputTeacherSubject ? inputTeacherSubject.value.trim() : "";
+    const phone = inputTeacherPhone ? inputTeacherPhone.value.trim() : "";
+    const notes = inputTeacherNotes ? inputTeacherNotes.value.trim() : "";
+
+    if (!id || !name || !subject || !phone) {
+        showToast("حقول ناقصة", "يرجى التأكد من ملء جميع الحقول الأساسية", "error");
+        return;
+    }
+
+    const teacherRef = db.ref(`teachers/${id}`);
+    teacherRef.update({
+        name: name,
+        subject: subject,
+        phone: phone,
+        notes: notes
+    })
+    .then(() => {
+        showToast("تم التعديل بنجاح", `تم تعديل بيانات المعلم ${name} بنجاح.`, "success");
+        setTeacherFormReadOnly(true);
+    })
+    .catch((error) => {
+        console.error(error);
+        showToast("فشل التعديل", `خطأ: ${error.message}`, "error");
+    });
+}
+
+// Database Action: Delete Teacher
+async function deleteTeacher() {
+    if (!inputTeacherAcademicId) return;
+    const id = inputTeacherAcademicId.value.trim();
+    const name = inputTeacherName ? inputTeacherName.value.trim() : "";
+
+    if (!id) return;
+
+    const confirmed = await showConfirmModal({
+        title: "حذف معلم نهائياً",
+        message: `هل أنت متأكد من رغبتك في حذف المعلم ${name || id} نهائياً؟`,
+        confirmText: "حذف نهائياً",
+        type: "danger"
+    });
+
+    if (confirmed) {
+        const teacherRef = db.ref(`teachers/${id}`);
+        teacherRef.remove()
+        .then(() => {
+            showToast("تم الحذف", `تمت إزالة المعلم ${name || id} من قاعدة البيانات.`, "success");
+            clearTeacherForm();
+        })
+        .catch((error) => {
+            console.error(error);
+            showToast("فشل الحذف", `خطأ: ${error.message}`, "error");
+        });
+    }
+}
+
+// Clear Teacher Form
+function clearTeacherForm() {
+    if (inputTeacherAcademicId) inputTeacherAcademicId.value = "";
+    if (inputTeacherName) inputTeacherName.value = "";
+    if (inputTeacherSubject) inputTeacherSubject.value = "";
+    if (inputTeacherPhone) inputTeacherPhone.value = "";
+    if (inputTeacherNotes) inputTeacherNotes.value = "";
+    
+    setTeacherFormReadOnly(false);
+
+    // Reset buttons
+    if (btnTeacherSave) btnTeacherSave.disabled = false;
+    if (btnTeacherEdit) btnTeacherEdit.disabled = true;
+    if (btnTeacherDelete) btnTeacherDelete.disabled = true;
+    
+    if (inputTeacherAcademicId) inputTeacherAcademicId.classList.remove("pulse-highlight");
+}
+
+// Render Table Data for Teachers
+function renderTeachersList(list) {
+    if (!teachersListBody) return;
+    teachersListBody.innerHTML = "";
+    if (teacherCountText) teacherCountText.textContent = list.length;
+
+    if (list.length === 0) {
+        teachersListBody.innerHTML = `
+            <tr class="table-empty-row">
+                <td colspan="5">
+                    <div class="empty-state-container">
+                        <i class="fa-solid fa-users-slash"></i>
+                        <span>لا يوجد معلمون مسجلون حالياً</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    list.forEach(teacher => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td><strong>${escapeHTML(teacher.academicId)}</strong></td>
+            <td>${escapeHTML(teacher.name)}</td>
+            <td>${escapeHTML(teacher.subject)}</td>
+            <td>${escapeHTML(teacher.phone)}</td>
+            <td class="actions-col">
+                <div class="actions-col-cell">
+                    <button class="btn-table-action edit" title="تعديل">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                    <button class="btn-table-action delete" title="حذف">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+    
+        // Click on edit action inside table
+        tr.querySelector(".btn-table-action.edit").addEventListener("click", (e) => {
+            e.stopPropagation();
+            inputTeacherAcademicId.value = teacher.academicId;
+            inputTeacherName.value = teacher.name;
+            inputTeacherSubject.value = teacher.subject;
+            inputTeacherPhone.value = teacher.phone;
+            inputTeacherNotes.value = teacher.notes || "";
+            
+            setTeacherFormReadOnly(true);
+
+            btnTeacherSave.disabled = true;
+            btnTeacherEdit.disabled = false;
+            btnTeacherDelete.disabled = false;
+            
+            // Scroll to form smoothly on mobile
+            document.getElementById("teacher-form-section").scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Click on delete action inside table
+        tr.querySelector(".btn-table-action.delete").addEventListener("click", (e) => {
+            e.stopPropagation();
+            inputTeacherAcademicId.value = teacher.academicId;
+            inputTeacherName.value = teacher.name;
+            deleteTeacher();
+        });
+
+        teachersListBody.appendChild(tr);
+    });
+}
+
+// Client-side Search and Filter logic for Teachers
+function filterTeachersList() {
+    const query = inputTeacherSearch.value.trim().toLowerCase();
+    
+    if (!query) {
+        renderTeachersList(allTeachers);
+        return;
+    }
+
+    const filtered = allTeachers.filter(teacher => {
+        return teacher.name.toLowerCase().includes(query) || 
+               teacher.academicId.toLowerCase().includes(query) ||
+               (teacher.subject && teacher.subject.toLowerCase().includes(query));
+    });
+
+    renderTeachersList(filtered);
+}
+
+// --- STUDENT DETAILED ACADEMIC & FINANCIAL PROFILE LOGIC ---
+
+// Load Student profile and configure panel
+function loadStudentProfile(student) {
+    selectedStudent = student;
+    if (!sectionStudentProfile) return;
+    
+    sectionStudentProfile.classList.remove("hidden");
+    
+    if (profileStudentName) profileStudentName.textContent = student.name;
+    if (profileStudentId) profileStudentId.innerHTML = `<strong>الرقم الأكاديمي:</strong> ${escapeHTML(student.academicId)}`;
+    if (profileStudentGrade) profileStudentGrade.innerHTML = `<strong>الصف الدراسي:</strong> ${escapeHTML(student.grade || "غير محدد")}`;
+    if (profileStudentPhone) profileStudentPhone.innerHTML = `<strong>رقم الهاتف:</strong> ${escapeHTML(student.phone || "لا يوجد")}`;
+    
+    renderMonthlyRecords();
+    
+    // Smoothly scroll profile panel into view
+    sectionStudentProfile.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Render dynamic attendance (8 sessions) and payment values for the selected month
+function renderMonthlyRecords() {
+    if (!selectedStudent) return;
+    
+    const records = selectedStudent.records || {};
+    const monthData = records[selectedMonth] || { paid: false, paidAmount: 0, sessions: {} };
+    
+    // Payments
+    paymentPaidCheckbox.checked = monthData.paid || false;
+    paymentAmountInput.value = monthData.paidAmount || 0;
+    updatePaymentLabel(monthData.paid || false);
+    
+    // 8 Sessions Grid render
+    sessionsGridContainer.innerHTML = "";
+    for (let i = 1; i <= 8; i++) {
+        const session = (monthData.sessions && monthData.sessions[i]) || { attended: false, examGrade: "", attendanceDate: "" };
+        const card = document.createElement("div");
+        card.className = `session-card ${session.attended ? 'attended' : ''}`;
+        
+        const badgeClass = session.attended ? 'attended' : 'absent';
+        const badgeText = session.attended ? 'حاضر' : 'غائب';
+        const dateText = session.attendanceDate ? `التاريخ: ${session.attendanceDate}` : 'لم يحضر بعد';
+        const gradeVal = session.examGrade !== undefined ? session.examGrade : '';
+        
+        card.innerHTML = `
+            <div class="session-card-header">
+                <span class="session-title">الحصة ${i}</span>
+                <span class="session-status-badge ${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="session-card-body">
+                <span class="session-date-text">${dateText}</span>
+                <div class="session-grade-input-group">
+                    <label>درجة الامتحان:</label>
+                    <input type="number" class="session-grade-input" id="grade-input-${i}" value="${gradeVal}" min="0" max="100">
+                </div>
+                <div class="session-actions">
+                    ${!session.attended ? `
+                        <button class="btn-session-action mark-present" onclick="quickMarkAttendance(${i}, true)">
+                            <i class="fa-solid fa-check"></i> حضور
+                        </button>
+                    ` : `
+                        <button class="btn-session-action mark-absent" onclick="quickMarkAttendance(${i}, false)">
+                            <i class="fa-solid fa-xmark"></i> غياب
+                        </button>
+                    `}
+                    <button class="btn-session-save" onclick="saveSessionGrade(${i})">حفظ</button>
+                </div>
+            </div>
+        `;
+        sessionsGridContainer.appendChild(card);
+    }
+}
+
+// Quick Mark attendance for student (1-8 sessions)
+function quickMarkAttendance(sessionId, attended) {
+    if (!selectedStudent) return;
+    
+    const academicId = selectedStudent.academicId;
+    const dateStr = attended ? new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'numeric', day: 'numeric' }) : "";
+    
+    db.ref(`students/${academicId}/records/${selectedMonth}/sessions/${sessionId}/attended`).set(attended);
+    db.ref(`students/${academicId}/records/${selectedMonth}/sessions/${sessionId}/attendanceDate`).set(dateStr)
+    .then(() => {
+        showToast("تحديث الحضور", `تم تسجيل الحصة ${sessionId} كـ ${attended ? 'حضور' : 'غياب'} للثنائي الأكاديمي ${academicId}`, "success");
+    })
+    .catch(error => {
+        showToast("خطأ", error.message, "error");
+    });
+}
+
+// Save specific session exam grade
+function saveSessionGrade(sessionId) {
+    if (!selectedStudent) return;
+    
+    const academicId = selectedStudent.academicId;
+    const gradeInput = document.getElementById(`grade-input-${sessionId}`);
+    const gradeVal = gradeInput.value.trim();
+    
+    if (gradeVal === "") {
+        db.ref(`students/${academicId}/records/${selectedMonth}/sessions/${sessionId}/examGrade`).remove()
+        .then(() => {
+            showToast("تم إزالة الدرجة", `تم مسح درجة امتحان الحصة ${sessionId}`, "success");
+        });
+        return;
+    }
+    
+    const grade = parseFloat(gradeVal);
+    if (isNaN(grade) || grade < 0) {
+        showToast("خطأ", "يرجى إدخال درجة صحيحة", "error");
+        return;
+    }
+    
+    db.ref(`students/${academicId}/records/${selectedMonth}/sessions/${sessionId}/examGrade`).set(grade)
+    .then(() => {
+        showToast("حفظ الدرجة", `تم تسجيل الدرجة (${grade}) بنجاح للحصة ${sessionId}`, "success");
+    })
+    .catch(error => {
+        showToast("خطأ", error.message, "error");
+    });
+}
+
+// Quick Attend Today action (Marks the first unoccupied session as present today)
+function quickAttendToday() {
+    if (!selectedStudent) {
+        showToast("تنبيه", "يرجى اختيار طالب أولاً", "error");
+        return;
+    }
+    
+    const records = selectedStudent.records || {};
+    const monthData = records[selectedMonth] || { sessions: {} };
+    const sessions = monthData.sessions || {};
+    
+    let targetSessionId = -1;
+    for (let i = 1; i <= 8; i++) {
+        if (!sessions[i] || !sessions[i].attended) {
+            targetSessionId = i;
+            break;
+        }
+    }
+    
+    if (targetSessionId === -1) {
+        showToast("تنبيه", "جميع الحصص الـ 8 مسجلة كحضور بالفعل لهذا الشهر!", "warning");
+        return;
+    }
+    
+    quickMarkAttendance(targetSessionId, true);
+}
+
+// Save payment info
+async function saveMonthlyPayment() {
+    if (!selectedStudent) return;
+    
+    const academicId = selectedStudent.academicId;
+    const paid = paymentPaidCheckbox.checked;
+    const amountVal = paymentAmountInput.value.trim();
+    const amount = amountVal === "" ? 0 : parseFloat(amountVal);
+    const todayDate = paid ? new Date().toLocaleDateString('ar-EG') : "";
+    const mName = getArabicMonthName(selectedMonth);
+
+    const actionText = paid ? `تأكيد دفع مصروفات شهر ${mName}` : `إلغاء دفع مصروفات شهر ${mName}`;
+    const confirmed = await showConfirmModal({
+        title: paid ? "تأكيد دفع المصروفات" : "إلغاء دفع المصروفات",
+        message: `هل أنت متأكد من ${actionText} للطالب: (${selectedStudent.name})؟`,
+        confirmText: paid ? "تأكيد الدفع" : "تأكيد الإلغاء",
+        type: paid ? "primary" : "warning"
+    });
+
+    if (!confirmed) {
+        return;
+    }
+    
+    if (isNaN(amount) || amount < 0) {
+        showToast("خطأ", "يرجى إدخال مبلغ دفع صالح", "error");
+        return;
+    }
+    
+    db.ref(`students/${academicId}/records/${selectedMonth}`).update({
+        paid: paid,
+        paidAmount: amount,
+        paymentDate: todayDate
+    }).then(() => {
+        if (selectedStudent.records && selectedStudent.records[selectedMonth]) {
+            selectedStudent.records[selectedMonth].paid = paid;
+            selectedStudent.records[selectedMonth].paidAmount = amount;
+            selectedStudent.records[selectedMonth].paymentDate = todayDate;
+        }
+        showToast("تم حفظ المدفوعات", `تم حفظ حالة الدفع لشهر ${selectedMonth}`, "success");
+    })
+    .catch(error => {
+        showToast("خطأ", error.message, "error");
+    });
+}
+
+// Update UI payment status toggle label
+function updatePaymentLabel(paid) {
+    if (paid) {
+        paymentStatusLabel.textContent = "تم دفع مصروفات الشهر";
+        paymentStatusLabel.className = "payment-status-label paid";
+    } else {
+        paymentStatusLabel.textContent = "غير مدفوع للشهر المختار";
+        paymentStatusLabel.className = "payment-status-label unpaid";
+    }
+}
+
+// Update stats panels
+function updateDashboardStats() {
+    if (statTotalStudents) statTotalStudents.textContent = allStudents.length;
+    if (statTotalTeachers) statTotalTeachers.textContent = allTeachers.length;
+    
+    if (!statTodayAttendance) return;
+
+    // Count student attendance for today
+    let todayCount = 0;
+    const todayDateStr = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'numeric', day: 'numeric' });
+    
+    allStudents.forEach(student => {
+        const records = student.records || {};
+        for (const month in records) {
+            const sessions = records[month].sessions || {};
+            for (const sessId in sessions) {
+                if (sessions[sessId].attended && sessions[sessId].attendanceDate === todayDateStr) {
+                    todayCount++;
+                }
+            }
+        }
+    });
+    
+    statTodayAttendance.textContent = todayCount;
+}
+
+// Toast Notifications System
+function showToast(title, message, type = "info") {
+    const container = document.getElementById("toast-container");
+    if (container) {
+        container.innerHTML = ""; // Clear old toasts to prevent stacking multiple notifications
+    }
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${type}`;
+
+    let iconHtml = '<i class="fa-solid fa-circle-info toast-icon"></i>';
+    if (type === "success") {
+        iconHtml = '<i class="fa-solid fa-circle-check toast-icon"></i>';
+    } else if (type === "error") {
+        iconHtml = '<i class="fa-solid fa-circle-xmark toast-icon"></i>';
+    }
+
+    toast.innerHTML = `
+        ${iconHtml}
+        <div class="toast-body">
+            <div class="toast-title">${escapeHTML(title)}</div>
+            <div class="toast-message">${escapeHTML(message)}</div>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    // Slide out and remove toast
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(-120%)";
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 4000);
+}
+
+// WhatsApp Phone Formatter Helper Function
+function formatWhatsAppPhone(phoneStr) {
+    if (!phoneStr) return "";
+    let cleaned = phoneStr.replace(/\D/g, '');
+    if (!cleaned) return "";
+    
+    if (cleaned.startsWith('0')) {
+        cleaned = '2' + cleaned;
+    } else if (!cleaned.startsWith('20') && cleaned.length === 10) {
+        cleaned = '20' + cleaned;
+    }
+    return cleaned;
+}
+
+// WhatsApp Configuration State & Auto-Send Gateway Helper Functions
+function getWhatsAppConfig() {
+    const provider = localStorage.getItem("wa_provider") || "direct";
+    let apiUrl = localStorage.getItem("wa_api_url");
+    let instanceId = localStorage.getItem("wa_instance_id");
+    let token = localStorage.getItem("wa_token");
+
+    if (provider === "local" && !apiUrl) {
+        apiUrl = "http://localhost:3000/send";
+    } else if (provider === "ultramsg" && !apiUrl) {
+        apiUrl = "https://api.ultramsg.com/instance188259/messages/chat";
+        instanceId = "instance188259";
+        token = "0o0d69ndrg6kjver";
+    }
+
+    return {
+        provider,
+        apiUrl: apiUrl || "",
+        instanceId: instanceId || "",
+        token: token || ""
+    };
+}
+
+function updateWaBulkButtonVisibility() {
+    if (!btnWhatsAppUnattendedBulk) return;
+    btnWhatsAppUnattendedBulk.style.display = "inline-flex";
+}
+
+function saveWhatsAppConfig(provider, apiUrl, instanceId, token) {
+    localStorage.setItem("wa_provider", provider);
+    localStorage.setItem("wa_api_url", apiUrl.trim());
+    localStorage.setItem("wa_instance_id", instanceId.trim());
+    localStorage.setItem("wa_token", token.trim());
+    updateWaBulkButtonVisibility();
+}
+
+async function sendWhatsAppAbsentNotice(student, sessionNum) {
+    if (!student) return;
+    const targetPhone = student.guardianPhone || student.phone || "";
+    const cleanPhone = formatWhatsAppPhone(targetPhone);
+    
+    if (!cleanPhone) {
+        showToast("رقم الهاتف غير متاح", `لا يوجد رقم هاتف متاح لولي أمر الطالب: ${student.name}`, "error");
+        return;
+    }
+
+    const sNumText = sessionNum ? ` (الحصة ${sessionNum})` : "";
+    const message = `السلام عليكم ورحمة الله وبركاته،\n\nالطالب/ة: ${student.name}\nلم يتم حضورة درس اللغة العربية اليوم${sNumText} تحت إشراف مستر هيثم.`;
+    
+    const config = getWhatsAppConfig();
+
+    // Direct Browser WhatsApp Web Option (No server needed)
+    if (config.provider === "direct") {
+        openWhatsAppDirectLink(cleanPhone, message);
+        return;
+    }
+
+    let rawUrl = config.apiUrl ? config.apiUrl.trim() : "";
+    let instanceId = config.instanceId ? config.instanceId.trim() : "";
+    let token = config.token ? config.token.trim() : "";
+
+    // Auto extract Instance ID if pasted in raw URL (e.g., https://api.ultramsg.com/instance188259)
+    if (rawUrl.includes("ultramsg.com")) {
+        const instMatch = rawUrl.match(/(instance\d+)/i);
+        if (instMatch && !instanceId) {
+            instanceId = instMatch[1];
+        }
+    }
+
+    // Check if background gateway API is configured
+    if (rawUrl || (instanceId && token)) {
+        try {
+            showToast("جاري الإرسال التلقائي...", `جاري إرسال الإشعار لولي أمر ${student.name} عبر الواتساب...`, "info");
+            
+            let fetchUrl = rawUrl;
+            let reqOptions = {};
+
+            // 0. Handling Local WhatsApp Gateway Server / ngrok
+            if (rawUrl.includes("localhost") || rawUrl.includes("127.0.0.1") || rawUrl.includes("ngrok") || config.provider === "local") {
+                let localUrl = rawUrl || "http://127.0.0.1:3000/send";
+                if (!localUrl.endsWith("/send") && !localUrl.endsWith("/")) {
+                    localUrl = localUrl + "/send";
+                }
+                fetchUrl = localUrl;
+                reqOptions = {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning": "true",
+                        "X-API-KEY": "IbnAlSaqr_Secured_WA_Key_2026_x89"
+                    },
+                    body: JSON.stringify({
+                        phone: cleanPhone,
+                        to: cleanPhone,
+                        message: message,
+                        body: message
+                    })
+                };
+            }
+            // 1. Handling WhatsAuto Mobile App Gateway
+            else if (rawUrl.includes("whatsauto") || config.provider === "whatsauto") {
+                fetchUrl = rawUrl || "http://192.168.1.100:8080/send";
+                reqOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        phone: "+" + cleanPhone,
+                        to: "+" + cleanPhone,
+                        message: message,
+                        text: message
+                    })
+                };
+            }
+            // 1. Handling CallMeBot Free Gateway
+            else if (rawUrl.includes("callmebot.com")) {
+                const apiKey = token || instanceId;
+                const formattedPhone = cleanPhone.startsWith('+') ? cleanPhone : '+' + cleanPhone;
+                fetchUrl = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(formattedPhone)}&text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}`;
+                reqOptions = { method: "GET", mode: "no-cors" };
+            }
+            // 1. Handling UltraMsg Gateway API
+            else if (rawUrl.includes("ultramsg.com") || (instanceId && instanceId.startsWith("instance"))) {
+                let inst = instanceId || "instance188259";
+                if (!inst && rawUrl.includes("instance")) {
+                    const parts = rawUrl.split('/');
+                    const foundInst = parts.find(p => p.startsWith("instance"));
+                    if (foundInst) inst = foundInst;
+                }
+                
+                // Formulate exact UltraMsg chat endpoint
+                fetchUrl = `https://api.ultramsg.com/${inst}/messages/chat`;
+
+                const urlParams = new URLSearchParams();
+                if (token) urlParams.append("token", token);
+                urlParams.append("to", "+" + cleanPhone);
+                urlParams.append("body", message);
+                urlParams.append("priority", "10");
+
+                reqOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: urlParams
+                };
+            }
+            // 2. Handling Green API Gateway
+            else if (rawUrl.includes("green-api.com") || rawUrl.includes("greenapi")) {
+                if (!rawUrl.includes("sendMessage")) {
+                    fetchUrl = `https://api.green-api.com/waInstance${instanceId}/sendMessage/${token}`;
+                }
+                reqOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chatId: `${cleanPhone}@c.us`,
+                        message: message
+                    })
+                };
+            }
+            // 3. Generic Custom Gateway API (JSON POST)
+            else {
+                reqOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        to: "+" + cleanPhone,
+                        phone: cleanPhone,
+                        body: message,
+                        message: message,
+                        token: token,
+                        instance_id: instanceId
+                    })
+                };
+            }
+
+            const response = await fetch(fetchUrl, reqOptions);
+            const resData = await response.json().catch(() => ({}));
+
+            if (response.ok || response.status === 200 || response.status === 201 || (resData && (resData.success === true || resData.sent === "true" || resData.id || resData.status === "success"))) {
+                showToast("تم الإرسال التلقائي 🟢", `تم إرسال إشعار الغياب بنجاح عبر الواتساب للطالب: ${student.name}`, "success");
+            } else {
+                console.warn("WhatsApp API Gateway response non-OK: ", resData);
+                showToast("لم يتم الإرسال 🔴", `فشل الإرسال للطالب: ${student.name} (${resData.error || 'تأكد من تشغيل السيرفر'}).`, "error");
+            }
+        } catch (err) {
+            console.error("WhatsApp API Error: ", err);
+            showToast("سيرفر الواتساب المحلي غير متصل 🔴", "يرجى تشغيل ملف (start-whatsapp-server.bat) على جهازك للإرسال التلقائي دون فتح تابات.", "error");
+        }
+    } else {
+        showToast("تنبيه الإعدادات ⚠️", "يرجى تحديد طريقة الإرسال من زر (ربط الواتساب ⚙️) أعلى الصفحة.", "warning");
+    }
+}
+
+function openWhatsAppDirectLink(cleanPhone, message) {
+    const encodedMsg = encodeURIComponent(message);
+    const waUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
+    window.open(waUrl, '_blank');
+}
+
+// Copy Canvas / Image Blob directly to Clipboard Helper (Allows Ctrl+V pasting in WhatsApp)
+async function copyImageToClipboard(canvas) {
+    if (!canvas) return false;
+    try {
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        if (!blob) return false;
+
+        if (navigator.clipboard && typeof window.ClipboardItem !== "undefined" && navigator.clipboard.write) {
+            const item = new ClipboardItem({ "image/png": blob });
+            await navigator.clipboard.write([item]);
+            return true;
+        }
+    } catch (err) {
+        console.warn("Clipboard image write failed/not allowed:", err);
+    }
+    return false;
+}
+
+// Populate Hidden Student Performance Report Card HTML (Image 2 Replica)
+function populateReportCardHTML(student) {
+    if (!student) return;
+
+    const reportStudentName = document.getElementById("report-student-name");
+    const reportStudentId = document.getElementById("report-student-id");
+    const reportStudentGrade = document.getElementById("report-student-grade");
+    const reportStudentPhone = document.getElementById("report-student-phone");
+    const reportDate = document.getElementById("report-date");
+    const reportMonthSubject = document.getElementById("report-month-subject");
+    const reportTableBody = document.getElementById("report-table-body");
+    const reportAttendedCount = document.getElementById("report-attended-count");
+    const reportPaidAmount = document.getElementById("report-paid-amount");
+    const reportTeacherNotes = document.getElementById("report-teacher-notes");
+
+    if (reportStudentName) reportStudentName.textContent = student.name || "طالب";
+    if (reportStudentId) reportStudentId.textContent = toEnglishDigits(student.academicId || "");
+    if (reportStudentGrade) reportStudentGrade.textContent = student.grade || "الصف الأول الإعدادي";
+    if (reportStudentPhone) reportStudentPhone.textContent = toEnglishDigits(student.guardianPhone || student.phone || "---");
+
+    const todayStr = new Date().toLocaleDateString('en-GB');
+    if (reportDate) reportDate.textContent = toEnglishDigits(todayStr);
+
+    const monthText = getSelectedMonthText();
+    if (reportMonthSubject) reportMonthSubject.textContent = `${monthText} في مادة اللغة العربية`;
+
+    const monthRec = (student.records && student.records[selectedMonth]) || { paid: false, paidAmount: 0, sessions: {} };
+    const sessions = monthRec.sessions || {};
+
+    let attendedCount = 0;
+    let tableHtml = "";
+
+    for (let i = 1; i <= 8; i++) {
+        const sess = sessions[i] || {};
+        const isAttended = sess.attended === true;
+        if (isAttended) attendedCount++;
+
+        const sessDate = sess.attendanceDate ? toEnglishDigits(sess.attendanceDate) : "---";
+        
+        let activityText = `حصة ${i}`;
+        if (sess.examGrade) activityText = `حصة ${i} + امتحان`;
+        if (!isAttended) activityText = `غياب`;
+
+        let gradeText = "---";
+        if (sess.examGrade) {
+            gradeText = `<strong style="color: #10b981;">${toEnglishDigits(sess.examGrade)} / 20</strong>`;
+        }
+
+        tableHtml += `
+            <tr>
+                <td>${sessDate}</td>
+                <td>${activityText}</td>
+                <td>${gradeText}</td>
+            </tr>
+        `;
+    }
+
+    if (reportTableBody) reportTableBody.innerHTML = tableHtml;
+    if (reportAttendedCount) reportAttendedCount.textContent = toEnglishDigits(attendedCount);
+
+    const reportFinancialStatus = document.getElementById("report-financial-status");
+    const reportSummaryBarFinancial = document.getElementById("report-summary-bar-financial");
+
+    if (reportFinancialStatus) {
+        if (monthRec.paid) {
+            reportFinancialStatus.innerHTML = `<strong>السجل المالي:</strong> تم دفع المصروفات لـ (${monthText}) بنجاح`;
+            if (reportSummaryBarFinancial) reportSummaryBarFinancial.className = "report-summary-bar green";
+        } else {
+            reportFinancialStatus.innerHTML = `<strong>السجل المالي:</strong> لم يتم سداد المصروفات لـ (${monthText}) حتى الآن`;
+            if (reportSummaryBarFinancial) reportSummaryBarFinancial.className = "report-summary-bar orange";
+        }
+    }
+}
+
+// Generic WhatsApp Message Sender for Custom Templates
+async function sendWhatsAppCustomNotice(student, messageTemplate) {
+    if (!student) return false;
+    const targetPhone = student.guardianPhone || student.phone || "";
+    const cleanPhone = formatWhatsAppPhone(targetPhone);
+    
+    if (!cleanPhone) {
+        showToast("رقم الهاتف غير متاح ⚠️", `لا يوجد رقم هاتف متاح لولي أمر الطالب: ${student.name}`, "error");
+        return false;
+    }
+
+    const monthText = getSelectedMonthText();
+    const sessionText = getSelectedSessionText();
+
+    const monthRec = (student.records && student.records[selectedMonth]) || { paid: false, paidAmount: 0, sessions: {} };
+    const sessions = monthRec.sessions || {};
+    let attendedCount = 0;
+    for (let i = 1; i <= 8; i++) {
+        if (sessions[i] && sessions[i].attended) attendedCount++;
+    }
+
+    const paidStatusText = monthRec.paid ? `تم سداد المصروفات بنجاح (${monthRec.paidAmount || 100} ج.م)` : `لم يتم السداد حتى الآن`;
+    const notesText = student.notes && student.notes.trim() ? student.notes.trim() : "الطالب يتابع دروسه بانتظام واجتهاد.";
+
+    const message = messageTemplate
+        .replace(/\{student_name\}/g, student.name)
+        .replace(/\{name\}/g, student.name)
+        .replace(/\[اسم الطالب\]/g, student.name)
+        .replace(/\{month_name\}/g, monthText)
+        .replace(/\{month\}/g, monthText)
+        .replace(/\[الشهر\]/g, monthText)
+        .replace(/\{session_name\}/g, sessionText)
+        .replace(/\{session\}/g, sessionText)
+        .replace(/\[الحصة\]/g, sessionText)
+        .replace(/\{attended_count\}/g, toEnglishDigits(attendedCount))
+        .replace(/\{total_sessions\}/g, "8")
+        .replace(/\{paid_status\}/g, paidStatusText)
+        .replace(/\{paid_summary\}/g, paidStatusText)
+        .replace(/\{notes\}/g, notesText);
+
+    // Populate Report Card HTML
+    populateReportCardHTML(student);
+
+    // Render report card HTML element into PNG Image Base64 / Canvas for Clipboard
+    let imageBase64Data = "";
+    let reportCanvas = null;
+    try {
+        const reportCardEl = document.getElementById("student-report-card");
+        if (reportCardEl && typeof html2canvas === "function") {
+            reportCanvas = await html2canvas(reportCardEl, {
+                scale: 2,
+                backgroundColor: "#ffffff",
+                logging: false,
+                useCORS: true,
+                allowTaint: true
+            });
+            imageBase64Data = reportCanvas.toDataURL("image/png");
+        }
+    } catch (e) {
+        console.warn("Failed to render report card image via html2canvas:", e);
+    }
+
+    const config = getWhatsAppConfig();
+    let rawUrl = config.apiUrl ? config.apiUrl.trim() : "";
+    let instanceId = config.instanceId ? config.instanceId.trim() : "";
+    let token = config.token ? config.token.trim() : "";
+
+    // Direct Browser WhatsApp Web Option (No server needed - Copies image directly to clipboard for Ctrl+V)
+    if (config.provider === "direct" || (!rawUrl && !instanceId && !token && config.provider !== "local")) {
+        if (reportCanvas) {
+            const copied = await copyImageToClipboard(reportCanvas);
+            if (copied) {
+                showToast("تم نسخ صورة التقرير 📋🖼️", `تم نسخ صورة تقرير الطالب (${student.name}) للحافظة! فقط اضغط (Ctrl + V) داخل شات الواتساب للصقها فوراً.`, "success");
+            } else {
+                showToast("جاري فتح الواتساب", `جاري فتح محادثة الواتساب لولي أمر: ${student.name}...`, "info");
+            }
+        }
+        openWhatsAppDirectLink(cleanPhone, message);
+        return true;
+    }
+
+    if (rawUrl.includes("ultramsg.com")) {
+        const instMatch = rawUrl.match(/(instance\d+)/i);
+        if (instMatch && !instanceId) {
+            instanceId = instMatch[1];
+        }
+    }
+
+    try {
+        let fetchUrl = rawUrl;
+        let reqOptions = {};
+
+        if (rawUrl.includes("localhost") || rawUrl.includes("127.0.0.1") || rawUrl.includes("ngrok") || config.provider === "local" || !rawUrl) {
+            let localUrl = rawUrl || "http://127.0.0.1:3000/send";
+            if (!localUrl.endsWith("/send") && !localUrl.endsWith("/")) {
+                localUrl = localUrl + "/send";
+            }
+            fetchUrl = localUrl;
+            reqOptions = {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true",
+                    "X-API-KEY": "IbnAlSaqr_Secured_WA_Key_2026_x89"
+                },
+                body: JSON.stringify({
+                    phone: cleanPhone,
+                    to: cleanPhone,
+                    message: message,
+                    body: message,
+                    imageBase64: imageBase64Data
+                })
+            };
+        } else if (rawUrl.includes("ultramsg.com") || (instanceId && instanceId.startsWith("instance"))) {
+            let inst = instanceId || "instance188259";
+            if (!inst && rawUrl.includes("instance")) {
+                const parts = rawUrl.split('/');
+                const foundInst = parts.find(p => p.startsWith("instance"));
+                if (foundInst) inst = foundInst;
+            }
+            
+            // If image exists, send to Ultramsg image endpoint
+            if (imageBase64Data) {
+                fetchUrl = `https://api.ultramsg.com/${inst}/messages/image`;
+                const urlParams = new URLSearchParams();
+                if (token) urlParams.append("token", token);
+                urlParams.append("to", "+" + cleanPhone);
+                urlParams.append("image", imageBase64Data);
+                urlParams.append("caption", message);
+                urlParams.append("priority", "10");
+                reqOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: urlParams
+                };
+            } else {
+                fetchUrl = `https://api.ultramsg.com/${inst}/messages/chat`;
+                const urlParams = new URLSearchParams();
+                if (token) urlParams.append("token", token);
+                urlParams.append("to", "+" + cleanPhone);
+                urlParams.append("body", message);
+                urlParams.append("priority", "10");
+                reqOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: urlParams
+                };
+            }
+        } else if (rawUrl.includes("green-api.com") || rawUrl.includes("greenapi")) {
+            if (!rawUrl.includes("sendMessage")) {
+                fetchUrl = `https://api.green-api.com/waInstance${instanceId}/sendMessage/${token}`;
+            }
+            reqOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chatId: `${cleanPhone}@c.us`,
+                    message: message
+                })
+            };
+        } else {
+            reqOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    to: "+" + cleanPhone,
+                    phone: cleanPhone,
+                    body: message,
+                    message: message,
+                    token: token,
+                    instance_id: instanceId
+                })
+            };
+        }
+
+        const response = await fetch(fetchUrl, reqOptions);
+        const resData = await response.json().catch(() => ({}));
+
+        const isSuccess = (response.ok || response.status === 200 || response.status === 201) && 
+                          (resData.success === true || resData.sent === "true" || resData.id || resData.status === "success" || !resData.error);
+
+        if (isSuccess) {
+            showToast("تم الإرسال 🟢", `تم إرسال الرسالة بنجاح لـ ولي أمر: ${student.name}`, "success");
+            return true;
+        } else {
+            console.warn("WhatsApp API Gateway response non-OK: ", resData);
+            const errMsg = resData.error || 'يرجى فتح نافذة السيرفر وتأكيد الاتصال بكود QR';
+            showToast("لم يتم الإرسال 🔴", `فشل الإرسال للطالب: ${student.name} (${errMsg}).`, "error");
+            return false;
+        }
+    } catch (err) {
+        console.error("WhatsApp API Error: ", err);
+        showToast("سيرفر الواتساب المحلي غير متصل 🔴", "يرجى تشغيل ملف (start-whatsapp-server.bat) على جهازك للإرسال التلقائي دون فتح تابات.", "error");
+        return false;
+    }
+}
+
+// Setup WhatsApp Bulk 4-Message Template Selection Modal
+function setupWhatsAppBulkModal() {
+    const waBulkModalOverlay = document.getElementById("wa-bulk-modal-overlay");
+    const btnCloseWaBulkModal = document.getElementById("btn-close-wa-bulk-modal");
+    const btnCancelWaBulkSend = document.getElementById("btn-cancel-wa-bulk-send");
+    const btnConfirmWaBulkSend = document.getElementById("btn-confirm-wa-bulk-send");
+    const waBulkMsgPreview = document.getElementById("wa-bulk-msg-preview");
+    const radios = document.querySelectorAll('input[name="wa-msg-template"]');
+
+    if (!waBulkModalOverlay) return;
+
+    const closeModal = () => {
+        waBulkModalOverlay.classList.add("hidden");
+    };
+
+    if (btnCloseWaBulkModal) btnCloseWaBulkModal.addEventListener("click", closeModal);
+    if (btnCancelWaBulkSend) btnCancelWaBulkSend.addEventListener("click", closeModal);
+    
+    waBulkModalOverlay.addEventListener("click", (e) => {
+        if (e.target === waBulkModalOverlay) closeModal();
+    });
+
+    // Handle template option card click & radio change
+    const msgCards = document.querySelectorAll(".msg-template-card");
+    msgCards.forEach(card => {
+        card.addEventListener("click", () => {
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                selectedWaBulkTemplateKey = radio.value;
+            }
+            msgCards.forEach(c => c.classList.remove("active"));
+            card.classList.add("active");
+        });
+    });
+
+    radios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+            selectedWaBulkTemplateKey = e.target.value;
+            msgCards.forEach(c => c.classList.remove("active"));
+            const card = document.getElementById(`card-msg-${selectedWaBulkTemplateKey}`);
+            if (card) card.classList.add("active");
+        });
+    });
+
+    // Handle Confirm Send Button click
+    if (btnConfirmWaBulkSend) {
+        btnConfirmWaBulkSend.addEventListener("click", () => {
+            const checkedRadio = document.querySelector('input[name="wa-msg-template"]:checked');
+            const key = selectedWaBulkTemplateKey || (checkedRadio ? checkedRadio.value : null);
+
+            if (!key) {
+                showToast("يرجى اختيار رسالة ⚠️", "قم باختيار إحدى الرسائل الـ 4 أولاً للإرسال.", "warning");
+                return;
+            }
+
+            if (!currentBulkTargetStudents || currentBulkTargetStudents.length === 0) {
+                showToast("الكشف فارغ ⚠️", "لا يوجد طلاب محددين لإرسال الرسائل لهم.", "warning");
+                closeModal();
+                return;
+            }
+
+            const templates = getWaBulkTemplates();
+            const templateText = templates[key];
+
+            if (!templateText) {
+                showToast("نص الرسالة فارغ ⚠️", "يرجى اختيار رسالة أو التأكد من إعدادات النص.", "warning");
+                return;
+            }
+
+            closeModal();
+
+            const count = currentBulkTargetStudents.length;
+            const config = getWhatsAppConfig();
+            const isBackgroundApi = (config.provider !== "direct") && (!!config.apiUrl || !!config.token || config.provider === "local");
+
+            currentBulkTargetStudents.forEach((student, index) => {
+                setTimeout(() => {
+                    sendWhatsAppCustomNotice(student, templateText);
+                }, index * (isBackgroundApi ? 300 : 800));
+            });
+
+            if (count === 1) {
+                const sName = currentBulkTargetStudents[0].name;
+                if (isBackgroundApi) {
+                    showToast("جاري الإرسال التلقائي 🟢", `جاري إرسال إشعار الواتساب لولي أمر: ${sName}...`, "success");
+                } else {
+                    showToast("جاري فتح الواتساب", `جاري فتح محادثة الواتساب لولي أمر: ${sName}...`, "info");
+                }
+            } else {
+                if (isBackgroundApi) {
+                    showToast("جاري الإرسال التلقائي 🟢", `جاري إرسال الرسائل في الخلفية لـ ${count} طالب...`, "success");
+                } else {
+                    showToast("جاري فتح الواتساب", `جاري فتح محادثات الواتساب لـ ${count} طالب...`, "info");
+                }
+            }
+        });
+    }
+}
+
+function openWhatsAppBulkModal(targetStudents = null) {
+    const waBulkModalOverlay = document.getElementById("wa-bulk-modal-overlay");
+    const waBulkTargetCount = document.getElementById("wa-bulk-target-count");
+    const waBulkSendCount = document.getElementById("wa-bulk-send-count");
+    const waBulkMsgPreview = document.getElementById("wa-bulk-msg-preview");
+    
+    if (!waBulkModalOverlay) return;
+
+    currentBulkTargetStudents = targetStudents || currentFilteredStudents || [];
+
+    const count = currentBulkTargetStudents.length;
+    if (count === 0) {
+        showToast("الكشف فارغ ⚠️", "لا يوجد طلاب محددين لإرسال الرسائل لهم.", "warning");
+        return;
+    }
+
+    if (waBulkTargetCount) waBulkTargetCount.textContent = toEnglishDigits(count);
+    if (waBulkSendCount) waBulkSendCount.textContent = toEnglishDigits(count);
+
+    const templates = getWaBulkTemplates();
+
+    // Update dynamic card preview text snippets
+    const cardAtt = document.querySelector("#card-msg-attendance .msg-preview-text");
+    const cardAbs = document.querySelector("#card-msg-absent .msg-preview-text");
+    const cardPaid = document.querySelector("#card-msg-paid .msg-preview-text");
+    const cardUnpaid = document.querySelector("#card-msg-unpaid .msg-preview-text");
+    const cardReport = document.querySelector("#card-msg-report .msg-preview-text");
+
+    if (cardAtt && templates.attendance) cardAtt.textContent = templates.attendance.replace("{student_name}", "[اسم الطالب]").split("\n\n")[1];
+    if (cardAbs && templates.absent) cardAbs.textContent = templates.absent.replace("{student_name}", "[اسم الطالب]").split("\n\n")[1];
+    if (cardPaid && templates.paid) cardPaid.textContent = templates.paid.replace("{student_name}", "[اسم الطالب]").split("\n\n")[1];
+    if (cardUnpaid && templates.unpaid) cardUnpaid.textContent = templates.unpaid.replace("{student_name}", "[اسم الطالب]").split("\n\n")[1];
+    if (cardReport && templates.report) cardReport.textContent = templates.report.replace("{student_name}", "[اسم الطالب]").split("\n\n")[1];
+
+    // Unselect all options initially so user chooses explicitly
+    selectedWaBulkTemplateKey = null;
+    document.querySelectorAll('input[name="wa-msg-template"]').forEach(r => r.checked = false);
+    document.querySelectorAll(".msg-template-card").forEach(c => c.classList.remove("active"));
+
+    if (waBulkMsgPreview) {
+        waBulkMsgPreview.value = "";
+    }
+
+    waBulkModalOverlay.classList.remove("hidden");
+}
+
+// Expose profile grid trigger functions to global window context (necessary for onclick HTML handlers)
+window.quickMarkAttendance = quickMarkAttendance;
+window.saveSessionGrade = saveSessionGrade;
+
+// Setup Custom Select Clear Buttons & Dynamic State Management
+function setupSelectClearButtons() {
+    const wrappers = document.querySelectorAll('.custom-select-wrapper');
+    
+    wrappers.forEach(wrapper => {
+        const select = wrapper.querySelector('select');
+        const iconBox = wrapper.querySelector('.select-icon-box');
+        if (!select || !iconBox) return;
+
+        // Save default initial value on load if not explicitly set in dataset
+        if (select.dataset.defaultValue === undefined) {
+            select.dataset.defaultValue = select.value || "";
+        }
+
+        // Function to update icon state ('X' vs arrow down)
+        const updateState = () => {
+            const defaultValue = select.dataset.defaultValue !== undefined ? select.dataset.defaultValue : "";
+            const currentValue = select.value;
+            // A selection has been made if value is not empty and different from default
+            const hasSelectedValue = currentValue !== "" && currentValue !== defaultValue;
+            
+            if (hasSelectedValue) {
+                wrapper.classList.add('has-selected-value');
+            } else {
+                wrapper.classList.remove('has-selected-value');
+            }
+        };
+
+        // Listen to change and input events on select
+        select.addEventListener('change', updateState);
+        select.addEventListener('input', updateState);
+
+        // Icon box click listener: clear selection when 'X' is active
+        iconBox.addEventListener('click', (e) => {
+            if (wrapper.classList.contains('has-selected-value')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Reset value back to default
+                select.value = select.dataset.defaultValue !== undefined ? select.dataset.defaultValue : "";
+                
+                // Dispatch change and input events so filter/form listeners run
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+                
+                updateState();
+            }
+        });
+
+        // Initialize state on load
+        updateState();
+    });
+}
+
+function updateAllSelectStates() {
+    document.querySelectorAll('.custom-select-wrapper select').forEach(select => {
+        const wrapper = select.closest('.custom-select-wrapper');
+        if (wrapper) {
+            const defaultValue = select.dataset.defaultValue !== undefined ? select.dataset.defaultValue : "";
+            const currentValue = select.value;
+            const hasSelectedValue = currentValue !== "" && currentValue !== defaultValue;
+            if (hasSelectedValue) {
+                wrapper.classList.add('has-selected-value');
+            } else {
+                wrapper.classList.remove('has-selected-value');
+            }
+        }
+    });
+}
+
+// --- ANALYTICS DASHBOARD CALCULATIONS & CHARTS LOGIC ---
+function updateAnalyticsDashboard() {
+    if (!sectionAnalyticsDashboard || sectionAnalyticsDashboard.classList.contains("hidden")) {
+        // If the dashboard section is hidden, skip calculation unless active tab is "dashboard"
+        if (activeTab !== "dashboard") return;
+    }
+
+    const selectedGrade = dashFilterGrade ? dashFilterGrade.value : "";
+    const selectedMonthVal = dashFilterMonth ? dashFilterMonth.value : selectedMonth;
+
+    // Filter students by grade
+    let filteredStudents = allStudents;
+    if (selectedGrade) {
+        filteredStudents = allStudents.filter(s => s.grade === selectedGrade);
+    }
+
+    const totalCount = filteredStudents.length;
+
+    // Active session attendance tracking
+    const currentActiveSess = activeSessionSelect ? activeSessionSelect.value : "1";
+    const todayDateStr = new Date().toLocaleDateString('ar-EG');
+
+    let attendedTodayCount = 0;
+    let absentTodayCount = 0;
+
+    // Sessions 1 to 8 stats for charts
+    const sessionAttendanceCounts = [0, 0, 0, 0, 0, 0, 0, 0];
+    const sessionExamSum = [0, 0, 0, 0, 0, 0, 0, 0];
+    const sessionExamCount = [0, 0, 0, 0, 0, 0, 0, 0];
+
+    // Fees calculation
+    let paidCount = 0;
+    let paidTodayCount = 0;
+    let unpaidCount = 0;
+
+    filteredStudents.forEach(s => {
+        const monthRec = (s.records && s.records[selectedMonthVal]) || { paid: false, sessions: {} };
+        
+        // Fee payment status
+        if (monthRec.paid) {
+            paidCount++;
+            if (monthRec.paymentDate === todayDateStr || !monthRec.paymentDate) {
+                paidTodayCount++;
+            }
+        } else {
+            unpaidCount++;
+        }
+
+        // Active session attendance
+        const activeSessData = (monthRec.sessions && monthRec.sessions[currentActiveSess]) || {};
+        if (activeSessData.attended === true) {
+            attendedTodayCount++;
+        } else {
+            absentTodayCount++;
+        }
+
+        // Sessions 1..8 calculations
+        for (let i = 1; i <= 8; i++) {
+            const sessData = (monthRec.sessions && monthRec.sessions[i]) || {};
+            if (sessData.attended === true) {
+                sessionAttendanceCounts[i - 1]++;
+            }
+            if (sessData.examGrade !== undefined && sessData.examGrade !== "" && !isNaN(parseFloat(sessData.examGrade))) {
+                sessionExamSum[i - 1] += parseFloat(sessData.examGrade);
+                sessionExamCount[i - 1]++;
+            }
+        }
+    });
+
+    const attendedPercentage = totalCount > 0 ? Math.round((attendedTodayCount / totalCount) * 100) : 0;
+    const absentPercentage = totalCount > 0 ? Math.round((absentTodayCount / totalCount) * 100) : 0;
+    const paidPercentage = totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0;
+    const paidTodayPercentage = totalCount > 0 ? Math.round((paidTodayCount / totalCount) * 100) : 0;
+
+    // Update KPI Card DOM
+    if (kpiTotalStudents) kpiTotalStudents.textContent = totalCount;
+    if (kpiGradeSubtext) kpiGradeSubtext.textContent = selectedGrade || "كافة الصفوف الدراسية";
+    if (kpiAttendedToday) kpiAttendedToday.textContent = attendedTodayCount;
+    if (kpiAttendedRate) kpiAttendedRate.textContent = `${attendedPercentage}% من الإجمالي (حصة ${currentActiveSess})`;
+    if (kpiPaidStudents) kpiPaidStudents.textContent = paidTodayCount;
+    if (kpiPaidStudentsRate) kpiPaidStudentsRate.textContent = `${paidTodayPercentage}% من إجمالي الطلاب`;
+    if (kpiPaidRate) kpiPaidRate.textContent = `${paidPercentage}%`;
+    if (kpiPaidCountText) kpiPaidCountText.textContent = `${paidCount} تم الدفع / ${unpaidCount} غير مدفوع`;
+
+    // Render / Update Chart.js Charts
+    if (typeof Chart === "undefined") return;
+
+    // --- Chart 1: Attendance Chart (Bar) ---
+    const ctxAttendance = document.getElementById("attendanceChart");
+    if (ctxAttendance) {
+        if (attendanceChartInstance) {
+            attendanceChartInstance.destroy();
+        }
+        attendanceChartInstance = new Chart(ctxAttendance, {
+            type: 'bar',
+            data: {
+                labels: ['الحصة 1', 'الحصة 2', 'الحصة 3', 'الحصة 4', 'الحصة 5', 'الحصة 6', 'الحصة 7', 'الحصة 8'],
+                datasets: [{
+                    label: 'عدد الطلاب الحاضرين',
+                    data: sessionAttendanceCounts,
+                    backgroundColor: 'rgba(6, 182, 212, 0.65)',
+                    borderColor: '#06b6d4',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    hoverBackgroundColor: '#06b6d4'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { family: 'Tajawal', size: 12 } }
+                    },
+                    tooltip: {
+                        titleFont: { family: 'Tajawal' },
+                        bodyFont: { family: 'Tajawal' }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { family: 'Tajawal' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8', precision: 0, font: { family: 'Tajawal' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // --- Chart 2: Fees Doughnut Chart ---
+    const ctxFees = document.getElementById("feesChart");
+    if (ctxFees) {
+        if (feesChartInstance) {
+            feesChartInstance.destroy();
+        }
+        feesChartInstance = new Chart(ctxFees, {
+            type: 'doughnut',
+            data: {
+                labels: ['تم دفع المصروفات', 'لم يتم الدفع'],
+                datasets: [{
+                    data: [paidCount, unpaidCount],
+                    backgroundColor: ['#10b981', '#ef4444'],
+                    borderColor: '#1e293b',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#f8fafc', font: { family: 'Tajawal', size: 12 } }
+                    }
+                },
+                cutout: '68%'
+            }
+        });
+    }
+
+    // --- Top 5 Students Performance Calculation & Render ---
+    const studentPerformanceList = [];
+
+    filteredStudents.forEach(s => {
+        const monthRec = (s.records && s.records[selectedMonthVal]) || { sessions: {} };
+        const sessions = monthRec.sessions || {};
+        
+        let sumGrades = 0;
+        let countGrades = 0;
+
+        for (let i = 1; i <= 8; i++) {
+            const sessData = sessions[i];
+            if (sessData && sessData.examGrade !== undefined && sessData.examGrade !== "" && !isNaN(parseFloat(sessData.examGrade))) {
+                sumGrades += parseFloat(sessData.examGrade);
+                countGrades++;
+            }
+        }
+
+        const avgScore = countGrades > 0 ? parseFloat((sumGrades / countGrades).toFixed(1)) : 0;
+        studentPerformanceList.push({
+            academicId: s.academicId,
+            name: s.name,
+            grade: s.grade || "غير محدد",
+            avgScore: avgScore,
+            examCount: countGrades
+        });
+    });
+
+    // Sort by avgScore descending, then by examCount descending
+    studentPerformanceList.sort((a, b) => {
+        if (b.avgScore !== a.avgScore) {
+            return b.avgScore - a.avgScore;
+        }
+        return b.examCount - a.examCount;
+    });
+
+    // Filter top 5 students
+    const top5Students = studentPerformanceList.slice(0, 5);
+
+    // Render Top 5 Students DOM
+    if (topStudentsListContainer) {
+        topStudentsListContainer.innerHTML = "";
+        
+        const validTopStudents = top5Students.filter(s => s.examCount > 0 || s.avgScore > 0);
+
+        if (validTopStudents.length === 0) {
+            topStudentsListContainer.innerHTML = `
+                <div class="top-students-empty">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>لا توجد درجات اختبارات مسجلة لهذه المرحلة بعد</span>
+                </div>
+            `;
+        } else {
+            validTopStudents.forEach((student, index) => {
+                const rankNum = index + 1;
+                let rankClass = "rank-other";
+                let rankIcon = rankNum;
+
+                if (rankNum === 1) {
+                    rankClass = "rank-1";
+                    rankIcon = '<i class="fa-solid fa-crown"></i>';
+                } else if (rankNum === 2) {
+                    rankClass = "rank-2";
+                    rankIcon = '2';
+                } else if (rankNum === 3) {
+                    rankClass = "rank-3";
+                    rankIcon = '3';
+                }
+
+                const item = document.createElement("div");
+                item.className = "top-student-item";
+                item.innerHTML = `
+                    <div class="rank-badge ${rankClass}">${rankIcon}</div>
+                    <div class="top-student-info">
+                        <span class="top-student-name">${student.name}</span>
+                        <div class="top-student-details">
+                            <span class="detail-id"><i class="fa-solid fa-id-card"></i> ${student.academicId}</span>
+                            <span class="detail-grade"><i class="fa-solid fa-school"></i> ${student.grade}</span>
+                        </div>
+                    </div>
+                    <div class="top-student-score">
+                        <span class="score-val">${student.avgScore}</span>
+                        <span class="score-unit">متوسط الدرجة</span>
+                    </div>
+                `;
+                topStudentsListContainer.appendChild(item);
+            });
+        }
+    }
+
+    // --- Chart 3: Exam Grades Performance Chart (Line) ---
+    const sessionExamAverages = sessionExamSum.map((sum, idx) => {
+        const cnt = sessionExamCount[idx];
+        return cnt > 0 ? parseFloat((sum / cnt).toFixed(1)) : 0;
+    });
+
+    const ctxGrades = document.getElementById("gradesChart");
+    if (ctxGrades) {
+        if (gradesChartInstance) {
+            gradesChartInstance.destroy();
+        }
+        gradesChartInstance = new Chart(ctxGrades, {
+            type: 'line',
+            data: {
+                labels: ['اختبار 1', 'اختبار 2', 'اختبار 3', 'اختبار 4', 'اختبار 5', 'اختبار 6', 'اختبار 7', 'اختبار 8'],
+                datasets: [{
+                    label: 'متوسط درجة الطلاب',
+                    data: sessionExamAverages,
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.15)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#f97316',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { family: 'Tajawal', size: 12 } }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { family: 'Tajawal' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: '#94a3b8', font: { family: 'Tajawal' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// System Custom Confirmation Modal (Replaces native browser confirm dialogs)
+function showConfirmModal({ title, message, confirmText = "تأكيد", type = "danger" }) {
+    return new Promise((resolve) => {
+        const overlay = document.getElementById("confirm-modal-overlay");
+        const titleEl = document.getElementById("confirm-modal-title");
+        const msgEl = document.getElementById("confirm-modal-message");
+        const btnConfirm = document.getElementById("confirm-modal-btn-confirm");
+        const btnCancel = document.getElementById("confirm-modal-btn-cancel");
+        const btnClose = document.getElementById("confirm-modal-close");
+        const btnConfirmText = document.getElementById("confirm-modal-btn-confirm-text");
+        const iconBox = document.getElementById("confirm-modal-icon-box");
+        const iconEl = document.getElementById("confirm-modal-icon");
+
+        if (!overlay) {
+            // Fallback if modal HTML element is not present
+            resolve(window.confirm(message));
+            return;
+        }
+
+        titleEl.textContent = title || "تأكيد الإجراء";
+        msgEl.textContent = message || "";
+        btnConfirmText.textContent = confirmText;
+
+        // Apply type styles and icon (danger vs primary vs warning)
+        if (type === "danger") {
+            iconBox.className = "custom-modal-icon-box danger";
+            iconEl.className = "fa-solid fa-trash-can";
+            btnConfirm.className = "custom-btn btn-modal-confirm danger";
+        } else if (type === "warning") {
+            iconBox.className = "custom-modal-icon-box warning";
+            iconEl.className = "fa-solid fa-triangle-exclamation";
+            btnConfirm.className = "custom-btn btn-modal-confirm warning";
+        } else {
+            iconBox.className = "custom-modal-icon-box primary";
+            iconEl.className = "fa-solid fa-circle-check";
+            btnConfirm.className = "custom-btn btn-modal-confirm primary";
+        }
+
+        overlay.classList.remove("hidden");
+        requestAnimationFrame(() => {
+            overlay.classList.add("active");
+        });
+
+        const cleanup = () => {
+            overlay.classList.remove("active");
+            setTimeout(() => {
+                overlay.classList.add("hidden");
+            }, 120);
+            btnConfirm.removeEventListener("click", onConfirm);
+            btnCancel.removeEventListener("click", onCancel);
+            if (btnClose) btnClose.removeEventListener("click", onCancel);
+            overlay.removeEventListener("click", onOverlayClick);
+            document.removeEventListener("keydown", onKeyDown);
+        };
+
+        const onConfirm = () => {
+            cleanup();
+            resolve(true);
+        };
+
+        const onCancel = () => {
+            cleanup();
+            resolve(false);
+        };
+
+        const onOverlayClick = (e) => {
+            if (e.target === overlay) {
+                onCancel();
+            }
+        };
+
+        const onKeyDown = (e) => {
+            if (e.key === "Escape") {
+                onCancel();
+            } else if (e.key === "Enter") {
+                onConfirm();
+            }
+        };
+
+        btnConfirm.addEventListener("click", onConfirm);
+        btnCancel.addEventListener("click", onCancel);
+        if (btnClose) btnClose.addEventListener("click", onCancel);
+        overlay.addEventListener("click", onOverlayClick);
+        document.addEventListener("keydown", onKeyDown);
+    });
+}
+
+// Export All Student Data to Excel (.xlsx) Spreadsheet
+function exportAllDataToExcel() {
+    if (typeof XLSX === "undefined") {
+        showToast("تنبيه ⚠️", "مكتبة تصدير الإكسيل جاري تحميلها، يرجى المحاولة مرة أخرى...", "warning");
+        return;
+    }
+
+    const studentsList = currentFilteredStudents && currentFilteredStudents.length > 0 
+        ? currentFilteredStudents 
+        : (studentsData || []);
+
+    if (!studentsList || studentsList.length === 0) {
+        showToast("لا توجد بيانات ⚠️", "لا يوجد طلاب متاحين لتصديرهم في ملف إكسيل.", "warning");
+        return;
+    }
+
+    const monthText = getSelectedMonthText();
+    const excelRows = [];
+
+    studentsList.forEach(student => {
+        const monthRec = (student.records && student.records[selectedMonth]) || { paid: false, paidAmount: 0, sessions: {} };
+        const sessions = monthRec.sessions || {};
+
+        let attendedCount = 0;
+        const sessionDetails = [];
+
+        for (let i = 1; i <= 8; i++) {
+            const sess = sessions[i] || {};
+            if (sess.attended) attendedCount++;
+            
+            let sessStatus = sess.attended ? "حضور" : "غياب";
+            if (sess.examGrade) {
+                sessStatus += ` (امتحان: ${toEnglishDigits(sess.examGrade)})`;
+            }
+            sessionDetails.push(`ح${i}: ${sessStatus}`);
+        }
+
+        const paidStatusText = monthRec.paid 
+            ? `تم الدفع (${toEnglishDigits(monthRec.paidAmount || 100)} ج.م)` 
+            : `لم يتم الدفع`;
+
+        excelRows.push({
+            "الرقم الأكاديمي": toEnglishDigits(student.academicId || ""),
+            "اسم الطالب": student.name || "",
+            "الصف الدراسي": student.grade || "",
+            "رقم هاتف الطالب": toEnglishDigits(student.phone || ""),
+            "رقم هاتف ولي الأمر": toEnglishDigits(student.guardianPhone || ""),
+            "الشهر المالي": monthText,
+            "حالة المصروفات": paidStatusText,
+            "عدد أيام الحضور": toEnglishDigits(attendedCount),
+            "تفاصيل الحصص والاختبارات": sessionDetails.join(" | "),
+            "ملاحظات": student.notes || ""
+        });
+    });
+
+    try {
+        const worksheet = XLSX.utils.json_to_sheet(excelRows);
+
+        // Auto-fit column widths for clear readability in Excel
+        const colWidths = [
+            { wch: 16 }, // Academic ID
+            { wch: 26 }, // Name
+            { wch: 22 }, // Grade
+            { wch: 16 }, // Student Phone
+            { wch: 18 }, // Guardian Phone
+            { wch: 14 }, // Month
+            { wch: 22 }, // Fee Status
+            { wch: 16 }, // Attendance Count
+            { wch: 50 }, // Session details
+            { wch: 30 }  // Notes
+        ];
+        worksheet["!cols"] = colWidths;
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "بيانات الطلاب");
+
+        const fileName = `كشف_بيانات_الطلاب_${monthText.replace(/\s+/g, '_')}.xlsx`;
+        XLSX.writeFile(workbook, fileName);
+
+        showToast("تم تصدير الإكسيل 📊🟢", `تم تصدير ${excelRows.length} طالب إلى ملف إكسيل بنجاح!`, "success");
+    } catch (err) {
+        console.error("Excel Export Error:", err);
+        showToast("خطأ أثناء التصدير 🔴", "حدث خطأ أثناء إنشاء ملف الإكسيل.", "error");
+    }
+}
+
+// Bind Export Excel Button
+function initExportExcelButton() {
+    const btnExportExcel = document.getElementById("btn-export-excel");
+    if (btnExportExcel) {
+        btnExportExcel.addEventListener("click", exportAllDataToExcel);
+    }
+}
+
+// --- Firebase Authentication & Full-Screen Login System ---
+let firebaseAuthCredentials = { username: "haitham", passwordHash: "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0" }; // SHA-256 hash of "0000"
+
+function initLoginSystem() {
+    const loginOverlay = document.getElementById("login-modal-overlay");
+    const loginForm = document.getElementById("login-form");
+    const inputUser = document.getElementById("login-username");
+    const inputPass = document.getElementById("login-password");
+    const errorMsg = document.getElementById("login-error-msg");
+    const btnLogout = document.getElementById("btn-logout");
+
+    if (!loginOverlay || !loginForm) return;
+
+    // Check Firebase for admin credentials under single node (adminAuth) & listen in real-time
+    if (typeof db !== "undefined" && db) {
+        db.ref("adminAuth").on("value", async (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                if (data && data.username !== undefined && data.password !== undefined) {
+                    const currentDbUser = String(data.username).trim();
+                    let currentDbPass = String(data.password).trim();
+                    let currentPassHash = currentDbPass;
+
+                    // Upgrade raw plaintext password in Firebase to SHA-256 hash automatically!
+                    if (currentDbPass.length !== 64 || !/^[0-9a-f]+$/i.test(currentDbPass)) {
+                        currentPassHash = await hashPassword(currentDbPass);
+                        db.ref("adminAuth/password").set(currentPassHash).catch(() => {});
+                    }
+
+                    firebaseAuthCredentials = {
+                        username: currentDbUser,
+                        passwordHash: currentPassHash
+                    };
+
+                    // Real-Time Password Change Auto Logout Check across all active devices
+                    const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+                    const savedSessionPassHash = sessionStorage.getItem("sessionPassHash");
+                    const savedSessionUser = sessionStorage.getItem("sessionUsername");
+
+                    if (isLoggedIn && (savedSessionPassHash !== currentPassHash || savedSessionUser !== currentDbUser)) {
+                        // Password or Username was updated in Firebase! Immediately invalidate session!
+                        sessionStorage.removeItem("isLoggedIn");
+                        sessionStorage.removeItem("sessionPassHash");
+                        sessionStorage.removeItem("sessionUsername");
+                        sessionStorage.removeItem("sessionPassword");
+
+                        if (inputPass) inputPass.value = "";
+                        loginOverlay.style.display = "flex";
+                        loginOverlay.style.opacity = "1";
+
+                        if (errorMsg) {
+                            errorMsg.textContent = "تم تغيير كلمة المرور! يرجى تسجيل الدخول بالبيانات الجديدة 🔒";
+                            errorMsg.style.display = "block";
+                        }
+                        showToast("تنبيه أمان ⚠️", "تم تغيير كلمة المرور، تم تسجيل الخروج تلقائياً.", "warning");
+                    }
+                }
+            } else {
+                // Initialize Firebase with default hashed credentials (SHA-256 of "0000")
+                const defaultHash = await hashPassword("0000");
+                db.ref("adminAuth").set({
+                    username: "haitham",
+                    password: defaultHash
+                }).catch(() => {});
+            }
+        });
+    }
+
+    // Check Session Login State
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+    if (isLoggedIn) {
+        loginOverlay.style.display = "none";
+    } else {
+        loginOverlay.style.display = "flex";
+    }
+
+    // Handle Login Submit
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const enteredUser = inputUser ? inputUser.value.trim() : "";
+        const enteredPass = inputPass ? inputPass.value.trim() : "";
+
+        const validUser = String(firebaseAuthCredentials.username || "haitham").trim();
+        const validPassHash = firebaseAuthCredentials.passwordHash || await hashPassword("0000");
+        const enteredHash = await hashPassword(enteredPass);
+
+        if (enteredUser === validUser && enteredHash === validPassHash) {
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("sessionUsername", validUser);
+            sessionStorage.setItem("sessionPassHash", validPassHash);
+            sessionStorage.removeItem("sessionPassword"); // Clean up legacy plaintext password
+            
+            if (errorMsg) errorMsg.style.display = "none";
+            
+            // Hide modal with smooth transition
+            loginOverlay.style.opacity = "0";
+            setTimeout(() => {
+                loginOverlay.style.display = "none";
+                loginOverlay.style.opacity = "1";
+            }, 350);
+
+            showToast("تم تسجيل الدخول بنجاح 🔓", `مرحباً بك يا مستر ${escapeHTML(validUser)}!`, "success");
+        } else {
+            if (errorMsg) {
+                errorMsg.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة 🔴";
+                errorMsg.style.display = "block";
+            }
+            showToast("فشل تسجيل الدخول 🔴", "يرجى التأكد من اسم المستخدم وكلمة المرور.", "error");
+        }
+    });
+
+    // Handle Logout
+    if (btnLogout) {
+        btnLogout.addEventListener("click", async () => {
+            const confirmLogout = await showConfirmModal(
+                "هل أنت تأكد من تسجيل الخروج من النظام؟",
+                "تأكيد الخروج",
+                "خروج",
+                "danger"
+            );
+            if (confirmLogout) {
+                sessionStorage.removeItem("isLoggedIn");
+                sessionStorage.removeItem("sessionPassHash");
+                sessionStorage.removeItem("sessionUsername");
+                sessionStorage.removeItem("sessionPassword");
+                
+                if (inputPass) inputPass.value = "";
+                loginOverlay.style.display = "flex";
+                showToast("تم تسجيل الخروج 🔒", "تم خروجك من نظام الأكاديمية بنجاح.", "info");
+            }
+        });
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+        initExportExcelButton();
+        initLoginSystem();
+    });
+} else {
+    initExportExcelButton();
+    initLoginSystem();
+}
