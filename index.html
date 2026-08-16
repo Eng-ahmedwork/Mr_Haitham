@@ -747,7 +747,7 @@
 
     <!-- Hidden Offscreen Student Performance Report Card (Rendered to PNG Image) -->
     <div id="report-card-offscreen-container"
-        style="position: absolute; left: -9999px; top: 0; width: 680px; pointer-events: none;">
+        style="position: fixed; top: 0; left: 0; transform: translateY(-10000px); opacity: 0; pointer-events: none; z-index: -99999; width: 680px; max-width: none;">
         <div id="student-report-card" class="report-card-paper">
             <div class="report-header">
                 <div class="report-logo-box">
@@ -827,5 +827,6 @@
     <script src="app.js"></script>
     <script src="security.js"></script>
 </body>
+
 
 </html>

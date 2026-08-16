@@ -7,7 +7,7 @@
 
         // 2. منع اختصارات الكيبورد الخاصة بأدوات المطورين
         document.addEventListener('keydown', (e) => {
-            const key = e.key.toLowerCase();
+            const key = e.key ? e.key.toLowerCase() : '';
             const isCtrl = e.ctrlKey || e.metaKey;
 
             // F12
@@ -28,25 +28,6 @@
                 return false;
             }
         });
-
-        // 3. حيلة الـ Debugger Loop (تجميد الصفحة إذا تم فتح الـ DevTools)
-        setInterval(() => {
-            const startTime = performance.now();
-            
-            // محاولة إيقاف التنفيذ برمجياً
-            (function () {
-                return false;
-            })
-            ["constructor"]("debugger")();
-
-            const endTime = performance.now();
-            
-            // إذا كان وقت التنفيذ أطول من 100ms فهذا يعني أن أدوات المطورين مفتوحة
-            if (endTime - startTime > 100) {
-                // يمكنك إعادة توجيه المستخدم أو مسح محتوى الصفحة
-                document.body.innerHTML = "<h1>عذراً، غير مسموح باستخدام أدوات المطورين!</h1>";
-            }
-        }, 500);
     }
 
     if (document.readyState === 'loading') {
