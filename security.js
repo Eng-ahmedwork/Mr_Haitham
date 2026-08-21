@@ -1,1 +1,38 @@
-/* Obfuscated by J2TEAM.org */function _0x16aa(_0x586ebf,_0x13eecc){_0x586ebf=_0x586ebf-0xdc;const _0x5289eb=_0x5289();let _0x16aa15=_0x5289eb[_0x586ebf];return _0x16aa15;}function _0x5289(){const _0x168185=['11692608neQOjE','F12','shiftKey','8224164TlPjxF','addEventListener','18215739ZJwsLq','4tXQqef','readyState','key','keydown','keyCode','6781075MGtWTF','398020EEROJD','ctrlKey','metaKey','6032045UlHstu','preventDefault','8rNZCan','includes','574986BZhQZP'];_0x5289=function(){return _0x168185;};return _0x5289();}(function(_0x2853e3,_0x5daa5a){const _0x34ba7d=_0x16aa,_0x5c8f8f=_0x2853e3();while(!![]){try{const _0x53dec7=-parseInt(_0x34ba7d(0xef))/0x1*(parseInt(_0x34ba7d(0xea))/0x2)+parseInt(_0x34ba7d(0xdd))/0x3*(-parseInt(_0x34ba7d(0xe4))/0x4)+-parseInt(_0x34ba7d(0xed))/0x5+parseInt(_0x34ba7d(0xe1))/0x6+-parseInt(_0x34ba7d(0xe9))/0x7+parseInt(_0x34ba7d(0xde))/0x8+parseInt(_0x34ba7d(0xe3))/0x9;if(_0x53dec7===_0x5daa5a)break;else _0x5c8f8f['push'](_0x5c8f8f['shift']());}catch(_0x4953ad){_0x5c8f8f['push'](_0x5c8f8f['shift']());}}}(_0x5289,0xdb155),(function(){const _0x3939c1=_0x16aa;function _0x54530e(){const _0x3cdc40=_0x16aa;document[_0x3cdc40(0xe2)]('contextmenu',_0x1cdc5c=>{const _0x3143d5=_0x3cdc40;_0x1cdc5c[_0x3143d5(0xee)]();},![]),document[_0x3cdc40(0xe2)](_0x3cdc40(0xe7),_0x3298de=>{const _0x6af529=_0x3cdc40,_0x13b83b=_0x3298de['key']?_0x3298de[_0x6af529(0xe6)]['toLowerCase']():'',_0x10d354=_0x3298de[_0x6af529(0xeb)]||_0x3298de[_0x6af529(0xec)];if(_0x3298de[_0x6af529(0xe6)]===_0x6af529(0xdf)||_0x3298de[_0x6af529(0xe8)]===0x7b)return _0x3298de[_0x6af529(0xee)](),![];if(_0x10d354&&_0x3298de[_0x6af529(0xe0)]&&['i','j','c'][_0x6af529(0xdc)](_0x13b83b))return _0x3298de[_0x6af529(0xee)](),![];if(_0x10d354&&_0x13b83b==='u')return _0x3298de['preventDefault'](),![];});}document[_0x3939c1(0xe5)]==='loading'?document[_0x3939c1(0xe2)]('DOMContentLoaded',_0x54530e):_0x54530e();}()));
+(function () {
+    function protectDevTools() {
+        // 1. منع الزر الأيمن للماوس (Right-Click)
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        }, false);
+
+        // 2. منع اختصارات الكيبورد الخاصة بأدوات المطورين
+        document.addEventListener('keydown', (e) => {
+            const key = e.key ? e.key.toLowerCase() : '';
+            const isCtrl = e.ctrlKey || e.metaKey;
+
+            // F12
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Ctrl + Shift + I / J / C (فتح الـ Inspector / Console)
+            if (isCtrl && e.shiftKey && ['i', 'j', 'c'].includes(key)) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Ctrl + U (عرض سورس الصفحة)
+            if (isCtrl && key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', protectDevTools);
+    } else {
+        protectDevTools();
+    }
+})();
