@@ -1,4 +1,13 @@
 (function () {
+    // 0. منع التضمين داخل إطارات وهمية (Anti-Clickjacking / Frame Busting)
+    if (window.top !== window.self) {
+        try {
+            window.top.location = window.self.location;
+        } catch (e) {
+            document.documentElement.style.display = 'none';
+        }
+    }
+
     function protectDevTools() {
         // 1. منع الزر الأيمن للماوس (Right-Click)
         document.addEventListener('contextmenu', (e) => {
