@@ -1,1 +1,71 @@
-/* Obfuscated by J2TEAM.org */function _0x21b1(_0x317706,_0x2e4d11){_0x317706=_0x317706-0x67;const _0x127a81=_0x127a();let _0x21b18b=_0x127a81[_0x317706];return _0x21b18b;}function _0x127a(){const _0x3180d6=['20cmlCpE','preventDefault','location','loading','450102RugJdq','addEventListener','10yVRFzc','self','readyState','keydown','295589lJJNkZ','key','3106953NBfcil','ctrlKey','documentElement','top','32wYxzGu','none','keyCode','DOMContentLoaded','includes','1227039KMTqzH','toLowerCase','58520rzvfGz','785931GiAOjL','display','4MqHReA','116332ruAGiQ'];_0x127a=function(){return _0x3180d6;};return _0x127a();}(function(_0x2921e9,_0x6b873d){const _0x4f21ca=_0x21b1,_0x2f8b41=_0x2921e9();while(!![]){try{const _0x2ba4bd=parseInt(_0x4f21ca(0x7b))/0x1*(parseInt(_0x4f21ca(0x7c))/0x2)+parseInt(_0x4f21ca(0x79))/0x3+-parseInt(_0x4f21ca(0x7d))/0x4*(parseInt(_0x4f21ca(0x78))/0x5)+parseInt(_0x4f21ca(0x81))/0x6+parseInt(_0x4f21ca(0x6b))/0x7*(parseInt(_0x4f21ca(0x71))/0x8)+-parseInt(_0x4f21ca(0x6d))/0x9+-parseInt(_0x4f21ca(0x67))/0xa*(parseInt(_0x4f21ca(0x76))/0xb);if(_0x2ba4bd===_0x6b873d)break;else _0x2f8b41['push'](_0x2f8b41['shift']());}catch(_0x224fd9){_0x2f8b41['push'](_0x2f8b41['shift']());}}}(_0x127a,0x36830),(function(){const _0x2b34cd=_0x21b1;if(window[_0x2b34cd(0x70)]!==window[_0x2b34cd(0x68)])try{window[_0x2b34cd(0x70)][_0x2b34cd(0x7f)]=window[_0x2b34cd(0x68)][_0x2b34cd(0x7f)];}catch(_0x33f981){document[_0x2b34cd(0x6f)]['style'][_0x2b34cd(0x7a)]=_0x2b34cd(0x72);}function _0x4ac1fc(){const _0xd690ab=_0x2b34cd;document[_0xd690ab(0x82)]('contextmenu',_0x559da4=>{_0x559da4['preventDefault']();},![]),document[_0xd690ab(0x82)](_0xd690ab(0x6a),_0x3eb4ff=>{const _0x5dfce1=_0xd690ab,_0x123ae8=_0x3eb4ff[_0x5dfce1(0x6c)]?_0x3eb4ff[_0x5dfce1(0x6c)][_0x5dfce1(0x77)]():'',_0x23d308=_0x3eb4ff[_0x5dfce1(0x6e)]||_0x3eb4ff['metaKey'];if(_0x3eb4ff[_0x5dfce1(0x6c)]==='F12'||_0x3eb4ff[_0x5dfce1(0x73)]===0x7b)return _0x3eb4ff[_0x5dfce1(0x7e)](),![];if(_0x23d308&&_0x3eb4ff['shiftKey']&&['i','j','c'][_0x5dfce1(0x75)](_0x123ae8))return _0x3eb4ff[_0x5dfce1(0x7e)](),![];if(_0x23d308&&_0x123ae8==='u')return _0x3eb4ff[_0x5dfce1(0x7e)](),![];});}document[_0x2b34cd(0x69)]===_0x2b34cd(0x80)?document[_0x2b34cd(0x82)](_0x2b34cd(0x74),_0x4ac1fc):_0x4ac1fc();}()));
+/**
+ * Security & Anti-Tampering Module
+ * حماية الموقع من الاختراق وأدوات التفتيش والاسكربتات الخبيثة
+ */
+(function () {
+    "use strict";
+
+    // 1. منع تضمين الصفحة داخل iframe غير مصرح به (Clickjacking Protection)
+    try {
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+    } catch (e) {
+        console.warn("Frame busting enforced.");
+    }
+
+    function initSecurityMeasures() {
+        // 2. منع القائمة المنبثقة بالزر الأيمن للماوس (Right-Click Context Menu)
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        }, { capture: true, passive: false });
+
+        // 3. منع سحب وإفلات العناصر لمنع استخراج الكود أو الوسائط الحساسة
+        document.addEventListener('dragstart', (e) => {
+            if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'A')) {
+                e.preventDefault();
+            }
+        });
+
+        // 4. منع اختصارات لوحة المفاتيح الخاصة بأدوات المطورين وحفظ الصفحة
+        document.addEventListener('keydown', (e) => {
+            const key = e.key ? e.key.toLowerCase() : '';
+            const isCtrl = e.ctrlKey || e.metaKey;
+
+            // F12 - فتح أدوات المطورين
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            // Ctrl + Shift + I / J / C (فتح Console / Inspector)
+            if (isCtrl && e.shiftKey && ['i', 'j', 'c'].includes(key)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            // Ctrl + U (عرض سورس الصفحة)
+            if (isCtrl && key === 'u') {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            // Ctrl + S (حفظ الصفحة ومحتوياتها)
+            if (isCtrl && key === 's') {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, { capture: true, passive: false });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSecurityMeasures);
+    } else {
+        initSecurityMeasures();
+    }
+})();
